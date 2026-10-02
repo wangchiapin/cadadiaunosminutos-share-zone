@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>下載統計</title>
+<style>
+:root{--cream:#f5eddc;--paper:#fbf7ee;--line:#e2d5bc;--ink:#2a231e;--soft:#6b6056;--brick:#a63d2f;--jade:#3c7c66}
+body{margin:0;font-family:"Noto Sans TC",system-ui,sans-serif;background:var(--cream);color:var(--ink)}
+.wrap{max-width:760px;margin:0 auto;padding:28px 16px}
+h1{font-size:1.5rem;margin:0 0 4px}
+p.note{color:var(--soft);font-size:.9rem;margin:0 0 20px}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+input{font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:#fff;flex:1;min-width:140px}
+button{font:inherit;font-weight:700;padding:8px 16px;border:0;border-radius:8px;background:var(--brick);color:#fff;cursor:pointer}
+.total{background:var(--jade);color:#fff;border-radius:14px;padding:18px;margin-bottom:16px}
+.total b{font-size:2.2rem;display:block;line-height:1.1}
+.rel{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:10px}
+.rel h2{font-size:1rem;margin:0 0 6px}
+.rel small{color:var(--soft)}
+table{width:100%;border-collapse:collapse;font-size:.92rem;margin-top:6px}
+td{padding:5px 0;border-top:1px dashed var(--line)}
+td:last-child{text-align:right;font-weight:700}
+a{color:var(--brick)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>下載與瀏覽統計</h1>
+  <p class="note">下載次數來自 GitHub Releases（實際下載數，非點擊數）。瀏覽人數請看 GoatCounter 後台。</p>
+  <div class="row">
+    <input id="repo" value="wangchiapin/GoodTeacher" aria-label="repo">
+    <button id="go">更新</button>
+  </div>
+  <div id="out"></div>
+  <p class="note" id="gc"></p>
+</div>
+<script>
+const GOATCOUNTER_CODE = "";   // 跟 index.html 填一樣的代碼
+const out = document.getElementById("out");
+if (GOATCOUNTER_CODE) document.getElementById("gc").innerHTML =
+  `瀏覽人數：<a href="https://${GOATCOUNTER_CODE}.goatcounter.com" target="_blank" rel="noopener">開啟 GoatCounter 後台 →</a>`;
+
+async function load(){
+  const repo = document.getElementById("repo").value.trim();
+  out.textContent = "讀取中…";
+  try{
+    const r = await fetch(`https://api.github.com/repos/${repo}/releases?per_page=100`);
+    if (!r.ok) throw new Error(r.status === 404 ? "找不到這個 repo（要是公開的，並且已經發布過 Release）" : "GitHub 回應 " + r.status);
+    const rels = await r.json();
+    if (!rels.length){ out.textContent = "這個 repo 還沒有任何 Release。"; return; }
+    let total = 0;
+    const html = rels.map(rel => {
+      const sum = rel.assets.reduce((a, x) => a + x.download_count, 0);
+      total += sum;
+      const rows = rel.assets.map(x => `<tr><td>${x.name}</td><td>${x.download_count.toLocaleString()}</td></tr>`).join("");
+      return `<div class="rel"><h2>${rel.name || rel.tag_name} · ${sum.toLocaleString()} 次</h2>
+        <small>發布於 ${new Date(rel.published_at).toLocaleDateString("zh-TW")}</small><table>${rows}</table></div>`;
+    }).join("");
+    out.innerHTML = `<div class="total">全部版本總下載<b>${total.toLocaleString()}</b></div>` + html;
+  }catch(e){ out.textContent = "讀取失敗：" + e.message; }
+}
+document.getElementById("go").addEventListener("click", load);
+load();
+</script>
+</body>
+</html>
