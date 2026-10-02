@@ -28,8 +28,7 @@ const CONFIG = {
     }
   },
 
-  // 統計：到 goatcounter.com 免費註冊後，把你取的代碼填在這裡（例："wangchiapin"）
-  analytics: { goatcounterCode: "" },
+  // 統計：Firebase 設定放在同資料夾的 firebase-config.js（只要貼一次）
 
   /* ---------------- 小遊戲 ---------------- */
   games: [
@@ -116,29 +115,41 @@ const CONFIG = {
   /* ---------------- 字體 ---------------- */
   font: {
     name: "GoodTeacher",
-    version: "v6",                 // ← 發新版時改這裡
-    updated: "2026-10",
+    updated: "2026-10-02",          // ← 每次發新版改這裡（和 GitHub Release 的 tag 一樣）
     desc: {
-      zh: "在 Word 裡直接打字，每個漢字上方就會自動出現台灣讀音的拼音。多音字和「一」「不」變調會自動處理。另附 PowerPoint 增益集。",
-      es: "Escribe en Word y cada carácter muestra su pinyin (pronunciación de Taiwán) automáticamente. Resuelve caracteres polifónicos y los cambios tonales de 一 y 不. Incluye un complemento para PowerPoint."
+      zh: "在 Word 裡直接打字，每個漢字上方就會自動出現台灣讀音的拼音或注音。多音字和「一」「不」變調會自動處理。共有文楷、正楷、注音三種，另附 PowerPoint 增益集。",
+      es: "Escribe en Word y cada carácter muestra su pinyin o zhuyin (pronunciación de Taiwán) automáticamente. Resuelve caracteres polifónicos y los cambios tonales de 一 y 不. Tres estilos: WenKai, Kai y Zhuyin, más un complemento para PowerPoint."
     },
-    // 建議把檔案放在 GitHub Releases，網址用 .../releases/latest/download/檔名
-    // 這樣每次發新版只要檔名不變，這裡的網址就不用改，下載次數也會自動統計
+    // 檔案放在 GitHub Releases。zip 檔名固定不變 → 這裡網址永遠不用改
+    // ⚠ 每次發新版，四個 zip 都要重新上傳到新的 Release，否則按鈕會下載失敗
+    // version：只要改這裡的數字，網站上就會顯示
     downloads: [
       {
-        id: "font",
-        label: { zh: "字體（Word 用）", es: "Fuente (para Word)" },
-        note:  { zh: "含 GoodTeacher.ttf 與授權檔 OFL.txt", es: "Incluye GoodTeacher.ttf y la licencia OFL.txt" },
-        url: "https://github.com/wangchiapin/GoodTeacher/releases/latest/download/GoodTeacher-Font.zip"
+        id: "wenkai", version: "v9",
+        label: { zh: "文楷拼音字體", es: "Fuente pinyin WenKai" },
+        note:  { zh: "手寫感、適合講義。含字體檔與 OFL.txt", es: "Estilo manuscrito, ideal para fichas. Incluye la licencia OFL.txt" },
+        url: "https://github.com/wangchiapin/GoodTeacher/releases/latest/download/GoodTeacher-WenKai.zip"
       },
       {
-        id: "ppt",
+        id: "kai", version: "v2",
+        label: { zh: "正楷拼音字體", es: "Fuente pinyin Kai" },
+        note:  { zh: "標準楷書。含字體檔與授權說明", es: "Caligrafía Kai estándar. Incluye las licencias" },
+        url: "https://github.com/wangchiapin/GoodTeacher/releases/latest/download/GoodTeacher-Kai.zip"
+      },
+      {
+        id: "zhuyin", version: "v2",
+        label: { zh: "注音字體", es: "Fuente zhuyin (bopomofo)" },
+        note:  { zh: "字旁顯示注音。含字體檔與授權說明", es: "Muestra zhuyin junto a cada carácter. Incluye las licencias" },
+        url: "https://github.com/wangchiapin/GoodTeacher/releases/latest/download/GoodTeacher-Zhuyin.zip"
+      },
+      {
+        id: "ppt", version: "",
         label: { zh: "PowerPoint 增益集", es: "Complemento de PowerPoint" },
-        note:  { zh: "含 GoodTeacherPPT.ppam 與 rules.csv", es: "Incluye GoodTeacherPPT.ppam y rules.csv" },
+        note:  { zh: "含 GoodTeacherPPT.ppam、rules.csv 與讀音資料檔", es: "Incluye GoodTeacherPPT.ppam, rules.csv y los archivos de datos" },
         url: "https://github.com/wangchiapin/GoodTeacher/releases/latest/download/GoodTeacher-PPT.zip"
       },
       {
-        id: "guide",
+        id: "guide", version: "",
         label: { zh: "圖解安裝說明（PDF）", es: "Guía de instalación ilustrada (PDF)" },
         note:  { zh: "Word 與 PowerPoint 一步一步設定", es: "Paso a paso para Word y PowerPoint (en chino)" },
         url: ""
@@ -149,20 +160,20 @@ const CONFIG = {
       es: "Microsoft Word / PowerPoint de escritorio en Windows. Mac, Google Docs y Canva aún no están probados."
     },
     steps: [
-      { zh: "下載「字體」壓縮檔並解壓縮。", es: "Descarga el archivo de la fuente y descomprímelo." },
-      { zh: "在 GoodTeacher.ttf 上按右鍵 →「為所有使用者安裝」。", es: "Clic derecho en GoodTeacher.ttf → «Instalar para todos los usuarios»." },
-      { zh: "重新開啟 Word，字型選 GoodTeacher，直接打字即可。", es: "Abre Word de nuevo, elige la fuente GoodTeacher y escribe." },
+      { zh: "選一種字體下載（文楷、正楷或注音），解壓縮。", es: "Elige una fuente (WenKai, Kai o Zhuyin), descárgala y descomprímela." },
+      { zh: "在字體檔（.ttf）上按右鍵 →「為所有使用者安裝」。", es: "Clic derecho en el archivo .ttf → «Instalar para todos los usuarios»." },
+      { zh: "重新開啟 Word，字型清單選 GoodTeacher 開頭的字型，直接打字即可。", es: "Abre Word de nuevo, elige la fuente que empieza por GoodTeacher y escribe." },
       { zh: "PowerPoint：下載增益集後，先在檔案上按右鍵 → 內容 → 勾選「解除封鎖」，再依 PDF 說明載入。", es: "PowerPoint: tras descargar el complemento, clic derecho → Propiedades → marca «Desbloquear» y sigue la guía PDF." }
     ],
     changelog: [
       // 新版本加在最上面
-      { version: "v6", date: "2026-10-01",
-        notes: { zh: "第一個公開版本。", es: "Primera versión pública." } }
+      { version: "2026-10-02", date: "",
+        notes: { zh: "第一個公開版本：文楷 v9、正楷 v2、注音 v2。", es: "Primera versión pública: WenKai v9, Kai v2, Zhuyin v2." } }
     ],
     reportUrl: "",                  // 讀音錯誤回報表單（例如 Google 表單）
     license: {
-      zh: "GoodTeacher 以 SIL Open Font License 1.1 授權，修改自 ToneOZ 拼音文楷（源自霞鶩文楷 LXGW WenKai）。可免費使用、分享與修改，但不可單獨販售。",
-      es: "GoodTeacher se distribuye bajo la SIL Open Font License 1.1 y es una modificación de ToneOZ Pinyin WenKai (basada en LXGW WenKai). Puedes usarla, compartirla y modificarla gratis, pero no venderla por separado."
+      zh: "GoodTeacher 系列字體修改自澳聲通 ToneOZ 拼音字體。文楷：SIL Open Font License 1.1（含霞鶩文楷、Fontworks Klee One）。正楷與注音：漢字字形來自國家發展委員會「全字庫」（cns11643.gov.tw），依政府資料開放授權條款第 1 版提供；拼音、注音部分為 SIL OFL 1.1。詳見各壓縮檔內的授權檔。可免費使用與分享，字體檔不可單獨販售。",
+      es: "Las fuentes GoodTeacher son modificaciones de las fuentes pinyin de ToneOZ. WenKai: SIL Open Font License 1.1 (incluye LXGW WenKai y Fontworks Klee One). Kai y Zhuyin: caracteres chinos del «full repertoire» CNS 11643 del National Development Council de Taiwán (cns11643.gov.tw), bajo la Open Government Data License v1.0; pinyin y zhuyin bajo SIL OFL 1.1. Detalles en los archivos de licencia de cada descarga. Uso y difusión gratuitos; las fuentes no pueden venderse por separado."
     }
   },
 
@@ -297,6 +308,7 @@ section{padding:48px 0}
 .dl .ic{width:38px; height:38px; flex-shrink:0; border-radius:9px; background:var(--jade); color:#fff; display:grid; place-items:center}
 .dl .ic svg{width:20px; height:20px}
 .dl b{display:block; font-size:.98rem}
+.dl .ver{font-style:normal; font-size:.72rem; font-weight:700; padding:1px 7px; margin-left:4px; border-radius:999px; background:var(--brick-soft); color:var(--brick-deep); vertical-align:2px}
 .dl small{color:var(--ink-faint); font-size:.82rem}
 .dl[aria-disabled="true"]{pointer-events:none; opacity:.6}
 .dl[aria-disabled="true"] .ic{background:var(--ink-faint)}
@@ -454,22 +466,26 @@ let lang = "zh";
 const t = v => (v == null ? "" : typeof v === "string" ? v : (v[lang] ?? v.zh ?? ""));
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[c]));
 
-/* ===== 統計（GoatCounter） ===== */
-function loadAnalytics(){
-  const code = CONFIG.analytics.goatcounterCode;
-  if (!code) return;
-  const s = document.createElement("script");
-  s.async = true;
-  s.src = "https://gc.zgo.at/count.js";
-  s.dataset.goatcounter = `https://${code}.goatcounter.com/count`;
-  document.head.appendChild(s);
+/* ===== 統計（Firebase）=====
+   每筆會同時寫進 portalStats/total 與 portalStats/d_日期（台灣時間）
+   欄位：views 瀏覽次數、visitors 每日訪客、game_xxx / download_xxx / support_xxx 點擊次數 */
+var STAT_QUEUE = [];
+function todayTW(){ return new Date().toLocaleDateString("sv-SE", { timeZone: "Asia/Taipei" }); }
+function isOwner(){ try { return localStorage.getItem("portal-owner") === "1"; } catch(e){ return false; } }
+function track(field){
+  if (isOwner()) return;
+  if (window.__statWrite) window.__statWrite(field); else STAT_QUEUE.push(field);
 }
-function track(name, title){
-  try { if (window.goatcounter && window.goatcounter.count) window.goatcounter.count({ path: name, title: title || name, event: true }); } catch(e){}
+function countVisit(){
+  track("views");
+  try {
+    const d = todayTW();
+    if (localStorage.getItem("portal-visit-day") !== d){ localStorage.setItem("portal-visit-day", d); track("visitors"); }
+  } catch(e){}
 }
 document.addEventListener("click", e => {
   const a = e.target.closest("[data-track]");
-  if (a) track(a.dataset.track, a.dataset.trackTitle);
+  if (a) track(a.dataset.track);
 });
 
 /* ===== 畫面 ===== */
@@ -482,7 +498,7 @@ function render(){
   document.getElementById("gameGrid").innerHTML = CONFIG.games.map(g => {
     const other = lang === "zh" ? g.title.es : g.title.zh;
     const btn = g.url
-      ? `<a class="btn btn-brick" href="${esc(g.url)}" target="_blank" rel="noopener" data-track="game-${esc(g.id)}" data-track-title="${esc(g.title.zh)}">${esc(t(UI.play))} ▸</a>`
+      ? `<a class="btn btn-brick" href="${esc(g.url)}" target="_blank" rel="noopener" data-track="game_${esc(g.id)}">${esc(t(UI.play))} ▸</a>`
       : `<span class="btn" aria-disabled="true">${esc(t(UI.soon))}</span>`;
     return `<article class="card">
       <div class="card-top">
@@ -498,18 +514,18 @@ function render(){
   // font
   const f = CONFIG.font;
   document.getElementById("fontMeta").innerHTML =
-    `<span class="pill b">${esc(t(UI.version))} ${esc(f.version)}</span><span class="pill">${esc(t(UI.updated))} ${esc(f.updated)}</span>`;
+    `<span class="pill">${esc(t(UI.updated))} ${esc(f.updated)}</span>`;
   document.getElementById("fontDesc").textContent = t(f.desc);
   document.getElementById("dlList").innerHTML = f.downloads.map(d => {
     const ok = !!d.url;
-    return `<a class="dl" ${ok ? `href="${esc(d.url)}" data-track="download-${esc(d.id)}" data-track-title="${esc(f.name)} ${esc(f.version)} ${esc(d.id)}"` : 'aria-disabled="true"'}>
+    return `<a class="dl" ${ok ? `href="${esc(d.url)}" data-track="download_${esc(d.id)}"` : 'aria-disabled="true"'}>
       <span class="ic">${DL_ICON}</span>
-      <span><b>${esc(t(d.label))}</b><small>${esc(ok ? t(d.note) : t(UI.soon))}</small></span>
+      <span><b>${esc(t(d.label))}${d.version ? ` <em class="ver">${esc(d.version)}</em>` : ""}</b><small>${esc(ok ? t(d.note) : t(UI.soon))}</small></span>
     </a>`;
   }).join("");
   document.getElementById("fontReq").textContent = t(f.requirements);
   document.getElementById("fontSteps").innerHTML = f.steps.map(s => `<li>${esc(t(s))}</li>`).join("");
-  document.getElementById("fontLog").innerHTML = f.changelog.map(c => `<li><b>${esc(c.version)}</b> · ${esc(c.date)}<br>${esc(t(c.notes))}</li>`).join("");
+  document.getElementById("fontLog").innerHTML = f.changelog.map(c => `<li><b>${esc(c.version)}</b>${c.date ? " · " + esc(c.date) : ""}<br>${esc(t(c.notes))}</li>`).join("");
   document.getElementById("fontLicense").textContent = t(f.license);
   const rep = document.getElementById("reportLink");
   if (f.reportUrl){ rep.href = f.reportUrl; rep.hidden = false; } else { rep.hidden = true; }
@@ -521,7 +537,7 @@ function render(){
       <div class="nm">${esc(p.name)}</div>
       ${p.qr ? `<img src="${esc(p.qr)}" alt="${esc(p.name)} QR code">` : ""}
       ${p.url
-        ? `<a class="btn btn-jade" href="${esc(p.url)}" target="_blank" rel="noopener" data-track="support-${esc(p.id)}">${esc(t(UI.give))} ▸</a>`
+        ? `<a class="btn btn-jade" href="${esc(p.url)}" target="_blank" rel="noopener" data-track="support_${esc(p.id)}">${esc(t(UI.give))} ▸</a>`
         : (p.qr ? "" : `<span class="pending">${esc(t(UI.pending))}</span>`)}
     </div>`).join("");
 
@@ -547,8 +563,28 @@ document.querySelectorAll(".lang button").forEach(b => b.addEventListener("click
   lang = (q === "zh" || q === "es") ? q
        : saved || ((navigator.language || "").toLowerCase().startsWith("zh") ? "zh" : "es");
   render();
-  loadAnalytics();
+  countVisit();
 })();
+</script>
+
+<script src="firebase-config.js"></script>
+<script type="module">
+/* Firebase 統計：沒填 firebase-config.js 時自動略過，不影響網頁 */
+try {
+  const cfg = window.FIREBASE_CONFIG;
+  if (cfg && cfg.projectId) {
+    const V = "10.12.2";
+    const { initializeApp } = await import(`https://www.gstatic.com/firebasejs/${V}/firebase-app.js`);
+    const { getFirestore, doc, setDoc, increment } = await import(`https://www.gstatic.com/firebasejs/${V}/firebase-firestore.js`);
+    const db = getFirestore(initializeApp(cfg, "portal"));
+    window.__statWrite = field => {
+      for (const id of ["total", "d_" + todayTW()]) {
+        setDoc(doc(db, "portalStats", id), { [field]: increment(1) }, { merge: true }).catch(() => {});
+      }
+    };
+    STAT_QUEUE.splice(0).forEach(window.__statWrite);
+  }
+} catch (e) { console.warn("stats off", e); }
 </script>
 </body>
 </html>
