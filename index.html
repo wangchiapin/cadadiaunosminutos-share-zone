@@ -188,6 +188,14 @@ const CONFIG = {
       note: { zh: "可用 PayPal 帳戶或信用卡付款", es: "Con cuenta PayPal o tarjeta de crédito" },
       url: "https://paypal.me/ben790831",
       qr: "img/paypal-qr.png"
+    },
+    {
+      // 銀行轉帳：帳號「不寫在這裡」，存在 Firebase 的 portalPublic/bank（避免出現在公開的原始碼）
+      id: "bank",
+      type: "bank",
+      name: { zh: "銀行轉帳", es: "Transferencia bancaria" },
+      who:  { zh: "台灣的朋友", es: "Desde Taiwán" },
+      note: { zh: "點按鈕查看帳號，轉帳後可以留言給我", es: "Pulsa para ver la cuenta; puedes dejarme un mensaje" }
     }
   ]
 };
@@ -326,6 +334,28 @@ summary{cursor:pointer; font-weight:900; font-size:.92rem}
 .pay img{width:130px; border:2px solid var(--ink); border-radius:10px; background:#fff; padding:4px}
 .pay .pending{font-size:.85rem; color:var(--ink-faint)}
 .pay .note{width:100%; font-size:.82rem; color:var(--ink-soft); margin:0}
+.btn-bank{background:var(--yellow)}
+.btn svg{width:18px; height:18px; flex-shrink:0}
+
+/* ---- bank modal ---- */
+.modal{position:fixed; inset:0; z-index:60; background:rgba(20,20,20,.45); display:grid; place-items:center; padding:16px}
+.modal-box{width:min(440px,100%); max-height:calc(100vh - 32px); overflow:auto; background:var(--paper); border:var(--bd); border-radius:18px; box-shadow:var(--shadow)}
+.modal-head{display:flex; align-items:center; gap:8px; padding:10px 10px 10px 16px; background:var(--yellow); border-bottom:var(--bd); border-radius:15px 15px 0 0; position:sticky; top:0}
+.modal-head b{flex:1; font-weight:900}
+.bm-info{padding:16px 16px 4px}
+.bm-row{display:flex; align-items:center; gap:10px; padding:8px 0; border-bottom:1px dashed var(--ink-faint)}
+.bm-row span{width:64px; flex-shrink:0; font-size:.82rem; font-weight:700; color:var(--ink-soft)}
+.bm-row b{flex:1; font-weight:900; word-break:break-all}
+.bm-row.acct b{font-size:1.15rem; letter-spacing:.03em}
+.bm-copy{border:2px solid var(--ink); border-radius:8px; background:var(--yellow-soft); font:inherit; font-size:.78rem; font-weight:900; padding:3px 9px; cursor:pointer}
+.bm-warn{font-size:.78rem; color:var(--ink-soft); margin:10px 0 0; line-height:1.5}
+.bm-msg{font-size:.9rem; color:var(--ink-soft)}
+#bmForm{padding:6px 16px 16px; display:flex; flex-direction:column; gap:10px; border-top:var(--bd); margin-top:12px; background:var(--yellow-soft); border-radius:0 0 15px 15px}
+#bmForm .bm-sub{margin:8px 0 0; font-weight:900; font-size:.92rem}
+#bmForm label{display:flex; flex-direction:column; gap:4px; font-size:.82rem; font-weight:700}
+#bmForm input, #bmForm textarea{font:inherit; font-size:.95rem; padding:8px 10px; border:2px solid var(--ink); border-radius:10px; background:#fff; resize:vertical}
+#bmForm .btn{align-self:flex-start}
+.bm-status{margin:0; font-size:.88rem; font-weight:700; min-height:1.2em}
 
 /* ---- floating donate card ---- */
 .fc{position:fixed; right:18px; bottom:18px; z-index:40; width:250px; background:var(--paper); border:var(--bd); border-radius:16px; box-shadow:var(--shadow); transition:opacity .2s, transform .2s}
@@ -340,13 +370,14 @@ summary{cursor:pointer; font-weight:900; font-size:.92rem}
 .fc-body img{width:88px; height:88px; border:2px solid var(--ink); border-radius:8px; padding:3px; background:#fff}
 .fc-side{display:flex; flex-direction:column; gap:6px; min-width:0}
 .fc-side small{font-size:.75rem; color:var(--ink-soft); line-height:1.4}
-.fc-side .btn{padding:6px 12px; font-size:.88rem}
+.fc-side .btn{padding:6px 12px; font-size:.88rem; justify-content:center}
 .fc-mini{position:fixed; right:18px; bottom:18px; z-index:40; width:54px; height:54px; border:var(--bd); border-radius:50%; background:var(--yellow); box-shadow:var(--shadow-sm); font-size:1.5rem; cursor:pointer; display:grid; place-items:center; padding:0; transition:opacity .2s}
 .fc-mini.away{opacity:0; pointer-events:none}
 @media (hover:none), (max-width:640px){
   .fc{width:auto; max-width:calc(100vw - 28px); right:14px; bottom:14px}
   .fc-body img{display:none}   /* 手機上掃自己螢幕的 QR code 沒意義，只留按鈕 */
   .fc-side small{display:none}
+  .fc-side{flex-direction:row}
   .fc-head{padding:6px 6px 6px 10px}
   .fc-body{padding:8px 10px}
 }
@@ -444,6 +475,21 @@ footer a{color:var(--ink); font-weight:700}
 </aside>
 <button type="button" class="fc-mini" id="fcMini" hidden aria-label="PayPal">☕</button>
 
+<!-- 銀行轉帳彈出視窗：帳號從 Firebase 讀取 -->
+<div class="modal" id="bankModal" hidden role="dialog" aria-modal="true" aria-labelledby="bmTitle">
+  <div class="modal-box">
+    <div class="modal-head"><b id="bmTitle" data-i="bankTitle"></b><button type="button" class="fc-x" id="bmClose" aria-label="close">✕</button></div>
+    <div class="bm-info" id="bmInfo"></div>
+    <form id="bmForm">
+      <p class="bm-sub" data-i="noteIntro"></p>
+      <label><span data-i="nameLabel"></span><input id="bmName" maxlength="40" autocomplete="name"></label>
+      <label><span data-i="msgLabel"></span><textarea id="bmMsg" maxlength="500" rows="3"></textarea></label>
+      <button type="submit" class="btn btn-brick" id="bmSend" data-i="sendNote"></button>
+      <p class="bm-status" id="bmStatus" role="status"></p>
+    </form>
+  </div>
+</div>
+
 <footer>
   <div class="wrap">
     © <span id="year"></span> <span data-i="brand"></span> · <a id="handle" target="_blank" rel="noopener"></a>
@@ -483,7 +529,26 @@ const UI = {
   give:       { zh: "前往支持", es: "Apoyar" },
   pending:    { zh: "（尚未設定）", es: "(Pendiente)" },
   fcText:     { zh: "喜歡這些遊戲和字體嗎？歡迎小額支持！", es: "¿Te gustan los juegos y la fuente? ¡Apóyame!" },
-  close:      { zh: "關閉", es: "Cerrar" }
+  close:      { zh: "關閉", es: "Cerrar" },
+  showBank:   { zh: "查看帳號", es: "Ver cuenta" },
+  bankShort:  { zh: "銀行轉帳", es: "Transferencia" },
+  bankTitle:  { zh: "銀行轉帳支持", es: "Apoyo por transferencia" },
+  bankLoading:{ zh: "讀取中…", es: "Cargando…" },
+  bankError:  { zh: "暫時無法顯示帳號，請稍後再試，或改用 PayPal。", es: "No se puede mostrar la cuenta ahora. Inténtalo más tarde o usa PayPal." },
+  bankName:   { zh: "銀行", es: "Banco" },
+  bankAcct:   { zh: "帳號", es: "Cuenta" },
+  bankHolder: { zh: "戶名", es: "Titular" },
+  copy:       { zh: "複製", es: "Copiar" },
+  copied:     { zh: "已複製", es: "Copiado" },
+  bankWarn:   { zh: "我不會私訊要求你匯款到其他帳戶。如果有人這樣做，請不要轉帳。", es: "Nunca te pediré por mensaje que transfieras a otra cuenta." },
+  noteIntro:  { zh: "想留下名字或說些話嗎？（都可以不填）", es: "¿Quieres dejar tu nombre o un mensaje? (opcional)" },
+  nameLabel:  { zh: "名字或暱稱", es: "Nombre o apodo" },
+  msgLabel:   { zh: "留言", es: "Mensaje" },
+  sendNote:   { zh: "送出留言", es: "Enviar" },
+  noteEmpty:  { zh: "請至少填一個欄位。", es: "Escribe al menos un campo." },
+  noteSending:{ zh: "送出中…", es: "Enviando…" },
+  noteOk:     { zh: "收到了，謝謝你！🙏", es: "¡Recibido, muchas gracias! 🙏" },
+  noteFail:   { zh: "送出失敗，請稍後再試。", es: "No se pudo enviar. Inténtalo más tarde." }
 };
 
 const DL_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>';
@@ -566,25 +631,27 @@ function render(){
   if (f.reportUrl){ rep.href = f.reportUrl; rep.hidden = false; } else { rep.hidden = true; }
 
   // support（下方區塊）
+  const BANK_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10 12 4l9 6"/><path d="M5 10v8M9.5 10v8M14.5 10v8M19 10v8"/><path d="M3 20h18"/></svg>';
+  const payBtn = (p, suffix, label) => p.type === "bank"
+    ? `<button type="button" class="btn btn-bank" data-bank data-track="support_${esc(p.id)}${suffix}">${BANK_ICON}${esc(label)}</button>`
+    : (p.url ? `<a class="btn btn-jade" href="${esc(p.url)}" target="_blank" rel="noopener" data-track="support_${esc(p.id)}${suffix}">${esc(label)} ▸</a>` : "");
   document.getElementById("payGrid").innerHTML = CONFIG.support.map(p => `
     <div class="pay">
       <div class="who">${esc(t(p.who))}</div>
-      <div class="nm">${esc(p.name)}</div>
-      ${p.qr ? `<img src="${esc(p.qr)}" alt="${esc(p.name)} QR code">` : ""}
-      ${p.url
-        ? `<a class="btn btn-jade" href="${esc(p.url)}" target="_blank" rel="noopener" data-track="support_${esc(p.id)}">${esc(t(UI.give))} ▸</a>`
-        : (p.qr ? "" : `<span class="pending">${esc(t(UI.pending))}</span>`)}
+      <div class="nm">${esc(t(p.name))}</div>
+      ${p.qr ? `<img src="${esc(p.qr)}" alt="${esc(t(p.name))} QR code">` : ""}
+      ${payBtn(p, "", p.type === "bank" ? t(UI.showBank) : t(UI.give)) || (p.qr ? "" : `<span class="pending">${esc(t(UI.pending))}</span>`)}
       ${p.note ? `<p class="note">${esc(t(p.note))}</p>` : ""}
     </div>`).join("");
 
-  // support（懸浮卡片：只放第一個方式）
-  const fp = CONFIG.support[0];
-  document.getElementById("fcBody").innerHTML = fp ? `
+  // support（懸浮卡片：所有方式的按鈕並排；QR code 用第一個有 QR 的）
+  const qrItem = CONFIG.support.find(p => p.qr);
+  document.getElementById("fcBody").innerHTML = CONFIG.support.length ? `
     <div class="fc-body">
-      ${fp.qr ? `<img src="${esc(fp.qr)}" alt="${esc(fp.name)} QR code">` : ""}
+      ${qrItem ? `<img src="${esc(qrItem.qr)}" alt="${esc(t(qrItem.name))} QR code">` : ""}
       <div class="fc-side">
         <small>${esc(t(UI.fcText))}</small>
-        ${fp.url ? `<a class="btn btn-jade" href="${esc(fp.url)}" target="_blank" rel="noopener" data-track="support_${esc(fp.id)}-float">${esc(fp.name)} ▸</a>` : ""}
+        ${CONFIG.support.map(p => payBtn(p, "-float", p.type === "bank" ? t(UI.bankShort) : t(p.name))).join("")}
       </div>
     </div>` : "";
   document.getElementById("fcClose").setAttribute("aria-label", t(UI.close));
@@ -647,6 +714,59 @@ document.querySelectorAll(".lang button").forEach(b => b.addEventListener("click
   }
 })();
 
+/* ===== 銀行轉帳彈出視窗 ===== */
+(function bankModal(){
+  const modal = document.getElementById("bankModal"), info = document.getElementById("bmInfo");
+  const form = document.getElementById("bmForm"), status = document.getElementById("bmStatus");
+  let bankCache = null;
+  const close = () => { modal.hidden = true; };
+  document.getElementById("bmClose").addEventListener("click", close);
+  modal.addEventListener("click", e => { if (e.target === modal) close(); });
+  addEventListener("keydown", e => { if (e.key === "Escape" && !modal.hidden) close(); });
+
+  function showInfo(b){
+    const row = (label, val, cls, copy) => val ? `<div class="bm-row ${cls||""}"><span>${esc(label)}</span><b>${esc(val)}</b>${copy ? `<button type="button" class="bm-copy" data-copy="${esc(val)}">${esc(t(UI.copy))}</button>` : ""}</div>` : "";
+    info.innerHTML =
+      row(t(UI.bankName), [b.bankName, b.bankCode && `(${b.bankCode})`].filter(Boolean).join(" ")) +
+      row(t(UI.bankAcct), b.account, "acct", true) +
+      row(t(UI.bankHolder), b.holder) +
+      `<p class="bm-warn">${esc(t(UI.bankWarn))}</p>`;
+  }
+  info.addEventListener("click", async e => {
+    const btn = e.target.closest("[data-copy]"); if (!btn) return;
+    try { await navigator.clipboard.writeText(btn.dataset.copy.replace(/[^0-9]/g, "") || btn.dataset.copy); btn.textContent = t(UI.copied); }
+    catch(err){ /* 不支援複製就算了 */ }
+  });
+
+  document.addEventListener("click", async e => {
+    if (!e.target.closest("[data-bank]")) return;
+    modal.hidden = false; status.textContent = "";
+    if (bankCache) { showInfo(bankCache); return; }
+    info.innerHTML = `<p class="bm-msg">${esc(t(UI.bankLoading))}</p>`;
+    try {
+      for (let i = 0; i < 30 && !window.__getBank; i++) await new Promise(r => setTimeout(r, 100));  // 等 Firebase 載入
+      const b = window.__getBank && await window.__getBank();
+      if (!b || !b.account) throw new Error("no data");
+      bankCache = b; showInfo(b);
+    } catch(err) { info.innerHTML = `<p class="bm-msg">${esc(t(UI.bankError))}</p>`; }
+  });
+
+  form.addEventListener("submit", async e => {
+    e.preventDefault();
+    const name = document.getElementById("bmName").value.trim().slice(0, 40);
+    const message = document.getElementById("bmMsg").value.trim().slice(0, 500);
+    if (!name && !message) { status.textContent = t(UI.noteEmpty); return; }
+    const sendBtn = document.getElementById("bmSend");
+    sendBtn.disabled = true; status.textContent = t(UI.noteSending);
+    try {
+      if (!window.__sendNote) throw new Error("firebase off");
+      await window.__sendNote(name, message, lang);
+      status.textContent = t(UI.noteOk); form.reset();
+    } catch(err) { status.textContent = t(UI.noteFail); }
+    sendBtn.disabled = false;
+  });
+})();
+
 /* 預設語言：上次選的 → 瀏覽器是中文就中文，否則西文 */
 (function init(){
   let saved = null;
@@ -667,7 +787,7 @@ try {
   if (cfg && cfg.projectId) {
     const V = "10.12.2";
     const { initializeApp } = await import(`https://www.gstatic.com/firebasejs/${V}/firebase-app.js`);
-    const { getFirestore, doc, setDoc, increment } = await import(`https://www.gstatic.com/firebasejs/${V}/firebase-firestore.js`);
+    const { getFirestore, doc, setDoc, getDoc, addDoc, collection, increment, serverTimestamp } = await import(`https://www.gstatic.com/firebasejs/${V}/firebase-firestore.js`);
     const db = getFirestore(initializeApp(cfg, "portal"));
     window.__statWrite = field => Promise.all(
       ["total", "d_" + todayTW()].map(id =>
@@ -676,6 +796,10 @@ try {
       )
     );
     STAT_QUEUE.splice(0).forEach(window.__statWrite);
+    // 銀行帳號（存在 portalPublic/bank）與留言（存到 portalNotes，只有你登入後看得到）
+    window.__getBank = async () => { const d = await getDoc(doc(db, "portalPublic", "bank")); return d.exists() ? d.data() : null; };
+    window.__sendNote = (name, message, lang) =>
+      addDoc(collection(db, "portalNotes"), { name, message, lang, createdAt: serverTimestamp() });
   }
 } catch (e) { console.warn("stats off", e); }
 </script>
