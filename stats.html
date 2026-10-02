@@ -114,11 +114,19 @@ try {
     const db = getFirestore(initializeApp(cfg, "stats"));
 
     const start = new Date(Date.now() - 29 * 864e5).toLocaleDateString("sv-SE", { timeZone: "Asia/Taipei" });
+    // 每個計數是一份文件：total__欄位、d_日期__欄位，欄位值放在 n
     const [totSnap, daySnap] = await Promise.all([
-      getDocs(query(collection(db, "portalStats"), where(documentId(), "==", "total"))),
+      getDocs(query(collection(db, "portalStats"), where(documentId(), ">=", "total__"), where(documentId(), "<=", "total__~"))),
       getDocs(query(collection(db, "portalStats"), where(documentId(), ">=", "d_" + start), where(documentId(), "<=", "d_9999")))
     ]);
-    const T = totSnap.empty ? {} : totSnap.docs[0].data();
+    const T = {};
+    totSnap.forEach(d => { T[d.id.split("__")[1]] = d.data().n || 0; });
+    const byDay = {};
+    daySnap.forEach(d => {
+      const [day, field] = d.id.slice(2).split("__");
+      if (!field) return;            // 略過舊格式的文件
+      (byDay[day] ||= {})[field] = d.data().n || 0;
+    });
 
     tiles.innerHTML = `
       <div class="tile j"><small>每日訪客（累計）</small><b>${n(T.visitors)}</b><span>同一裝置一天只算一次</span></div>
@@ -127,7 +135,7 @@ try {
       <div class="tile"><small>下載點擊</small><b>${n(sumPrefix(T,"download"))}</b></div>
       <div class="tile"><small>捐款點擊</small><b>${n(sumPrefix(T,"support"))}</b></div>`;
 
-    const rows = daySnap.docs.map(d => ({ day: d.id.slice(2), ...d.data() })).sort((a,b) => b.day.localeCompare(a.day));
+    const rows = Object.keys(byDay).map(day => ({ day, ...byDay[day] })).sort((a,b) => b.day.localeCompare(a.day));
     days.innerHTML = rows.length
       ? `<table><tr><th>日期</th><th>訪客</th><th>瀏覽</th><th>遊戲</th><th>下載</th><th>捐款</th></tr>` +
         rows.map(r => `<tr><td>${r.day}</td><td>${n(r.visitors)}</td><td>${n(r.views)}</td><td>${n(sumPrefix(r,"game"))}</td><td>${n(sumPrefix(r,"download"))}</td><td>${n(sumPrefix(r,"support"))}</td></tr>`).join("") + `</table>`
