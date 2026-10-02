@@ -12,7 +12,7 @@
 <script>
 /* =====================================================================
    ★ 設定區 CONFIG ★ — 以後只要改這裡，網頁會自動更新
-   - 每個文字欄位都是 { zh: "中文", es: "Españo
+   - 每個文字欄位都是 { zh: "中文", es: "Español" }
    - 網址留空 "" → 該項目會顯示「即將推出 / 尚未設定」
    - 要新增遊戲：複製一整段 { ... } 貼到 games 清單裡，記得逗號
    ===================================================================== */
@@ -467,14 +467,16 @@ const t = v => (v == null ? "" : typeof v === "string" ? v : (v[lang] ?? v.zh ??
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[c]));
 
 /* ===== 統計（Firebase）=====
-   每筆會同時寫進 portalStats/total 與 portalStats/d_日期（台灣時間）
+   每個計數是一份文件，只有一個欄位 n：
+   portalStats/total__欄位 與 portalStats/d_日期__欄位（台灣時間）
    欄位：views 瀏覽次數、visitors 每日訪客、game_xxx / download_xxx / support_xxx 點擊次數 */
 var STAT_QUEUE = [];
 function todayTW(){ return new Date().toLocaleDateString("sv-SE", { timeZone: "Asia/Taipei" }); }
 function isOwner(){ try { return localStorage.getItem("portal-owner") === "1"; } catch(e){ return false; } }
 function track(field){
-  if (isOwner()) return;
-  if (window.__statWrite) window.__statWrite(field); else STAT_QUEUE.push(field);
+  if (isOwner()) return Promise.resolve();
+  if (window.__statWrite) return window.__statWrite(field);
+  STAT_QUEUE.push(field); return Promise.resolve();
 }
 function countVisit(){
   track("views");
@@ -485,7 +487,14 @@ function countVisit(){
 }
 document.addEventListener("click", e => {
   const a = e.target.closest("[data-track]");
-  if (a) track(a.dataset.track);
+  if (!a) return;
+  const p = track(a.dataset.track);
+  // 下載連結會在同一頁跳轉，先等記錄送出（最多 1.2 秒）再下載，避免記錄被中斷
+  if (!a.target && a.href && !e.ctrlKey && !e.metaKey && !e.shiftKey) {
+    e.preventDefault();
+    const href = a.href;
+    Promise.race([p, new Promise(r => setTimeout(r, 1200))]).finally(() => { location.href = href; });
+  }
 });
 
 /* ===== 畫面 ===== */
@@ -577,11 +586,12 @@ try {
     const { initializeApp } = await import(`https://www.gstatic.com/firebasejs/${V}/firebase-app.js`);
     const { getFirestore, doc, setDoc, increment } = await import(`https://www.gstatic.com/firebasejs/${V}/firebase-firestore.js`);
     const db = getFirestore(initializeApp(cfg, "portal"));
-    window.__statWrite = field => {
-      for (const id of ["total", "d_" + todayTW()]) {
-        setDoc(doc(db, "portalStats", id), { [field]: increment(1) }, { merge: true }).catch(() => {});
-      }
-    };
+    window.__statWrite = field => Promise.all(
+      ["total", "d_" + todayTW()].map(id =>
+        setDoc(doc(db, "portalStats", id + "__" + field), { n: increment(1) }, { merge: true })
+          .catch(err => console.warn("stat", id, field, err.code))
+      )
+    );
     STAT_QUEUE.splice(0).forEach(window.__statWrite);
   }
 } catch (e) { console.warn("stats off", e); }
