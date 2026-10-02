@@ -35,6 +35,12 @@ button{font:inherit;font-weight:700;padding:8px 16px;border:0;border-radius:8px;
 .rel h3{font-size:.98rem;margin:0 0 4px}
 .rel small{color:var(--soft)}
 .msg{color:var(--soft);font-size:.9rem}
+.note{padding:10px 0;border-top:1px dashed var(--line)}
+.note:first-of-type{border-top:0}
+.note b{font-size:.95rem}
+.note small{color:var(--soft);font-size:.78rem;margin-left:6px}
+.note p{margin:4px 0 0;white-space:pre-wrap;word-break:break-word}
+.note .del{float:right;font-size:.75rem;padding:2px 8px;background:#fff;color:var(--brick);border:1px solid var(--line)}
 </style>
 </head>
 <body>
@@ -52,6 +58,12 @@ button{font:inherit;font-weight:700;padding:8px 16px;border:0;border-radius:8px;
 
   <h2>各項點擊（總計）</h2>
   <div class="box" id="clicks"><p class="msg">讀取中…</p></div>
+
+  <h2>留言（只有你登入後看得到）</h2>
+  <div class="box" id="notes">
+    <p class="msg">請用你的 Google 帳號登入才能看到留言。</p>
+    <div class="row" style="margin:8px 0 10px"><button id="login">用 Google 登入</button></div>
+  </div>
 
   <h2>字體實際下載（GitHub Releases）</h2>
   <div class="row">
@@ -111,7 +123,48 @@ try {
     const V = "10.12.2";
     const { initializeApp } = await import(`https://www.gstatic.com/firebasejs/${V}/firebase-app.js`);
     const { getFirestore, collection, getDocs, query, where, documentId } = await import(`https://www.gstatic.com/firebasejs/${V}/firebase-firestore.js`);
-    const db = getFirestore(initializeApp(cfg, "stats"));
+    const app = initializeApp(cfg, "stats");
+    const db = getFirestore(app);
+
+    /* ---- 留言：需要用你的 Google 帳號登入（Firestore 規則只允許你讀取） ---- */
+    (async () => {
+      const notesBox = document.getElementById("notes");
+      const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[c]));
+      try {
+        const { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } =
+          await import(`https://www.gstatic.com/firebasejs/${V}/firebase-auth.js`);
+        const { orderBy, limit, deleteDoc, doc } = await import(`https://www.gstatic.com/firebasejs/${V}/firebase-firestore.js`);
+        const auth = getAuth(app);
+        const loginUI = () => {
+          notesBox.innerHTML = `<p class="msg">請用你的 Google 帳號登入才能看到留言。</p><div class="row" style="margin:8px 0 10px"><button id="login">用 Google 登入</button></div>`;
+          document.getElementById("login").onclick = () => signInWithPopup(auth, new GoogleAuthProvider())
+            .catch(err => { notesBox.insertAdjacentHTML("beforeend", `<p class="msg">登入失敗：${esc(err.code)}</p>`); });
+        };
+        async function loadNotes(user){
+          notesBox.innerHTML = `<p class="msg">讀取中…（${esc(user.email)}）</p>`;
+          try {
+            const snap = await getDocs(query(collection(db, "portalNotes"), orderBy("createdAt", "desc"), limit(200)));
+            const list = snap.docs.map(d => {
+              const x = d.data(), when = x.createdAt ? x.createdAt.toDate().toLocaleString("zh-TW", { hour12: false }) : "";
+              return `<div class="note"><button class="del" data-id="${esc(d.id)}">刪除</button><b>${esc(x.name || "（沒留名字）")}</b><small>${esc(when)} · ${x.lang === "es" ? "西文" : "中文"}</small>${x.message ? `<p>${esc(x.message)}</p>` : ""}</div>`;
+            }).join("");
+            notesBox.innerHTML = `<div class="row" style="justify-content:space-between;align-items:center;margin:8px 0"><span class="msg">共 ${snap.size} 則 · ${esc(user.email)}</span><button id="logout">登出</button></div>` +
+              (list || `<p class="msg">還沒有留言。</p>`);
+            document.getElementById("logout").onclick = () => signOut(auth);
+            notesBox.querySelectorAll(".del").forEach(b => b.onclick = async () => {
+              if (!confirm("確定要刪除這則留言？")) return;
+              await deleteDoc(doc(db, "portalNotes", b.dataset.id)); loadNotes(user);
+            });
+          } catch (err) {
+            notesBox.innerHTML = `<p class="msg">讀不到留言（${esc(err.code || err.message)}）。請確認登入的是你的帳號，以及 Firestore 規則已更新。</p><div class="row" style="margin:8px 0"><button id="logout">登出</button></div>`;
+            document.getElementById("logout").onclick = () => signOut(auth);
+          }
+        }
+        onAuthStateChanged(auth, user => user ? loadNotes(user) : loginUI());
+      } catch (err) {
+        notesBox.innerHTML = `<p class="msg">登入功能載入失敗：${esc(err.code || err.message)}</p>`;
+      }
+    })();
 
     const start = new Date(Date.now() - 29 * 864e5).toLocaleDateString("sv-SE", { timeZone: "Asia/Taipei" });
     // 每個計數是一份文件：total__欄位、d_日期__欄位，欄位值放在 n
