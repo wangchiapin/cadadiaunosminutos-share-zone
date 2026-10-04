@@ -1142,8 +1142,9 @@ try {
   if (cfg && cfg.projectId) {
     const V = "10.12.2";
     const { initializeApp } = await import(`https://www.gstatic.com/firebasejs/${V}/firebase-app.js`);
-    const { getFirestore, doc, setDoc, getDoc, addDoc, collection, increment, serverTimestamp } = await import(`https://www.gstatic.com/firebasejs/${V}/firebase-firestore.js`);
-    const db = getFirestore(initializeApp(cfg, "portal"));
+    const { initializeFirestore, doc, setDoc, getDoc, addDoc, collection, increment, serverTimestamp } = await import(`https://www.gstatic.com/firebasejs/${V}/firebase-firestore.js`);
+    // 用「長輪詢」連線：在手機網路、部分瀏覽器上比較不會卡住
+    const db = initializeFirestore(initializeApp(cfg, "portal"), { experimentalForceLongPolling: true });
     window.__statWrite = field => Promise.all(
       ["total", "d_" + todayTW()].map(id =>
         setDoc(doc(db, "portalStats", id + "__" + field), { n: increment(1) }, { merge: true })
