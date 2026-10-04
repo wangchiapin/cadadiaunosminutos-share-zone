@@ -127,6 +127,12 @@ loadReleases();
 <script type="module">
 const tiles = document.getElementById("tiles"), days = document.getElementById("days"), clicks = document.getElementById("clicks");
 const fail = msg => { for (const el of [tiles, days, clicks]) el.innerHTML = `<p class="msg">${msg}</p>`; };
+// 等太久就放棄，顯示原因和重試按鈕（不會一直停在「讀取中…」）
+const withTimeout = (p, ms = 20000) => Promise.race([p, new Promise((_, rej) => setTimeout(() => rej({ code: "timeout" }), ms))]);
+const RETRY = `<button onclick="location.reload()" style="margin-top:8px">重試</button>`;
+const explain = e => e && e.code === "timeout"
+  ? "連線逾時：手機網路或瀏覽器擋住了 Firebase 的連線。可以換成 Wi-Fi／行動網路、關掉擋廣告功能，或用 Safari／電腦試試看。"
+  : "讀取 Firebase 失敗：" + ((e && (e.code || e.message)) || e) + "（請確認 firebase-config.js 和 Firestore 規則）";
 const n = v => (v || 0).toLocaleString();
 const sumPrefix = (o, p) => Object.keys(o).filter(k => k.startsWith(p + "_")).reduce((a,k) => a + (o[k]||0), 0);
 
@@ -137,9 +143,11 @@ try {
   } else {
     const V = "10.12.2";
     const { initializeApp } = await import(`https://www.gstatic.com/firebasejs/${V}/firebase-app.js`);
-    const { getFirestore, collection, getDocs, query, where, documentId } = await import(`https://www.gstatic.com/firebasejs/${V}/firebase-firestore.js`);
+    const { initializeFirestore, collection, getDocs: rawGetDocs, query, where, documentId } = await withTimeout(import(`https://www.gstatic.com/firebasejs/${V}/firebase-firestore.js`));
     const app = initializeApp(cfg, "stats");
-    const db = getFirestore(app);
+    // 用「長輪詢」連線：在手機網路、部分瀏覽器上比較不會卡住
+    const db = initializeFirestore(app, { experimentalForceLongPolling: true });
+    const getDocs = q => withTimeout(rawGetDocs(q));
 
     /* ---- 留言：需要用你的 Google 帳號登入（Firestore 規則只允許你讀取） ---- */
     (async () => {
@@ -171,7 +179,7 @@ try {
               await deleteDoc(doc(db, "portalNotes", b.dataset.id)); loadNotes(user);
             });
           } catch (err) {
-            notesBox.innerHTML = `<p class="msg">讀不到留言（${esc(err.code || err.message)}）。請確認登入的是你的帳號，以及 Firestore 規則已更新。</p><div class="row" style="margin:8px 0"><button id="logout">登出</button></div>`;
+            notesBox.innerHTML = `<p class="msg">${err.code === "timeout" ? esc(explain(err)) : `讀不到留言（${esc(err.code || err.message)}）。請確認登入的是你的帳號，以及 Firestore 規則已更新。`}</p><div class="row" style="margin:8px 0"><button id="logout">登出</button></div>`;
             document.getElementById("logout").onclick = () => signOut(auth);
           }
         }
@@ -224,7 +232,7 @@ try {
               when: x.createdAt ? x.createdAt.toDate().toLocaleString("zh-TW", { hour12: false }) : "" }; });
             drawFb();
           } catch (err) {
-            fbBox.innerHTML = `<p class="msg">讀不到回饋（${esc(err.code || err.message)}）。請確認 Firestore 規則已更新。</p>`;
+            fbBox.innerHTML = `<p class="msg">${err.code === "timeout" ? esc(explain(err)) : `讀不到回饋（${esc(err.code || err.message)}）。請確認 Firestore 規則已更新。`}</p>`;
           }
         }
 
@@ -271,7 +279,7 @@ try {
     clicks.innerHTML = items.length ? `<table><tr><th>項目</th><th>次數</th></tr>${items.join("")}</table>` : `<p class="msg">還沒有點擊紀錄。</p>`;
   }
 } catch (e) {
-  fail("讀取 Firebase 失敗：" + (e.code || e.message) + "（請確認 firebase-config.js 和 Firestore 規則）");
+  fail(explain(e) + "<br>" + RETRY);
 }
 </script>
 </body>
