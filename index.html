@@ -649,6 +649,18 @@ footer a{color:var(--ink); font-weight:700}
   </div>
 </div>
 
+<!-- 開始玩之前的小提醒（每台裝置每天一次） -->
+<div class="modal" id="gameModal" hidden role="dialog" aria-modal="true" aria-labelledby="gmTitle">
+  <div class="modal-box">
+    <div class="modal-head"><b id="gmTitle" data-i="gmTitle"></b><button type="button" class="fc-x" id="gmClose" aria-label="close">✕</button></div>
+    <div class="notice-body" id="gmBody"></div>
+    <div class="notice-btns">
+      <button type="button" class="btn btn-brick" id="gmOk" data-i="gmOk"></button>
+      <a class="btn btn-line" id="gmIg" target="_blank" rel="noopener" data-i="gmIg" hidden></a>
+    </div>
+  </div>
+</div>
+
 <footer>
   <div class="wrap">
     <div class="terms" id="terms">
@@ -751,7 +763,16 @@ const UI = {
   voteTotal:  { zh: "共 {n} 票", es: "{n} votos" },
   voteNone:   { zh: "還沒有人投票", es: "Aún sin votos" },
   voteThanks: { zh: "已投票，謝謝你！", es: "¡Voto registrado, gracias!" },
-  voteFail:   { zh: "投票失敗，請稍後再試。", es: "No se pudo votar. Inténtalo más tarde." }
+  voteFail:   { zh: "投票失敗，請稍後再試。", es: "No se pudo votar. Inténtalo más tarde." },
+  gmTitle:    { zh: "開始玩之前 🎮", es: "Antes de jugar 🎮" },
+  gmOk:       { zh: "好，開始玩", es: "Vale, ¡a jugar!" },
+  gmIg:       { zh: "前往我的 IG", es: "Ir a mi Instagram" }
+};
+
+/* 點「開始玩」時跳出的小提醒（每台裝置每天一次；{handle} 會自動換成 IG 帳號） */
+const GAME_NOTE = {
+  zh: "如果你覺得這個遊戲很適合你的學生，請多多分享！也歡迎在 IG tag 我 <b>{handle}</b>，並多給我一些建議和回饋。",
+  es: "Si crees que este juego es adecuado para tus estudiantes, ¡compártelo! También puedes etiquetarme en Instagram <b>{handle}</b> y dejarme tus sugerencias y comentarios."
 };
 
 /* ===== 使用說明與版權聲明（要改警語內容改這裡；{brand} 會自動換成品牌名） ===== */
@@ -945,6 +966,9 @@ function render(){
   document.getElementById("termsFull").innerHTML = termsText(TERMS.full);
   document.getElementById("wmBody").innerHTML = termsText(TERMS.welcome);
   document.getElementById("dmBody").innerHTML = termsText(TERMS.download);
+  document.getElementById("gmBody").innerHTML = (GAME_NOTE[lang] ?? GAME_NOTE.zh).replaceAll("{handle}", esc(CONFIG.site.handle));
+  const gmIg = document.getElementById("gmIg");
+  if (CONFIG.site.handleUrl) { gmIg.href = CONFIG.site.handleUrl; gmIg.hidden = false; } else gmIg.hidden = true;
 
   // footer
   document.getElementById("year").textContent = new Date().getFullYear();
@@ -1099,6 +1123,36 @@ document.querySelectorAll(".lang button").forEach(b => b.addEventListener("click
     if (!dm.hidden) closeDl();
     else if (!wm.hidden) closeWelcome();
   });
+})();
+
+/* ===== 開始玩之前的小提醒：每台裝置每天一次；按「好，開始玩」才進遊戲並記一次點擊 ===== */
+(function gameNote(){
+  const gm = document.getElementById("gameModal"), KEY = "game-note-day";
+  let pending = null;
+  const close = () => { gm.hidden = true; pending = null; };
+  window.addEventListener("click", e => {
+    const a = e.target.closest('a[data-track^="game_"]');
+    if (!a || e.ctrlKey || e.metaKey || e.shiftKey) return;
+    let seenToday = false; try { seenToday = localStorage.getItem(KEY) === todayTW(); } catch(err){}
+    if (seenToday) return;                       // 今天看過了：照原本的方式直接開遊戲
+    e.preventDefault(); e.stopPropagation();     // 先不要開，也先不要記錄
+    pending = a; gm.hidden = false;
+    document.getElementById("gmOk").focus();
+  }, true);
+  document.getElementById("gmOk").addEventListener("click", () => {
+    if (!pending) return close();
+    const href = pending.href, field = pending.dataset.track;
+    try { localStorage.setItem(KEY, todayTW()); } catch(err){}
+    track(field);
+    close();
+    // 在點擊當下直接開新分頁（不要等待，才不會被瀏覽器擋掉）
+    // （用 noopener 參數開的話，成功也會回傳 null，沒辦法判斷有沒有被擋，所以開完再把 opener 清掉）
+    const w = window.open(href, "_blank");
+    if (w) { try { w.opener = null; } catch(err){} } else location.href = href;
+  });
+  document.getElementById("gmClose").addEventListener("click", close);
+  gm.addEventListener("click", e => { if (e.target === gm) close(); });
+  addEventListener("keydown", e => { if (e.key === "Escape" && !gm.hidden) close(); });
 })();
 
 /* ===== 回饋專區 ===== */
