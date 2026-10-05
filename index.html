@@ -126,10 +126,10 @@ const CONFIG = {
   /* ---------------- 字體 ---------------- */
   font: {
     name: "GoodTeacher",
-    updated: "2026-10-15",          // ← 每次發新版改這裡（和 GitHub Release 的 tag 一樣）
+    updated: "2026-10-03",          // ← 每次發新版改這裡（和 GitHub Release 的 tag 一樣）
     desc: {
-      zh: "在 Word 裡直接打字，每個漢字上方就會自動出現台灣讀音的拼音或注音。多音字和「一」「不」變調會自動處理。共有文楷、正楷、注音三種，另附 PowerPoint 增益集。",
-      es: "Escribe en Word y cada carácter muestra su pinyin o zhuyin (pronunciación de Taiwán) automáticamente. Resuelve caracteres polifónicos y los cambios tonales de 一 y 不. Tres estilos: WenKai, Kai y Zhuyin, más un complemento para PowerPoint."
+      zh: "此字體可自動校正拼音（以台灣讀音為主）。共有文楷拼音、正楷拼音、正楷注音三種字體，簡體、繁體輸入法皆適用。詳細用法請看圖解安裝說明。",
+      es: "Esta fuente corrige automáticamente el pinyin (según la pronunciación de Taiwán). Incluye tres fuentes: WenKai Pinyin, Kai Pinyin y Kai Zhuyin, y funciona con la entrada de caracteres simplificados y tradicionales. Consulta la guía de instalación ilustrada para más detalles."
     },
     // 檔案放在 GitHub Releases。zip 檔名固定不變 → 這裡網址永遠不用改
     // ⚠ 每次發新版，四個 zip 都要重新上傳到新的 Release，否則按鈕會下載失敗
@@ -149,14 +149,14 @@ const CONFIG = {
       },
       {
         id: "zhuyin", version: "v2",
-        label: { zh: "注音字體", es: "Fuente zhuyin (bopomofo)" },
+        label: { zh: "正楷注音字體", es: "Fuente Kai zhuyin (bopomofo)" },
         note:  { zh: "字旁顯示注音。含字體檔與授權說明", es: "Muestra zhuyin junto a cada carácter. Incluye las licencias" },
         url: "https://github.com/wangchiapin/GoodTeacher/releases/latest/download/GoodTeacher-Zhuyin.zip"
       },
       {
         id: "ppt", version: "",
-        label: { zh: "PowerPoint 增益集", es: "Complemento de PowerPoint" },
-        note:  { zh: "含 GoodTeacherPPT.ppam、rules.csv 與讀音資料檔", es: "Incluye GoodTeacherPPT.ppam, rules.csv y los archivos de datos" },
+        label: { zh: "PowerPoint 外掛程式", es: "Complemento de PowerPoint" },
+        note:  { zh: "PowerPoint 使用者必須安裝", es: "Imprescindible para usuarios de PowerPoint" },
         url: "https://github.com/wangchiapin/GoodTeacher/releases/latest/download/GoodTeacher-PPT.zip"
       },
       {
@@ -167,18 +167,18 @@ const CONFIG = {
       }
     ],
     requirements: {
-      zh: "Windows 版 Microsoft Word / PowerPoint（桌面版）可正常使用；Mac、Canva 測試中，目前可行；Google 文件不可以。",
-      es: "Funciona en Microsoft Word / PowerPoint de escritorio para Windows. En Mac y Canva está en pruebas, pero por ahora funciona. No funciona en Google Docs."
+      zh: "Windows 版 Microsoft Word / PowerPoint（桌面版）可正常使用；Mac、Canva 目前回報均可使用；Google 文件不可以。",
+      es: "Funciona en Microsoft Word / PowerPoint de escritorio para Windows. En Mac y Canva, según los reportes recibidos, también funciona. No funciona en Google Docs."
     },
     steps: [
       { zh: "選一種字體下載（文楷、正楷或注音），解壓縮。", es: "Elige una fuente (WenKai, Kai o Zhuyin), descárgala y descomprímela." },
       { zh: "在字體檔（.ttf）上按右鍵 →「為所有使用者安裝」。", es: "Clic derecho en el archivo .ttf → «Instalar para todos los usuarios»." },
       { zh: "重新開啟 Word，字型清單選 GoodTeacher 開頭的字型，直接打字即可。", es: "Abre Word de nuevo, elige la fuente que empieza por GoodTeacher y escribe." },
-      { zh: "PowerPoint：下載增益集後，先在檔案上按右鍵 → 內容 → 勾選「解除封鎖」，再依 PDF 說明載入。", es: "PowerPoint: tras descargar el complemento, clic derecho → Propiedades → marca «Desbloquear» y sigue la guía PDF." }
+      { zh: "PowerPoint：下載外掛程式後，先在檔案上按右鍵 → 內容 → 勾選「解除封鎖」，再依 PDF 說明載入。", es: "PowerPoint: tras descargar el complemento, clic derecho → Propiedades → marca «Desbloquear» y sigue la guía PDF." }
     ],
     changelog: [
       // 新版本加在最上面
-     { version: "2026-10-15", date: "",
+     { version: "2026-10-03", date: "",
        notes: { zh: "文楷拼音 v9、正楷拼音 v2、正楷注音 v2", es: "WenKai v9, Kai v2, Zhuyin v2." } },
       { version: "2026-10-02", date: "",
         notes: { zh: "第一個公開版本：文楷 v9、正楷 v2、注音 v2。", es: "Primera versión pública: WenKai v9, Kai v2, Zhuyin v2." } }
@@ -305,10 +305,10 @@ section{padding:44px 0}
 @media (max-width:820px){ .font-grid{grid-template-columns:1fr} }
 .panel{background:var(--paper); border:var(--bd); border-radius:var(--radius); box-shadow:var(--shadow); padding:22px}
 .preview{text-align:center; background:var(--yellow-soft)}
-.preview .sample{font-weight:700; font-size:clamp(1.7rem,6vw,2.4rem); line-height:2.4; margin:6px 0 4px}
+.preview .sample{font-weight:700; font-size:clamp(1.5rem,4.6vw,2.1rem); line-height:2.4; margin:6px 0 4px}
+.preview .ph{display:inline-block; white-space:nowrap; margin:0 .35em}
 .preview ruby{ruby-position:over; margin:0 .04em}
 .preview rt{font-size:.42em; font-weight:700; color:var(--red-deep)}
-.preview .demo-note{font-size:.78rem; color:var(--ink-faint)}
 .meta{display:flex; gap:8px; flex-wrap:wrap; justify-content:center; margin-top:14px}
 .pill{font-size:.8rem; font-weight:900; padding:2px 11px; border-radius:999px; border:2px solid var(--ink); background:var(--paper)}
 .font-desc{color:var(--ink-soft); margin:14px 0 0; text-align:left; font-size:.95rem}
@@ -531,10 +531,9 @@ footer a{color:var(--ink); font-weight:700}
       <div class="left-col">
         <div class="panel preview">
           <div class="sample">
-            <ruby>我<rt>wǒ</rt></ruby><ruby>不<rt>bú</rt></ruby><ruby>是<rt>shì</rt></ruby><ruby>老<rt>lǎo</rt></ruby><ruby>師<rt>shī</rt></ruby><br>
-            <ruby>一<rt>yì</rt></ruby><ruby>起<rt>qǐ</rt></ruby><ruby>學<rt>xué</rt></ruby><ruby>中<rt>zhōng</rt></ruby><ruby>文<rt>wén</rt></ruby>
+            <span class="ph"><ruby>我<rt>wǒ</rt></ruby><ruby>不<rt>bú</rt></ruby><ruby>是<rt>shì</rt></ruby><ruby>老<rt>lǎo</rt></ruby><ruby>師<rt>shī</rt></ruby></span>
+            <span class="ph"><ruby>一<rt>yì</rt></ruby><ruby>起<rt>qǐ</rt></ruby><ruby>學<rt>xué</rt></ruby><ruby>中<rt>zhōng</rt></ruby><ruby>文<rt>wén</rt></ruby></span>
           </div>
-          <div class="demo-note" data-i="demoNote"></div>
           <div class="meta" id="fontMeta"></div>
           <p class="font-desc" id="fontDesc"></p>
         </div>
@@ -693,7 +692,6 @@ const UI = {
   fontTitle:  { zh: "GoodTeacher 拼音字體", es: "Fuente pinyin GoodTeacher" },
   fontIntro:  { zh: "給中文老師做講義、簡報用。免費下載，歡迎分享。",
                 es: "Para profesores de chino que preparan fichas y presentaciones. Descarga gratuita." },
-  demoNote:   { zh: "▲ 效果示意", es: "▲ Ejemplo del resultado" },
   version:    { zh: "版本", es: "Versión" },
   updated:    { zh: "更新", es: "Actualizado" },
   dlTitle:    { zh: "下載", es: "Descargas" },
@@ -791,7 +789,7 @@ const TERMS = {
 <li>正楷、注音：漢字字形來自國家發展委員會「全字庫」，依政府資料開放授權條款第 1 版提供；拼音、注音部分為 SIL Open Font License 1.1。</li></ul>
 <p>使用規則：</p>
 <ul><li>可以<b>免費</b>下載、安裝，並用於個人、教學及商業用途的講義或簡報。</li><li><b>禁止單獨販售字體檔案</b>。</li><li>轉傳時請保留壓縮檔內的授權檔案（OFL.txt、LICENSE-NOTICE.txt）。</li></ul>
-<h5>三、PowerPoint 增益集與安裝說明</h5>
+<h5>三、PowerPoint 外掛程式與安裝說明</h5>
 <p>由作者製作，可免費使用，<b>禁止轉賣</b>。</p>
 <h5>四、免責聲明</h5>
 <p>本站資源以「現況」免費提供。讀音規則雖經整理，仍可能有錯誤，歡迎透過「回饋專區」回報。因使用本站資源所產生的任何損失，作者不負賠償責任。</p>`,
@@ -818,7 +816,7 @@ const TERMS = {
 <p class="notice-warn">⚠️ Prohibida la venta de cualquier recurso.</p>`
   },
   download: {
-    zh: `<ul><li>可免費用於個人、教學與商業用途的講義和簡報</li><li><b>禁止單獨販售字體檔或增益集</b></li><li>轉傳時請保留壓縮檔內的授權檔案</li></ul>`,
+    zh: `<ul><li>可免費用於個人、教學與商業用途的講義和簡報</li><li><b>禁止單獨販售字體檔或外掛程式</b></li><li>轉傳時請保留壓縮檔內的授權檔案</li></ul>`,
     es: `<ul><li>Uso gratuito en materiales y presentaciones personales, educativos o comerciales</li><li><b>Prohibido vender los archivos de fuente o el complemento</b></li><li>Si los compartes, incluye los archivos de licencia</li></ul>`
   }
 };
@@ -1099,7 +1097,7 @@ document.querySelectorAll(".lang button").forEach(b => b.addEventListener("click
     document.getElementById("terms").scrollIntoView({ behavior: "smooth", block: "start" });
   });
 
-  // 下載前確認：攔下字體／增益集的下載連結（安裝說明 PDF 不攔）
+  // 下載前確認：攔下字體／外掛程式的下載連結（安裝說明 PDF 不攔）
   let pending = null;
   const closeDl = () => { dm.hidden = true; pending = null; };
   window.addEventListener("click", e => {
