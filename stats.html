@@ -217,11 +217,12 @@ try {
               <span class="sp"></span><button id="fbCsv">匯出 CSV（目前篩選）</button></div>` +
             (list.length ? list.map(x => `<div class="fbi ${x.done ? "done" : ""}">
               <span class="acts">${x.kind === "pinyin" ? `<button data-newvote="${esc(x.id)}">🗳️ 建立投票</button>` : ""}<button data-done="${esc(x.id)}">${x.done ? "改回未處理" : "✓ 已處理"}</button><button data-del="${esc(x.id)}">刪除</button></span>
-              <span class="tag ${esc(x.type)}">${esc(nm(x.type))}</span><span class="tag ${x.kind==="pinyin"?"pinyin":""}">${esc(nm(x.kind))}</span>
+              <span class="tag ${esc(x.type)}">${esc(nm(x.type))}</span><span class="tag ${x.kind==="pinyin"?"pinyin":""}">${esc(nm(x.kind))}</span><span class="vmark" data-fid="${esc(x.id)}"></span>
               <b>${esc(nm(x.target))}</b>${x.app ? ` · ${esc(nm(x.app))}` : ""}
               <br><small>${esc(x.when)} · ${esc(x.name || "（沒留名字）")}${x.contact ? " · 聯絡：" + esc(x.contact) : ""} · ${x.lang === "es" ? "西文" : "中文"}</small>
               <p>${esc(x.message)}</p><div class="vslot" data-slot="${esc(x.id)}"></div></div>`).join("") : `<p class="msg">沒有符合的回饋。</p>`);
           fbBox.querySelectorAll("[data-f]").forEach(b => b.onclick = () => { fbFilter = b.dataset.f; drawFb(); });
+          markVoted();
           fbBox.querySelectorAll("[data-done]").forEach(b => b.onclick = async () => {
             const x = FBALL.find(y => y.id === b.dataset.done);
             await updateDoc(doc(db, "portalFeedback", x.id), { done: !x.done }); x.done = !x.done; drawFb();
@@ -294,15 +295,43 @@ try {
             (list.length
               ? `<table class="vt"><tr><th>字詞</th><th>目前 → 建議</th><th>同意</th><th>不同意</th><th>同意比例</th><th>狀態</th>${me ? "<th></th>" : ""}</tr>${rows}</table>`
               : `<p class="msg">還沒有投票項目。</p>`);
+          markVoted();
         }
+        const normW = v => String(v || "").trim().toLowerCase();
+        // 在回饋清單的每一則上標出「已有投票：字詞」，避免重複建立
+        function markVoted(){
+          fbBox.querySelectorAll(".vmark").forEach(el => {
+            const x = FBALL.find(y => y.id === el.dataset.fid); if (!x) return;
+            const msg = normW(x.message);
+            const hit = VALL.filter(v => v.word && msg.includes(normW(v.word))).map(v => v.word + (v.active ? "" : "（已關閉）"));
+            el.innerHTML = hit.length ? `<span class="tag voted">已有投票：${hit.map(esc).join("、")}</span>` : "";
+          });
+        }
+        // 回傳要顯示的訊息；ok=true 代表有新增或重新開放
         async function createVote(form){
           const f = new FormData(form), g = k => String(f.get(k) || "").trim();
-          const word = g("word"); if (!word) return false;
+          const word = g("word"); if (!word) return { ok: false, msg: "請填字詞。" };
+          const cur = g("current"), sug = g("suggested");
+          const same = VALL.filter(v => normW(v.word) === normW(word));
+          const show = v => `「${v.word}」：${v.current} → ${v.suggested}（${v.active ? "開放中" : "已關閉"}，同意 ${v.agree}／不同意 ${v.disagree}）`;
+          const sameRead = v => normW(v.current) === normW(cur) && normW(v.suggested) === normW(sug);
+          const openSame = same.find(v => v.active && sameRead(v));
+          if (openSame) return { ok: false, msg: "已經有一樣的投票了，沒有建立。" + show(openSame) };
+          const closedSame = same.find(v => !v.active && sameRead(v));
+          if (closedSame && confirm(`這個字詞和讀音已經有一個「已關閉」的投票：\n${show(closedSame)}\n\n按「確定」＝重新開放那一個（保留原本票數）\n按「取消」＝再決定要不要另外建立新的`)) {
+            await updateDoc(doc(db, "portalVotes", closedSame.id), { active: true });
+            return { ok: true, msg: "已重新開放原本的投票 ✓" };
+          }
+          const others = same.filter(v => v !== closedSame && !(v.active && sameRead(v)));
+          if (closedSame || others.length) {
+            const lines = (closedSame ? [closedSame] : others).map(show).join("\n");
+            if (!confirm(`「${word}」已經有投票項目：\n${lines}\n\n確定還要另外建立一個新的嗎？`)) return { ok: false, msg: "已取消，沒有建立。" };
+          }
           await addDoc(collection(db, "portalVotes"), {
-            word, current: g("current"), suggested: g("suggested"), note: g("note"),
+            word, current: cur, suggested: sug, note: g("note"),
             active: true, createdAt: serverTimestamp(), fromFeedback: form.dataset.src || ""
           });
-          return true;
+          return { ok: true, msg: "已公開 ✓（可繼續新增下一個詞）" };
         }
         const onVoteSubmit = async e => {
           const form = e.target.closest(".vform"); if (!form) return;
@@ -310,12 +339,13 @@ try {
           const msg = form.querySelector(".msg"), btn = form.querySelector("[type=submit]");
           btn.disabled = true; msg.textContent = "送出中…";
           try {
-            if (await createVote(form)) {
+            const res = await createVote(form);
+            if (res.ok) {
               const inFb = !!form.dataset.src;           // 回饋裡的表單不會被重畫，訊息會留著；上方的表單會重畫
-              form.reset(); msg.textContent = "已公開 ✓（可繼續新增下一個詞）";
+              form.reset(); msg.textContent = res.msg;
               await loadVotes();
-              if (!inFb) { const m = voteBox.querySelector(".vform .msg"); if (m) m.textContent = "已公開 ✓（可繼續新增下一個詞）"; }
-            } else msg.textContent = "請填字詞。";
+              if (!inFb) { const m = voteBox.querySelector(".vform .msg"); if (m) m.textContent = res.msg; }
+            } else msg.textContent = res.msg;
           } catch (err) { msg.textContent = "失敗：" + (err.code || err.message); }
           btn.disabled = false;
         };
