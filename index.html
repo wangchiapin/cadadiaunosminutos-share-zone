@@ -426,6 +426,15 @@ summary{cursor:pointer; font-weight:900; font-size:.92rem}
   .fc-body{padding:8px 10px}
 }
 
+/* 電腦版懸浮卡片：沒有 QR code，卡片大小不變，文字與按鈕依比例放大 */
+@media (hover:hover) and (min-width:641px){
+  .fc-body{padding:8px 12px 9px}
+  .fc-side{width:100%; gap:7px}
+  .fc-side small{font-size:.9rem; line-height:1.4; color:var(--ink)}
+  .fc-side .btn{padding:6px 12px; font-size:1.05rem; line-height:1.3}
+  .fc-side .btn svg{width:20px; height:20px}
+}
+
 /* ---- feedback ---- */
 .fb{background:var(--paper); border:var(--bd); border-radius:20px; box-shadow:var(--shadow); padding:24px; max-width:760px}
 .fb-types{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:18px}
@@ -681,11 +690,11 @@ const UI = {
   logTitle:   { zh: "更新紀錄", es: "Historial de versiones" },
   report:     { zh: "發現讀音錯誤？回報給我 →", es: "¿Un pinyin incorrecto? Avísame →" },
   supportTitle:{ zh: "請我喝杯咖啡", es: "Invítame a un café" },
-  supportIntro:{ zh: "所有遊戲和字體都免費。如果它們對你有幫助，歡迎小額支持，讓我繼續做下去。謝謝你！",
+  supportIntro:{ zh: "所有遊戲和字體都免費。如果它們對你有幫助，歡迎隨喜支持，讓我繼續做下去。謝謝你！",
                  es: "Los juegos y la fuente son y seguirán siendo gratis. Si te resultan útiles, un pequeño aporte me ayuda a seguir creando. ¡Gracias!" },
   give:       { zh: "前往支持", es: "Apoyar" },
   pending:    { zh: "（尚未設定）", es: "(Pendiente)" },
-  fcText:     { zh: "喜歡這些遊戲和字體嗎？歡迎小額支持！", es: "¿Te gustan los juegos y la fuente? ¡Apóyame!" },
+  fcText:     { zh: "喜歡這些遊戲和字體嗎？歡迎隨喜支持！", es: "¿Te gustan los juegos y la fuente? ¡Apóyame!" },
   close:      { zh: "關閉", es: "Cerrar" },
   showBank:   { zh: "查看帳號", es: "Ver cuenta" },
   bankShort:  { zh: "銀行轉帳", es: "Transferencia" },
@@ -920,14 +929,13 @@ function render(){
       ${p.note ? `<p class="note">${esc(t(p.note))}</p>` : ""}
     </div>`).join("");
 
-  // support（懸浮卡片：所有方式的按鈕並排；QR code 用第一個有 QR 的）
-  const qrItem = CONFIG.support.find(p => p.qr);
+  // support（懸浮卡片：沒有 QR code；銀行轉帳排在最前面，其他方式依 CONFIG 順序）
+  const fcList = [...CONFIG.support].sort((a, b) => (b.type === "bank") - (a.type === "bank"));
   document.getElementById("fcBody").innerHTML = CONFIG.support.length ? `
     <div class="fc-body">
-      ${qrItem ? `<img src="${esc(qrItem.qr)}" alt="${esc(t(qrItem.name))} QR code">` : ""}
       <div class="fc-side">
         <small>${esc(t(UI.fcText))}</small>
-        ${CONFIG.support.map(p => payBtn(p, "-float", p.type === "bank" ? t(UI.bankShort) : t(p.name))).join("")}
+        ${fcList.map(p => payBtn(p, "-float", p.type === "bank" ? t(UI.bankShort) : t(p.name))).join("")}
       </div>
     </div>` : "";
   document.getElementById("fcClose").setAttribute("aria-label", t(UI.close));
