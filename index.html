@@ -336,6 +336,30 @@ summary{cursor:pointer; font-weight:900; font-size:.92rem}
 .license{font-size:.8rem; color:var(--ink-faint); margin:16px 0 0}
 .report{display:inline-block; margin-top:14px; font-size:.9rem; font-weight:900; color:var(--red-deep)}
 
+/* ---- 讀音投票 ---- */
+.left-col{display:flex; flex-direction:column; gap:22px; min-width:0}
+@media (max-width:820px){ .left-col{display:contents} .vote{order:2} }
+.vote-intro{margin:0 0 14px; font-size:.9rem; color:var(--ink-soft)}
+.vote-list{display:flex; flex-direction:column; gap:12px; max-height:560px; overflow-y:auto; padding:2px 6px 6px 2px}
+.vi{border:var(--bd); border-radius:12px; background:#fff; padding:12px 14px; box-shadow:var(--shadow-sm)}
+.vi-word{font-size:1.5rem; font-weight:900; line-height:1.25}
+.vi-read{display:flex; flex-wrap:wrap; align-items:center; gap:6px 8px; margin:6px 0; font-weight:700; font-size:.95rem}
+.vi-read span{border:2px solid var(--ink); border-radius:8px; padding:0 9px}
+.vi-read .cur{background:var(--red-soft)}
+.vi-read .sug{background:var(--blue-soft)}
+.vi-note{margin:0 0 8px; font-size:.85rem; color:var(--ink-soft); white-space:pre-wrap; word-break:break-word}
+.vi-btns{display:flex; gap:10px; margin-top:8px}
+.vi-btns .btn{flex:1; justify-content:center; padding:7px 8px; font-size:.88rem}
+.vi-btns .btn b{font-weight:900}
+.vi-btns .btn[disabled]{pointer-events:none; box-shadow:none; transform:none}
+.vi-btns .btn[disabled]:not([aria-pressed="true"]){opacity:.5}
+.vi-btns .vb-yes[aria-pressed="true"]{background:var(--blue); color:#fff}
+.vi-btns .vb-no[aria-pressed="true"]{background:var(--red); color:#fff}
+.vi-bar{height:10px; margin-top:10px; border:2px solid var(--ink); border-radius:999px; background:var(--red-soft); overflow:hidden}
+.vi-bar i{display:block; height:100%; background:var(--blue)}
+.vi-total{margin-top:4px; font-size:.78rem; color:var(--ink-faint)}
+.vote-status{margin:8px 0 0; font-size:.85rem; font-weight:700; min-height:1.2em}
+
 /* ---- support (bottom) ---- */
 .support{background:var(--yellow); border:var(--bd); border-radius:20px; box-shadow:var(--shadow); padding:34px 26px; position:relative; overflow:hidden}
 .support::after{content:""; position:absolute; right:-40px; top:-40px; width:220px; height:220px; border-radius:50%; background-image:radial-gradient(rgba(20,20,20,.18) 2.5px, transparent 2.7px); background-size:12px 12px; pointer-events:none}
@@ -488,14 +512,23 @@ footer a{color:var(--ink); font-weight:700}
     <div class="sec-head"><span class="mark"></span><h2 data-i="fontTitle"></h2></div>
     <p class="sec-intro" data-i="fontIntro"></p>
     <div class="font-grid">
-      <div class="panel preview">
-        <div class="sample">
-          <ruby>我<rt>wǒ</rt></ruby><ruby>不<rt>bú</rt></ruby><ruby>是<rt>shì</rt></ruby><ruby>老<rt>lǎo</rt></ruby><ruby>師<rt>shī</rt></ruby><br>
-          <ruby>一<rt>yì</rt></ruby><ruby>起<rt>qǐ</rt></ruby><ruby>學<rt>xué</rt></ruby><ruby>中<rt>zhōng</rt></ruby><ruby>文<rt>wén</rt></ruby>
+      <div class="left-col">
+        <div class="panel preview">
+          <div class="sample">
+            <ruby>我<rt>wǒ</rt></ruby><ruby>不<rt>bú</rt></ruby><ruby>是<rt>shì</rt></ruby><ruby>老<rt>lǎo</rt></ruby><ruby>師<rt>shī</rt></ruby><br>
+            <ruby>一<rt>yì</rt></ruby><ruby>起<rt>qǐ</rt></ruby><ruby>學<rt>xué</rt></ruby><ruby>中<rt>zhōng</rt></ruby><ruby>文<rt>wén</rt></ruby>
+          </div>
+          <div class="demo-note" data-i="demoNote"></div>
+          <div class="meta" id="fontMeta"></div>
+          <p class="font-desc" id="fontDesc"></p>
         </div>
-        <div class="demo-note" data-i="demoNote"></div>
-        <div class="meta" id="fontMeta"></div>
-        <p class="font-desc" id="fontDesc"></p>
+        <!-- 讀音投票：項目由 stats.html 公開；沒有項目時整塊隱藏 -->
+        <div class="panel vote" id="voteBox" hidden>
+          <h4 data-i="voteTitle"></h4>
+          <p class="vote-intro" data-i="voteIntro"></p>
+          <div class="vote-list" id="voteList"></div>
+          <p class="vote-status" id="voteStatus" role="status"></p>
+        </div>
       </div>
       <div class="panel">
         <h4 data-i="dlTitle"></h4>
@@ -691,7 +724,18 @@ const UI = {
   wmMore:     { zh: "查看完整說明", es: "Ver condiciones" },
   dmTitle:    { zh: "下載前請確認 ✋", es: "Antes de descargar ✋" },
   dmOk:       { zh: "同意並下載", es: "Acepto y descargo" },
-  dmCancel:   { zh: "取消", es: "Cancelar" }
+  dmCancel:   { zh: "取消", es: "Cancelar" },
+  voteTitle:  { zh: "大家一起來校對讀音 🗳️", es: "Revisemos juntos el pinyin 🗳️" },
+  voteIntro:  { zh: "這些是大家回報的讀音問題。你覺得該改嗎？每個項目可以投一次，投完就會看到大家的結果。",
+                es: "Estas son lecturas señaladas por otras personas. ¿Crees que deben cambiarse? Puedes votar una vez por cada una y verás los resultados." },
+  voteNow:    { zh: "目前", es: "Ahora" },
+  voteSuggest:{ zh: "建議", es: "Propuesta" },
+  voteYes:    { zh: "同意修改", es: "De acuerdo" },
+  voteNo:     { zh: "不同意", es: "En desacuerdo" },
+  voteTotal:  { zh: "共 {n} 票", es: "{n} votos" },
+  voteNone:   { zh: "還沒有人投票", es: "Aún sin votos" },
+  voteThanks: { zh: "已投票，謝謝你！", es: "¡Voto registrado, gracias!" },
+  voteFail:   { zh: "投票失敗，請稍後再試。", es: "No se pudo votar. Inténtalo más tarde." }
 };
 
 /* ===== 使用說明與版權聲明（要改警語內容改這裡；{brand} 會自動換成品牌名） ===== */
@@ -853,6 +897,7 @@ function render(){
   rep.hidden = false;
 
   renderFeedback();
+  renderVotes();
 
   // support（下方區塊）
   const BANK_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10 12 4l9 6"/><path d="M5 10v8M9.5 10v8M14.5 10v8M19 10v8"/><path d="M3 20h18"/></svg>';
@@ -1122,6 +1167,59 @@ function updateHint(){
   });
 })();
 
+/* ===== 讀音投票 =====
+   項目存在 Firestore portalVotes（由 stats.html 建立／關閉），票數存在 portalVoteCount。
+   每台裝置每個項目只能投一次（記在瀏覽器 localStorage），投了不能改。 */
+var VOTES = [];
+const VOTED_KEY = "pv-voted";
+function myVotes(){ try { return JSON.parse(localStorage.getItem(VOTED_KEY) || "{}") || {}; } catch(e){ return {}; } }
+function saveVotes(o){ try { localStorage.setItem(VOTED_KEY, JSON.stringify(o)); } catch(e){} }
+function renderVotes(){
+  const box = document.getElementById("voteBox");
+  if (!VOTES.length){ box.hidden = true; return; }
+  box.hidden = false;
+  const mine = myVotes();
+  document.getElementById("voteList").innerHTML = VOTES.map(v => {
+    const a = v.agree || 0, d = v.disagree || 0, tot = a + d, pct = tot ? Math.round(a / tot * 100) : 0;
+    const my = mine[v.id];
+    return `<div class="vi" data-id="${esc(v.id)}">
+      <div class="vi-word">${esc(v.word)}</div>
+      <div class="vi-read">${v.current ? `<span class="cur">${esc(t(UI.voteNow))} ${esc(v.current)}</span>` : ""}${v.current && v.suggested ? " →" : ""}${v.suggested ? `<span class="sug">${esc(t(UI.voteSuggest))} ${esc(v.suggested)}</span>` : ""}</div>
+      ${v.note ? `<p class="vi-note">${esc(v.note)}</p>` : ""}
+      <div class="vi-btns">
+        <button type="button" class="btn vb-yes" data-vote="agree" aria-pressed="${my === "agree"}" ${my ? "disabled" : ""}>👍 ${esc(t(UI.voteYes))} <b>${a}</b></button>
+        <button type="button" class="btn vb-no" data-vote="disagree" aria-pressed="${my === "disagree"}" ${my ? "disabled" : ""}>👎 ${esc(t(UI.voteNo))} <b>${d}</b></button>
+      </div>
+      <div class="vi-bar" ${tot ? "" : "hidden"}><i style="width:${pct}%"></i></div>
+      <div class="vi-total">${esc(tot ? t(UI.voteTotal).replace("{n}", tot) + " · " + pct + "%" : t(UI.voteNone))}${my ? " · " + esc(t(UI.voteThanks)) : ""}</div>
+    </div>`;
+  }).join("");
+}
+async function loadVotes(){
+  try {
+    for (let i = 0; i < 150 && !window.__getVotes; i++) await new Promise(r => setTimeout(r, 100));
+    if (!window.__getVotes) return;
+    VOTES = await window.__getVotes();
+    renderVotes();
+  } catch(e){ console.warn("votes", e); }
+}
+document.getElementById("voteList").addEventListener("click", async e => {
+  const b = e.target.closest("[data-vote]"); if (!b || b.disabled) return;
+  const id = b.closest(".vi").dataset.id, choice = b.dataset.vote;
+  const mine = myVotes(); if (mine[id]) return;
+  const status = document.getElementById("voteStatus");
+  b.disabled = true; status.textContent = "";
+  try {
+    if (!window.__sendVote) throw new Error("firebase off");
+    await Promise.race([window.__sendVote(id, choice), new Promise((_, rej) => setTimeout(() => rej(new Error("timeout")), 12000))]);
+    mine[id] = choice; saveVotes(mine);
+    const v = VOTES.find(x => x.id === id); if (v) v[choice] = (v[choice] || 0) + 1;
+    renderVotes();
+  } catch(err){
+    b.disabled = false; status.textContent = t(UI.voteFail);
+  }
+});
+
 /* 預設語言：上次選的 → 瀏覽器是中文就中文，否則西文 */
 (function init(){
   let saved = null;
@@ -1131,6 +1229,7 @@ function updateHint(){
        : saved || ((navigator.language || "").toLowerCase().startsWith("zh") ? "zh" : "es");
   render();
   countVisit();
+  loadVotes();
 })();
 </script>
 
@@ -1142,7 +1241,7 @@ try {
   if (cfg && cfg.projectId) {
     const V = "10.12.2";
     const { initializeApp } = await import(`https://www.gstatic.com/firebasejs/${V}/firebase-app.js`);
-    const { initializeFirestore, doc, setDoc, getDoc, addDoc, collection, increment, serverTimestamp } = await import(`https://www.gstatic.com/firebasejs/${V}/firebase-firestore.js`);
+    const { initializeFirestore, doc, setDoc, getDoc, addDoc, collection, increment, serverTimestamp, getDocs, query, where, documentId } = await import(`https://www.gstatic.com/firebasejs/${V}/firebase-firestore.js`);
     // 用「長輪詢」連線：在手機網路、部分瀏覽器上比較不會卡住
     const db = initializeFirestore(initializeApp(cfg, "portal"), { experimentalForceLongPolling: true });
     window.__statWrite = field => Promise.all(
@@ -1158,6 +1257,22 @@ try {
       addDoc(collection(db, "portalNotes"), { name, message, lang, createdAt: serverTimestamp() });
     // 回饋（存到 portalFeedback，只有你登入後看得到）
     window.__sendFeedback = data => addDoc(collection(db, "portalFeedback"), { ...data, createdAt: serverTimestamp() });
+    // 讀音投票：項目在 portalVotes（公開可讀），票數在 portalVoteCount/項目ID__agree|disagree（欄位 n）
+    window.__getVotes = async () => {
+      const snap = await getDocs(query(collection(db, "portalVotes"), where("active", "==", true)));
+      const items = snap.docs.map(d => { const x = d.data();
+        return { id: d.id, word: x.word || "", current: x.current || "", suggested: x.suggested || "", note: x.note || "",
+                 ts: x.createdAt && x.createdAt.toMillis ? x.createdAt.toMillis() : 0, agree: 0, disagree: 0 }; });
+      const byId = Object.fromEntries(items.map(i => [i.id, i]));
+      const ids = items.flatMap(i => [i.id + "__agree", i.id + "__disagree"]);
+      for (let i = 0; i < ids.length; i += 30) {          // Firestore 的 in 查詢一次最多 30 個
+        const cs = await getDocs(query(collection(db, "portalVoteCount"), where(documentId(), "in", ids.slice(i, i + 30))));
+        cs.forEach(c => { const [id, k] = c.id.split("__"); if (byId[id]) byId[id][k] = c.data().n || 0; });
+      }
+      return items.sort((a, b) => b.ts - a.ts);
+    };
+    window.__sendVote = (id, choice) =>
+      setDoc(doc(db, "portalVoteCount", id + "__" + choice), { n: increment(1) }, { merge: true });
   }
 } catch (e) { console.warn("stats off", e); }
 </script>
