@@ -404,6 +404,7 @@ try {
       <div class="tile j"><small>每日訪客（累計）</small><b>${n(T.visitors)}</b><span>同一裝置一天只算一次</span></div>
       <div class="tile"><small>瀏覽次數</small><b>${n(T.views)}</b><span>每開一次頁面算一次</span></div>
       <div class="tile"><small>遊戲點擊</small><b>${n(sumPrefix(T,"game"))}</b></div>
+      <div class="tile"><small>工具開啟</small><b>${n(sumPrefix(T,"tool"))}</b><span>看說明 ${n(sumPrefix(T,"toolview"))}・複製網址 ${n(sumPrefix(T,"toolcopy"))}</span></div>
       <div class="tile"><small>下載點擊</small><b>${n(sumPrefix(T,"download"))}</b></div>
       <div class="tile"><small>捐款點擊</small><b>${n(sumPrefix(T,"support"))}</b></div>`;
 
@@ -413,8 +414,8 @@ try {
         rows.map(r => `<tr><td>${r.day}</td><td>${n(r.visitors)}</td><td>${n(r.views)}</td><td>${n(sumPrefix(r,"game"))}</td><td>${n(sumPrefix(r,"download"))}</td><td>${n(sumPrefix(r,"support"))}</td></tr>`).join("") + `</table>`
       : `<p class="msg">最近 30 天還沒有資料。</p>`;
 
-    const NAMES = { game: "遊戲", download: "下載", support: "捐款" };
-    const items = Object.keys(T).filter(k => /^(game|download|support)_/.test(k)).sort()
+    const NAMES = { game: "遊戲", download: "下載", support: "捐款", tool: "工具開啟", toolview: "工具說明", toolcopy: "工具複製網址" };
+    const items = Object.keys(T).filter(k => /^(game|download|support|tool|toolview|toolcopy)_/.test(k)).sort()
       .map(k => { const [p, ...rest] = k.split("_"); return `<tr><td>${NAMES[p]} · ${rest.join("_")}</td><td>${n(T[k])}</td></tr>`; });
     clicks.innerHTML = items.length ? `<table><tr><th>項目</th><th>次數</th></tr>${items.join("")}</table>` : `<p class="msg">還沒有點擊紀錄。</p>`;
   }

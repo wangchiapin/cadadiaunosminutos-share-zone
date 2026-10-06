@@ -123,6 +123,40 @@ const CONFIG = {
     }
   ],
 
+  /* ---------------- 小工具（url 留空 = 顯示「即將推出」；填了網址卡片就會啟用，說明視窗也會一起開放）---------------- */
+  tools: [
+    {
+      id: "pinyin",
+      glyph: "音", color: "gold",
+      title: { zh: "漢字加拼音", es: "Hanzi con pinyin" },
+      desc: {
+        zh: "貼上中文，變成有拼音的圖片或文字，直接傳給學生。台灣讀音，破音字自動判斷。",
+        es: "Pega un texto en chino y conviértelo en imagen o texto con pinyin para enviarlo a tus estudiantes. Pronunciación de Taiwán; los caracteres polifónicos se detectan solos."
+      },
+      tags: [{ zh: "拼音", es: "Pinyin" }, { zh: "LINE / WhatsApp", es: "LINE / WhatsApp" }],
+      url: "",                          // ← 準備好要公開時，把工具網址填在這裡：https://wangchiapin.github.io/messagewithpinyin/
+      guide: {
+        steps: [
+          { img: "img/tool-pinyin-1.jpg",
+            zh: "<b>輸入中文</b>：貼上或直接打字。簡體可以按「轉成繁體」，想先看效果可以按「範例」。拼音會自動加在每個字上方，圖片預覽馬上就會出現。",
+            es: "<b>Escribe el texto en chino</b>: pégalo o escríbelo. Si está en simplificado, pulsa «轉成繁體» (convertir a tradicional); para ver un ejemplo, pulsa «範例». El pinyin aparece encima de cada carácter y la imagen se muestra al instante." },
+          { img: "img/tool-pinyin-2.jpg",
+            zh: "<b>讀音不對？點那個字</b>：點圖片上的字，選正確的讀音，或自己打拼音（例：wo3）。勾選「之後這個字都這樣讀」，下次就會自動套用。",
+            es: "<b>¿Pronunciación incorrecta? Toca el carácter</b>: toca el carácter en la imagen y elige la lectura correcta, o escribe el pinyin tú mismo (ej.: wo3). Marca «之後這個字都這樣讀» para que lo recuerde la próxima vez." },
+          { img: "img/tool-pinyin-3.jpg",
+            zh: "<b>調整圖片</b>：可以換顏色（米黃、白底、青綠、深色）、漢字和拼音的大小，以及漢字字體（楷體或黑體）。",
+            es: "<b>Ajusta la imagen</b>: cambia el color (crema, blanco, verde, oscuro), el tamaño de los caracteres y del pinyin, y la tipografía (楷體 o 黑體)." },
+          { zh: "<b>傳給學生</b>：按下方的「分享圖片」或「分享文字」，選 LINE 或 WhatsApp 就能送出。也可以「複製」或「下載圖片」。",
+            es: "<b>Envíalo a tus estudiantes</b>: pulsa «分享圖片» (compartir imagen) o «分享文字» (compartir texto) y elige LINE o WhatsApp. También puedes copiarlo o descargar la imagen." }
+        ],
+        tip: {
+          zh: "小提醒：一次建議 10 行以內，太長的圖片手機會放不下。文字版沒辦法把拼音排在每個字正上方，要對齊請傳圖片。",
+          es: "Consejo: usa como máximo unas 10 líneas por vez; una imagen demasiado larga no cabe en el móvil. En la versión de texto el pinyin no puede quedar justo encima de cada carácter; para que quede alineado, envía la imagen."
+        }
+      }
+    }
+  ],
+
   /* ---------------- 字體 ---------------- */
   font: {
     name: "GoodTeacher",
@@ -482,6 +516,17 @@ summary{cursor:pointer; font-weight:900; font-size:.92rem}
 .notice-body ul{margin:0 0 10px; padding-left:1.2em}
 .notice-body li{margin-bottom:4px}
 .notice-warn{background:var(--red-soft); border:2px solid var(--ink); border-radius:10px; padding:8px 12px; font-weight:900}
+.modal-box.wide{width:min(560px,100%)}
+.card-click{cursor:pointer}
+.modal-box.wide .notice-btns{position:sticky; bottom:0; background:var(--paper); border-top:var(--bd); padding-top:12px; border-radius:0 0 16px 16px}
+.guide-body{padding:14px 18px 4px; font-size:.95rem}
+.guide-lead{margin:0 0 12px; color:var(--ink-soft)}
+.guide-steps{list-style:none; counter-reset:gs; margin:0; padding:0; display:grid; gap:16px}
+.guide-steps li{counter-increment:gs; position:relative; padding-left:34px}
+.guide-steps li::before{content:counter(gs); position:absolute; left:0; top:0; width:24px; height:24px; border:var(--bd); border-radius:50%; background:var(--yellow); font-weight:900; font-size:.85rem; display:grid; place-items:center}
+.guide-steps p{margin:0 0 8px}
+.guide-steps img{display:block; width:100%; max-width:360px; height:auto; border:var(--bd); border-radius:10px}
+.guide-tip{margin:16px 0 4px; padding:10px 12px; background:var(--cream, #fbf3dd); border:1px dashed var(--ink-faint); border-radius:10px; font-size:.88rem; color:var(--ink-soft)}
 .notice-btns{display:flex; flex-wrap:wrap; gap:10px; padding:6px 18px 18px}
 
 footer{padding:36px 0 96px; text-align:center; font-size:.85rem; color:var(--ink-soft)}
@@ -495,6 +540,7 @@ footer a{color:var(--ink); font-weight:700}
     <a class="brand" href="#top"><span class="logo">華</span><span data-i="brand"></span></a>
     <nav>
       <a href="#games" data-i="navGames"></a>
+      <a href="#tools" data-i="navTools"></a>
       <a href="#font" data-i="navFont"></a>
       <a href="#feedback" data-i="navFeedback"></a>
       <a href="#support" data-i="navSupport"></a>
@@ -525,6 +571,12 @@ footer a{color:var(--ink); font-weight:700}
     <div class="sec-head"><span class="mark"></span><h2 data-i="gamesTitle"></h2></div>
     <p class="sec-intro" data-i="gamesIntro"></p>
     <div class="grid" id="gameGrid"></div>
+  </section>
+
+  <section id="tools">
+    <div class="sec-head"><span class="mark" style="background:var(--yellow)"></span><h2 data-i="toolsTitle"></h2></div>
+    <p class="sec-intro" data-i="toolsIntro"></p>
+    <div class="grid" id="toolGrid"></div>
   </section>
 
   <section id="font">
@@ -651,7 +703,16 @@ footer a{color:var(--ink); font-weight:700}
   </div>
 </div>
 
-<!-- 開始玩之前的小提醒（每台裝置每天一次） -->
+<!-- 小工具使用說明 -->
+<div class="modal" id="toolGuide" hidden role="dialog" aria-modal="true" aria-labelledby="tgName">
+  <div class="modal-box wide">
+    <div class="modal-head"><b id="tgName"></b><button type="button" class="fc-x" id="tgClose" aria-label="close">✕</button></div>
+    <div class="guide-body" id="tgBody"></div>
+    <div class="notice-btns" id="tgBtns"></div>
+  </div>
+</div>
+
+<!-- 開始玩／開啟工具之前的小提醒（每台裝置每天一次） -->
 <div class="modal" id="gameModal" hidden role="dialog" aria-modal="true" aria-labelledby="gmTitle">
   <div class="modal-box">
     <div class="modal-head"><b id="gmTitle" data-i="gmTitle"></b><button type="button" class="fc-x" id="gmClose" aria-label="close">✕</button></div>
@@ -690,6 +751,16 @@ const UI = {
   gamesTitle: { zh: "中文小遊戲", es: "Juegos para aprender chino" },
   gamesIntro: { zh: "全部免費，打開瀏覽器就能玩，手機也可以。介面是西班牙文，中文附台灣讀音拼音。",
                 es: "Todos gratis, directamente en el navegador, también en el móvil. Chino con pinyin según la pronunciación de Taiwán." },
+  navTools:   { zh: "小工具", es: "Herramientas" },
+  toolsTitle: { zh: "教學小工具", es: "Herramientas para enseñar" },
+  toolsIntro: { zh: "給華語老師的小幫手，打開瀏覽器就能用，手機也可以。",
+                es: "Pequeñas ayudas para profesores de chino, gratis y directamente en el navegador, también en el móvil." },
+  toolOpen:   { zh: "開啟工具", es: "Abrir herramienta" },
+  toolGuide:  { zh: "使用說明", es: "Cómo se usa" },
+  toolCopy:   { zh: "複製網址", es: "Copiar enlace" },
+  toolCopied: { zh: "已複製 ✓", es: "¡Copiado! ✓" },
+  tmTitle:    { zh: "開始使用之前 🛠️", es: "Antes de usarla 🛠️" },
+  tmOk:       { zh: "好，開啟工具", es: "Vale, abrir" },
   play:       { zh: "開始玩", es: "Jugar" },
   soon:       { zh: "即將推出", es: "Próximamente" },
   fontTitle:  { zh: "GoodTeacher 拼音字體", es: "Fuente pinyin GoodTeacher" },
@@ -774,6 +845,12 @@ const UI = {
 const GAME_NOTE = {
   zh: "如果你覺得這個遊戲很適合你的學生，請多多分享！也歡迎在 IG tag 我 <b>{handle}</b>，並多給我一些建議和回饋。",
   es: "Si crees que este juego es adecuado para tus estudiantes, ¡compártelo! También puedes etiquetarme en Instagram <b>{handle}</b> y dejarme tus sugerencias y comentarios."
+};
+
+/* 點「開啟工具」時跳出的小提醒（每台裝置每天一次） */
+const TOOL_NOTE = {
+  zh: "如果你覺得這個工具對你的學生有幫助，請多多分享！也歡迎在 IG tag 我 <b>{handle}</b>，並多給我一些建議和回饋。",
+  es: "Si crees que esta herramienta es útil para tus estudiantes, ¡compártela! También puedes etiquetarme en Instagram <b>{handle}</b> y dejarme tus sugerencias y comentarios."
 };
 
 /* ===== 使用說明與版權聲明（要改警語內容改這裡；{brand} 會自動換成品牌名） ===== */
@@ -911,6 +988,26 @@ function render(){
       <div class="card-actions">${btn}<a class="fb-link" href="#feedback" data-fb="game" data-fb-target="${esc(g.id)}">${esc(t(UI.fbCardLink))}</a></div>
     </article>`;
   }).join("");
+
+  // tools
+  document.getElementById("toolGrid").innerHTML = CONFIG.tools.map(g => {
+    const other = lang === "zh" ? g.title.es : g.title.zh;
+    const ready = !!g.url;
+    const actions = ready
+      ? `<button type="button" class="btn btn-line" data-guide="${esc(g.id)}">${esc(t(UI.toolGuide))}</button>
+         <a class="btn btn-brick" href="${esc(g.url)}" target="_blank" rel="noopener" data-track="tool_${esc(g.id)}">${esc(t(UI.toolOpen))} ▸</a>`
+      : `<span class="btn" aria-disabled="true">${esc(t(UI.soon))}</span>`;
+    return `<article class="card${ready ? " card-click" : ""}"${ready ? ` data-guide="${esc(g.id)}"` : ""}>
+      <div class="card-top">
+        <div class="glyph ${esc(g.color || "gold")}" aria-hidden="true">${esc(g.glyph || "")}</div>
+        <div><h3>${esc(t(g.title))}</h3><div class="alt">${esc(other)}</div></div>
+      </div>
+      <p>${esc(t(g.desc))}</p>
+      <div class="tags">${(g.tags||[]).map(x => `<span>${esc(t(x))}</span>`).join("")}</div>
+      <div class="card-actions">${actions}</div>
+    </article>`;
+  }).join("");
+  renderGuide();
 
   // font
   const f = CONFIG.font;
@@ -1126,18 +1223,77 @@ document.querySelectorAll(".lang button").forEach(b => b.addEventListener("click
   });
 })();
 
+/* ===== 小工具使用說明視窗（網址有填才會開放）===== */
+function toolById(id){ return CONFIG.tools.find(x => x.id === id); }
+let guideId = null;
+function renderGuide(){
+  const box = document.getElementById("toolGuide");
+  if (!box || box.hidden || !guideId) return;
+  const g = toolById(guideId); if (!g || !g.url) { box.hidden = true; return; }
+  const gd = g.guide || { steps: [] };
+  document.getElementById("tgName").textContent = t(g.title) + " · " + t(UI.toolGuide);
+  document.getElementById("tgBody").innerHTML =
+    `<p class="guide-lead">${esc(t(g.desc))}</p>
+     <ol class="guide-steps">${gd.steps.map(st => `<li><p>${st[lang] ?? st.zh}</p>${st.img ? `<img src="${esc(st.img)}" alt="" loading="lazy">` : ""}</li>`).join("")}</ol>
+     ${gd.tip ? `<p class="guide-tip">${esc(gd.tip[lang] ?? gd.tip.zh)}</p>` : ""}`;
+  document.getElementById("tgBtns").innerHTML =
+    `<a class="btn btn-brick" href="${esc(g.url)}" target="_blank" rel="noopener" data-track="tool_${esc(g.id)}">${esc(t(UI.toolOpen))} ▸</a>
+     <button type="button" class="btn btn-line" id="tgCopy">${esc(t(UI.toolCopy))}</button>`;
+}
+function openGuide(id){
+  const g = toolById(id); if (!g || !g.url) return;
+  guideId = id; document.getElementById("toolGuide").hidden = false; renderGuide();
+  document.getElementById("tgBody").scrollTop = 0;
+  track("toolview_" + id);
+}
+function closeGuide(){ document.getElementById("toolGuide").hidden = true; guideId = null; }
+async function copyText(txt){
+  try { await navigator.clipboard.writeText(txt); return true; } catch(e){}
+  try {
+    const ta = document.createElement("textarea"); ta.value = txt; ta.style.cssText = "position:fixed;opacity:0";
+    document.body.appendChild(ta); ta.select(); const ok = document.execCommand("copy"); ta.remove(); return ok;
+  } catch(e){ return false; }
+}
+document.addEventListener("click", async e => {
+  const cp = e.target.closest("#tgCopy");
+  if (cp){
+    const g = toolById(guideId); if (!g) return;
+    const ok = await copyText(g.url);
+    cp.textContent = ok ? t(UI.toolCopied) : g.url;
+    if (ok) track("toolcopy_" + g.id);
+    setTimeout(() => { if (document.body.contains(cp)) cp.textContent = t(UI.toolCopy); }, 2000);
+    return;
+  }
+  // 點卡片（不是點到連結或按鈕以外的地方）→ 打開說明
+  const card = e.target.closest("[data-guide]");
+  if (card && !e.target.closest("a")) openGuide(card.dataset.guide);
+});
+document.getElementById("tgClose").addEventListener("click", closeGuide);
+document.getElementById("toolGuide").addEventListener("click", e => { if (e.target.id === "toolGuide") closeGuide(); });
+addEventListener("keydown", e => {
+  if (e.key !== "Escape") return;
+  if (!document.getElementById("gameModal").hidden) return;   // 提醒視窗自己處理
+  if (!document.getElementById("toolGuide").hidden) closeGuide();
+});
+
 /* ===== 開始玩之前的小提醒：每台裝置每天一次；按「好，開始玩」才進遊戲並記一次點擊 ===== */
 (function gameNote(){
-  const gm = document.getElementById("gameModal"), KEY = "game-note-day";
-  let pending = null;
+  const gm = document.getElementById("gameModal");
+  let pending = null, KEY = "game-note-day";
   const close = () => { gm.hidden = true; pending = null; };
   window.addEventListener("click", e => {
-    const a = e.target.closest('a[data-track^="game_"]');
+    const a = e.target.closest('a[data-track^="game_"], a[data-track^="tool_"]');
     if (!a || e.ctrlKey || e.metaKey || e.shiftKey) return;
-    let seenToday = false; try { seenToday = localStorage.getItem(KEY) === todayTW(); } catch(err){}
-    if (seenToday) return;                       // 今天看過了：照原本的方式直接開遊戲
+    const isTool = a.dataset.track.startsWith("tool_");
+    const key = isTool ? "tool-note-day" : "game-note-day";
+    let seenToday = false; try { seenToday = localStorage.getItem(key) === todayTW(); } catch(err){}
+    if (seenToday) return;                       // 今天看過了：照原本的方式直接開
     e.preventDefault(); e.stopPropagation();     // 先不要開，也先不要記錄
-    pending = a; gm.hidden = false;
+    KEY = key; pending = a;
+    document.getElementById("gmTitle").textContent = t(isTool ? UI.tmTitle : UI.gmTitle);
+    document.getElementById("gmOk").textContent = t(isTool ? UI.tmOk : UI.gmOk);
+    document.getElementById("gmBody").innerHTML = ((isTool ? TOOL_NOTE : GAME_NOTE)[lang] ?? GAME_NOTE.zh).replaceAll("{handle}", esc(CONFIG.site.handle));
+    gm.hidden = false;
     document.getElementById("gmOk").focus();
   }, true);
   document.getElementById("gmOk").addEventListener("click", () => {
