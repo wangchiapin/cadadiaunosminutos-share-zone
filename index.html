@@ -521,6 +521,11 @@ summary{cursor:pointer; font-weight:900; font-size:.92rem}
 .notice-warn{background:var(--red-soft); border:2px solid var(--ink); border-radius:10px; padding:8px 12px; font-weight:900}
 .modal-box.wide{width:min(560px,100%)}
 .card-click{cursor:pointer}
+.card{position:relative}
+.card.off{background:#efece4; filter:grayscale(.85); opacity:.85}
+.card.off:hover{transform:none; box-shadow:var(--shadow)}
+.fix-badge{position:absolute; top:-10px; right:12px; padding:3px 11px; font-size:.78rem; font-weight:900; background:var(--yellow); color:var(--ink); border:var(--bd); border-radius:999px; box-shadow:var(--shadow-sm); filter:none}
+.btn-fix[aria-disabled="true"]{background:var(--yellow); color:var(--ink); border-color:var(--ink); opacity:.9}
 .modal-box.wide .notice-btns{position:sticky; bottom:0; background:var(--paper); border-top:var(--bd); padding-top:12px; border-radius:0 0 16px 16px}
 .guide-body{padding:14px 18px 4px; font-size:.95rem}
 .guide-lead{margin:0 0 12px; color:var(--ink-soft)}
@@ -768,6 +773,7 @@ const UI = {
   tmOk:       { zh: "好，開啟工具", es: "Vale, abrir" },
   play:       { zh: "開始玩", es: "Jugar" },
   soon:       { zh: "即將推出", es: "Próximamente" },
+  fixing:     { zh: "維修中", es: "En mantenimiento" },
   fontTitle:  { zh: "GoodTeacher 拼音字體", es: "Fuente pinyin GoodTeacher" },
   fontIntro:  { zh: "給中文老師做講義、簡報用。免費下載，歡迎分享。",
                 es: "Para profesores de chino que preparan fichas y presentaciones. Descarga gratuita." },
@@ -940,6 +946,10 @@ let lang = "zh";
 const t = v => (v == null ? "" : typeof v === "string" ? v : (v[lang] ?? v.zh ?? ""));
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[c]));
 
+/* ===== 卡片開關：統計頁勾掉的項目會顯示「維修中」（資料在 Firestore 的 portalStatus；讀不到就當作全部開啟）===== */
+var OFF = new Set();
+const isOff = id => OFF.has(id);
+
 /* ===== 統計（Firebase）=====
    每個計數是一份文件，只有一個欄位 n：
    portalStats/total__欄位 與 portalStats/d_日期__欄位（台灣時間）
@@ -980,10 +990,13 @@ function render(){
   // games
   document.getElementById("gameGrid").innerHTML = CONFIG.games.map(g => {
     const other = lang === "zh" ? g.title.es : g.title.zh;
-    const btn = g.url
+    const off = isOff("game-" + g.id);
+    const btn = off
+      ? `<span class="btn btn-fix" aria-disabled="true">🔧 ${esc(t(UI.fixing))}</span>`
+      : g.url
       ? `<a class="btn btn-brick" href="${esc(g.url)}" target="_blank" rel="noopener" data-track="game_${esc(g.id)}">${esc(t(UI.play))} ▸</a>`
       : `<span class="btn" aria-disabled="true">${esc(t(UI.soon))}</span>`;
-    return `<article class="card">
+    return `<article class="card${off ? " off" : ""}">${off ? `<span class="fix-badge">🔧 ${esc(t(UI.fixing))}</span>` : ""}
       <div class="card-top">
         <div class="glyph ${esc(g.color || "brick")}" aria-hidden="true">${esc(g.glyph || "")}</div>
         <div><h3>${esc(t(g.title))}</h3><div class="alt">${esc(other)}</div></div>
@@ -997,12 +1010,15 @@ function render(){
   // tools
   document.getElementById("toolGrid").innerHTML = CONFIG.tools.map(g => {
     const other = lang === "zh" ? g.title.es : g.title.zh;
-    const ready = !!g.url;
-    const actions = ready
+    const off = isOff("tool-" + g.id);
+    const ready = !!g.url && !off;
+    const actions = off
+      ? `<span class="btn btn-fix" aria-disabled="true">🔧 ${esc(t(UI.fixing))}</span>`
+      : ready
       ? `<button type="button" class="btn btn-line" data-guide="${esc(g.id)}">${esc(t(UI.toolGuide))}</button>
          <a class="btn btn-brick" href="${esc(g.url)}" target="_blank" rel="noopener" data-track="tool_${esc(g.id)}">${esc(t(UI.toolOpen))} ▸</a>`
       : `<span class="btn" aria-disabled="true">${esc(t(UI.soon))}</span>`;
-    return `<article class="card${ready ? " card-click" : ""}"${ready ? ` data-guide="${esc(g.id)}"` : ""}>
+    return `<article class="card${ready ? " card-click" : ""}${off ? " off" : ""}"${ready ? ` data-guide="${esc(g.id)}"` : ""}>${off ? `<span class="fix-badge">🔧 ${esc(t(UI.fixing))}</span>` : ""}
       <div class="card-top">
         <div class="glyph ${esc(g.color || "gold")}" aria-hidden="true">${esc(g.glyph || "")}</div>
         <div><h3>${esc(t(g.title))}</h3><div class="alt">${esc(other)}</div></div>
@@ -1020,10 +1036,11 @@ function render(){
     `<span class="pill">${esc(t(UI.updated))} ${esc(f.updated)}</span>`;
   document.getElementById("fontDesc").textContent = t(f.desc);
   document.getElementById("dlList").innerHTML = f.downloads.map(d => {
-    const ok = !!d.url;
+    const off = isOff("dl-" + d.id);
+    const ok = !!d.url && !off;
     return `<a class="dl" ${ok ? `href="${esc(d.url)}" data-track="download_${esc(d.id)}"` : 'aria-disabled="true"'}>
       <span class="ic">${DL_ICON}</span>
-      <span><b>${esc(t(d.label))}${d.version ? ` <em class="ver">${esc(d.version)}</em>` : ""}</b><small>${esc(ok ? t(d.note) : t(UI.soon))}</small></span>
+      <span><b>${esc(t(d.label))}${d.version ? ` <em class="ver">${esc(d.version)}</em>` : ""}</b><small>${esc(ok ? t(d.note) : off ? "🔧 " + t(UI.fixing) : t(UI.soon))}</small></span>
     </a>`;
   }).join("");
   document.getElementById("fontReq").textContent = t(f.requirements);
@@ -1234,7 +1251,7 @@ let guideId = null;
 function renderGuide(){
   const box = document.getElementById("toolGuide");
   if (!box || box.hidden || !guideId) return;
-  const g = toolById(guideId); if (!g || !g.url) { box.hidden = true; return; }
+  const g = toolById(guideId); if (!g || !g.url || isOff("tool-" + g.id)) { box.hidden = true; return; }
   const gd = g.guide || { steps: [] };
   document.getElementById("tgName").textContent = t(g.title) + " · " + t(UI.toolGuide);
   document.getElementById("tgBody").innerHTML =
@@ -1246,7 +1263,7 @@ function renderGuide(){
      <button type="button" class="btn btn-line" id="tgCopy">${esc(t(UI.toolCopy))}</button>`;
 }
 function openGuide(id){
-  const g = toolById(id); if (!g || !g.url) return;
+  const g = toolById(id); if (!g || !g.url || isOff("tool-" + id)) return;
   guideId = id; document.getElementById("toolGuide").hidden = false; renderGuide();
   document.getElementById("tgBody").scrollTop = 0;
   track("toolview_" + id);
@@ -1505,6 +1522,9 @@ try {
       }
       return items.sort((a, b) => b.ts - a.ts);
     };
+    // 卡片開關：portalStatus 裡 off:true 的項目 = 維修中；讀取失敗就當作全部開啟
+    window.__getStatus = async () => (await getDocs(query(collection(db, "portalStatus")))).docs.filter(d => d.data().off === true).map(d => d.id);
+    window.__getStatus().then(ids => { if (ids.length) { OFF = new Set(ids); render(); } }).catch(err => console.warn("status", err.code));
     window.__sendVote = (id, choice) =>
       setDoc(doc(db, "portalVoteCount", id + "__" + choice), { n: increment(1) }, { merge: true });
   }
