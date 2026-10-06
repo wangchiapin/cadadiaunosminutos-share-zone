@@ -64,6 +64,9 @@ button.ghost{background:#fff;color:var(--ink);border:1px solid var(--line)}
 .vt tr.off td{opacity:.5}
 .vt .ops button{font-size:.75rem;padding:2px 8px;background:#fff;color:var(--ink);border:1px solid var(--line);margin-left:4px}
 .tag.voted{background:#dfe8ff}
+.go-site{position:fixed;right:16px;bottom:16px;z-index:50;display:flex;align-items:center;gap:8px;padding:11px 16px;background:var(--brick);color:#fff;font-weight:700;font-size:.95rem;text-decoration:none;border-radius:999px;box-shadow:0 4px 14px rgba(0,0,0,.25);transition:transform .12s,box-shadow .12s}
+.go-site:hover{transform:translateY(-2px);box-shadow:0 7px 18px rgba(0,0,0,.3)}
+.go-site small{font-weight:400;opacity:.85;font-size:.78rem}
 </style>
 </head>
 <body>
@@ -423,5 +426,6 @@ try {
   fail(explain(e) + "<br>" + RETRY);
 }
 </script>
+<a class="go-site" href="https://wangchiapin.github.io/" target="_blank" rel="noopener" title="開啟華語老師分享區">🏠 華語老師分享區 <small>↗</small></a>
 </body>
 </html>
