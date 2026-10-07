@@ -47,7 +47,7 @@ button{font:inherit;font-weight:700;padding:8px 16px;border:0;border-radius:8px;
 .fbi{padding:12px 0;border-top:1px dashed var(--line)}
 .fbi.done{opacity:.45}
 .fbi .tag{display:inline-block;font-size:.72rem;font-weight:700;padding:1px 8px;border-radius:999px;background:#eee;margin-right:4px}
-.fbi .tag.font{background:#ffe1dc}.fbi .tag.game{background:#dfe8ff}.fbi .tag.pinyin{background:#ffd23f}
+.fbi .tag.font{background:#ffe1dc}.fbi .tag.game{background:#dfe8ff}.fbi .tag.tool{background:#fff0b3}.fbi .tag.pinyin{background:#ffd23f}
 .fbi p{margin:6px 0 0;white-space:pre-wrap;word-break:break-word}
 .fbi small{color:var(--soft);font-size:.78rem}
 .fbi .acts{float:right;display:flex;gap:6px}
@@ -216,14 +216,14 @@ try {
         const fbBox = document.getElementById("fbBox");
         const { updateDoc } = await import(`https://www.gstatic.com/firebasejs/${V}/firebase-firestore.js`);
         const NAME = {
-          game: "遊戲", font: "字體", site: "整個網站",
+          game: "遊戲", font: "字體", tool: "工具", site: "整個網站", "tool-pinyin": "漢字加拼音",
           wenkai: "文楷拼音", kai: "正楷拼音", zhuyin: "正楷注音", ppt: "PPT 外掛程式",
           word: "Word", other: "其他",
           suggest: "建議", bug: "問題回報", thoughts: "心得", pinyin: "讀音錯誤", install: "安裝問題"
         };
         const nm = k => NAME[k] || k || "";
         let FBALL = [], fbFilter = "all";
-        const FILTERS = [["all","全部"],["open","未處理"],["game","遊戲"],["font","字體"],["pinyin","讀音錯誤"]];
+        const FILTERS = [["all","全部"],["open","未處理"],["game","遊戲"],["font","字體"],["tool","工具"],["pinyin","讀音錯誤"]];
         const pass = x => fbFilter === "all" || (fbFilter === "open" ? !x.done : fbFilter === "pinyin" ? x.kind === "pinyin" : x.type === fbFilter);
         function drawFb(){
           const list = FBALL.filter(pass);

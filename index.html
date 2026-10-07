@@ -477,11 +477,13 @@ summary{cursor:pointer; font-weight:900; font-size:.92rem}
 
 /* ---- feedback ---- */
 .fb{background:var(--paper); border:var(--bd); border-radius:20px; box-shadow:var(--shadow); padding:24px; max-width:760px}
-.fb-types{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:18px}
+.fb-types{display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:18px}
 .fb-type{display:flex; align-items:center; justify-content:center; gap:8px; padding:14px; font:inherit; font-size:1.05rem; font-weight:900; border:var(--bd); border-radius:14px; background:var(--paper); box-shadow:var(--shadow-sm); cursor:pointer; transition:transform .12s, box-shadow .12s, background .12s}
 .fb-type:hover{transform:translate(-2px,-2px); box-shadow:5px 5px 0 var(--ink)}
 .fb-type[aria-pressed="true"]{background:var(--blue); color:#fff}
 .fb-type[data-type="font"][aria-pressed="true"]{background:var(--red)}
+.fb-type[data-type="tool"][aria-pressed="true"]{background:var(--yellow); color:var(--ink)}
+@media (max-width:560px){.fb-types{gap:8px}.fb-type{padding:12px 4px; font-size:.92rem; gap:4px; flex-wrap:wrap}}
 .fb-grid{display:grid; grid-template-columns:1fr 1fr; gap:14px}
 .fb-grid .full{grid-column:1/-1}
 .fb label, .fb fieldset{display:flex; flex-direction:column; gap:5px; font-size:.86rem; font-weight:900; min-width:0}
@@ -633,6 +635,7 @@ footer a{color:var(--ink); font-weight:700}
       <div class="fb-types" role="group">
         <button type="button" class="fb-type" data-type="game" aria-pressed="true">🎮 <span data-i="fbGame"></span></button>
         <button type="button" class="fb-type" data-type="font" aria-pressed="false">🔤 <span data-i="fbFont"></span></button>
+        <button type="button" class="fb-type" data-type="tool" aria-pressed="false">🛠️ <span data-i="fbTool"></span></button>
       </div>
       <div class="fb-grid">
         <label id="fbTargetWrap"><span id="fbTargetLabel"></span><select id="fbTarget"></select></label>
@@ -812,10 +815,13 @@ const UI = {
   noteFail:   { zh: "送出失敗，請稍後再試。", es: "No se pudo enviar. Inténtalo más tarde." },
   navFeedback:{ zh: "回饋", es: "Opiniones" },
   fbTitle:    { zh: "回饋專區", es: "Tu opinión" },
-  fbIntro:    { zh: "玩遊戲或用字體時遇到問題、有建議或心得，都歡迎告訴我！字體讀音錯誤也可以在這裡回報。",
-                es: "¿Un problema, una idea o un comentario sobre los juegos o la fuente? ¡Cuéntamelo!" },
+  fbIntro:    { zh: "玩遊戲、用字體或小工具時遇到問題、有建議或心得，都歡迎告訴我！字體讀音錯誤也可以在這裡回報。",
+                es: "¿Un problema, una idea o un comentario sobre los juegos, la fuente o las herramientas? ¡Cuéntamelo!" },
   fbGame:     { zh: "遊戲回饋", es: "Juegos" },
   fbFont:     { zh: "字體回饋", es: "Fuente" },
+  fbTool:     { zh: "工具回饋", es: "Herramientas" },
+  fbWhichTool:{ zh: "哪個工具", es: "¿Qué herramienta?" },
+  fbToolCardLink: { zh: "給這個工具回饋", es: "Opinar sobre esta herramienta" },
   fbWhichGame:{ zh: "哪個遊戲", es: "¿Qué juego?" },
   fbWhichFont:{ zh: "哪個字體", es: "¿Qué fuente?" },
   fbWholeSite:{ zh: "整個網站", es: "Todo el sitio" },
@@ -921,6 +927,11 @@ const FB = {
       { id: "bug",     zh: "問題回報", es: "Un error" },
       { id: "thoughts",zh: "心得", es: "Comentario" }
     ],
+    tool: [
+      { id: "suggest", zh: "建議", es: "Sugerencia" },
+      { id: "bug",     zh: "問題回報", es: "Un error" },
+      { id: "thoughts",zh: "心得", es: "Comentario" }
+    ],
     font: [
       { id: "pinyin",  zh: "讀音錯誤", es: "Pinyin incorrecto" },
       { id: "install", zh: "安裝問題", es: "Instalación" },
@@ -934,6 +945,7 @@ const FB = {
   ],
   hints: {
     game:    { zh: "例如：哪一關、做了什麼、發生了什麼事。", es: "Por ejemplo: en qué nivel, qué hiciste y qué pasó." },
+    tool:    { zh: "例如：貼了什麼文字、選了哪些設定、哪裡和你預期的不一樣。", es: "Por ejemplo: qué texto pegaste, qué opciones elegiste y qué no salió como esperabas." },
     pinyin:  { zh: "請寫出詞語、現在顯示的拼音和正確讀音，一行一個。例如：\n盤子：現在 pán zǐ → 應該 pán zi\n一起：現在 yí qǐ → 應該 yì qǐ",
                es: "Escribe la palabra, el pinyin que aparece y el correcto, uno por línea." },
     font:    { zh: "例如：用的是哪個版本、在哪一步遇到問題。", es: "Por ejemplo: qué versión usas y en qué paso tuviste el problema." }
@@ -1025,7 +1037,7 @@ function render(){
       </div>
       <p>${esc(t(g.desc))}</p>
       <div class="tags">${(g.tags||[]).map(x => `<span>${esc(t(x))}</span>`).join("")}</div>
-      <div class="card-actions">${actions}</div>
+      <div class="card-actions">${actions}<a class="fb-link" href="#feedback" data-fb="tool" data-fb-target="tool-${esc(g.id)}">${esc(t(UI.fbToolCardLink))}</a></div>
     </article>`;
   }).join("");
   renderGuide();
@@ -1339,10 +1351,12 @@ const fbState = { type: "game", target: "", kind: "", app: "word" };
 function renderFeedback(){
   const L = o => o[lang] ?? o.zh;
   document.querySelectorAll(".fb-type").forEach(b => b.setAttribute("aria-pressed", b.dataset.type === fbState.type));
-  const isFont = fbState.type === "font";
-  document.getElementById("fbTargetLabel").textContent = t(isFont ? UI.fbWhichFont : UI.fbWhichGame);
+  const isFont = fbState.type === "font", isTool = fbState.type === "tool";
+  document.getElementById("fbTargetLabel").textContent = t(isFont ? UI.fbWhichFont : isTool ? UI.fbWhichTool : UI.fbWhichGame);
   const targets = isFont
     ? CONFIG.font.downloads.filter(d => d.id !== "guide").map(d => ({ id: d.id, label: t(d.label) }))
+    : isTool
+    ? CONFIG.tools.map(g => ({ id: "tool-" + g.id, label: t(g.title) }))
     : [...CONFIG.games.map(g => ({ id: g.id, label: t(g.title) })), { id: "site", label: t(UI.fbWholeSite) }];
   if (!targets.some(x => x.id === fbState.target)) fbState.target = targets[0].id;
   const sel = document.getElementById("fbTarget");
@@ -1359,7 +1373,7 @@ function renderFeedback(){
   updateHint();
 }
 function updateHint(){
-  const h = fbState.type === "game" ? FB.hints.game : (fbState.kind === "pinyin" ? FB.hints.pinyin : FB.hints.font);
+  const h = fbState.type === "game" ? FB.hints.game : fbState.type === "tool" ? FB.hints.tool : (fbState.kind === "pinyin" ? FB.hints.pinyin : FB.hints.font);
   const txt = h[lang] ?? h.zh;
   document.getElementById("fbHint").textContent = "";
   document.getElementById("fbMsg").placeholder = txt;
