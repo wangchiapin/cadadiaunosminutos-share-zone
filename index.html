@@ -682,7 +682,8 @@ footer a{color:var(--ink); font-weight:700}
     <div class="panel subbox" id="subPanel"></div>
     <div class="panel wa-box" id="waBox">
       <div><h3 data-i="waTitle"></h3><p data-i="waDesc"></p></div>
-      <a class="btn btn-jade" href="https://wangchiapin.github.io/subscription/" target="_blank" rel="noopener"><span data-i="waBtn"></span> ▸</a>
+      <a class="btn btn-jade" id="waLink" href="https://wangchiapin.github.io/subscription/" target="_blank" rel="noopener"><span data-i="waBtn"></span> ▸</a>
+      <span class="btn btn-fix" id="waFix" hidden aria-disabled="true">🔧 <span data-i="fixing"></span></span>
     </div>
   </section>
 
@@ -849,6 +850,18 @@ const UI = {
   subSending: { zh: "送出中…", es: "Enviando…" },
   subSent:    { zh: "已送出！我核對收款後會開通，開通後重新整理頁面就會看到。", es: "¡Enviada! La activaré al verificar el pago. Actualiza la página para ver el cambio." },
   subFail:    { zh: "送出失敗，請稍後再試。", es: "No se pudo enviar. Inténtalo más tarde." },
+  subRefPaypal:{ zh: "PayPal 交易編號（至少 6 個字）", es: "ID de transacción de PayPal (mínimo 6 caracteres)" },
+  subRefTwd:  { zh: "匯款帳號末五碼（5 位數字）", es: "Últimos 5 dígitos de la cuenta desde la que transferiste" },
+  subRefOther:{ zh: "付款參考資訊（選填：交易編號、追蹤碼等）", es: "Referencia del pago (opcional: número de operación, clave de rastreo…)" },
+  subPaidAt:  { zh: "付款時間（選填）", es: "Fecha y hora del pago (opcional)" },
+  subShot:    { zh: "付款截圖（選填）", es: "Captura del pago (opcional)" },
+  subShotPick:{ zh: "選擇圖片", es: "Elegir imagen" },
+  subShotDel: { zh: "移除", es: "Quitar" },
+  subShotErr: { zh: "這張圖片無法使用，請換一張（需要是圖片，且小於 15 MB）。", es: "No se puede usar esta imagen. Elige otra (debe ser una imagen de menos de 15 MB)." },
+  subConfirm: { zh: "我確認已經付款，資料正確。", es: "Confirmo que ya realicé el pago y que mis datos son correctos." },
+  subRefNo:   { zh: "申請編號", es: "N.º de solicitud" },
+  subNotified:{ zh: "已通知老師。", es: "Se avisó al profesor." },
+  subNotifyFail:{ zh: "（通知信沒有寄出，但申請已經收到。）", es: "(No se pudo enviar el aviso por correo, pero tu solicitud quedó registrada.)" },
   subNoPrice: { zh: "這個方案和付款方式還沒有公布價格，暫時無法申請。", es: "Aún no hay precio para este plan y forma de pago." },
   subPayPaypal:{ zh: "請先用 PayPal 付款，再回來送出申請：", es: "Paga primero con PayPal y luego envía la solicitud:" },
   subPayBank: { zh: "請先轉帳，再回來送出申請：", es: "Haz primero la transferencia y luego envía la solicitud:" },
@@ -1034,7 +1047,9 @@ const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&":"&amp;", "<":"&lt;", 
    site_plans/{uid}：會員的方案與到期日（只有管理員能寫）；site_requests：會員送出的申請
    注意：這裡只負責「顯示入口」，不是真正的鎖。真正要鎖的內容要放在 site_content，由 Firestore 規則判斷。 */
 var SUBITEMS = {};
-var SUBST = { ready: false, loading: false, user: null, plan: null, requests: [], pricing: null, msg: "", sending: false, form: { plan: "month", method: "paypal", note: "" } };
+/* 收款通知信：部署 apps-script/site-notify.gs 之後，把網址貼在這裡（沒貼就不寄信、也不顯示截圖上傳）。步驟見該檔案開頭。 */
+const SITE_NOTIFY_URL = "";
+var SUBST = { ready: false, loading: false, user: null, plan: null, requests: [], pricing: null, msg: "", sending: false, form: { plan: "month", method: "paypal", note: "", ref: "", paidAt: "", ok: false, shot: null, shotName: "" } };
 const SUB_METHODS = [
   { id: "paypal",  cur: "USD", label: { zh: "PayPal（美金）", es: "PayPal (USD)" } },
   { id: "twd",     cur: "TWD", label: { zh: "台灣銀行轉帳（新台幣）", es: "Transferencia en Taiwán (TWD)" } },
@@ -1162,10 +1177,13 @@ function render(){
   renderFeedback();
   renderVotes();
   renderSub();
+  { const wo = isOff("wa-group"); document.getElementById("waLink").hidden = wo; document.getElementById("waFix").hidden = !wo; }
 
   // support（下方區塊）
   const BANK_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10 12 4l9 6"/><path d="M5 10v8M9.5 10v8M14.5 10v8M19 10v8"/><path d="M3 20h18"/></svg>';
-  const payBtn = (p, suffix, label) => p.type === "bank"
+  const payBtn = (p, suffix, label) => isOff("support-" + p.id)
+    ? `<span class="btn btn-fix" aria-disabled="true">🔧 ${esc(t(UI.fixing))}</span>`
+    : p.type === "bank"
     ? `<button type="button" class="btn btn-bank" data-bank data-track="support_${esc(p.id)}${suffix}">${BANK_ICON}${esc(label)}</button>`
     : (p.url ? `<a class="btn btn-jade" href="${esc(p.url)}" target="_blank" rel="noopener" data-track="support_${esc(p.id)}${suffix}">${esc(label)} ▸</a>` : "");
   document.getElementById("payGrid").innerHTML = CONFIG.support.map(p => `
@@ -1589,8 +1607,46 @@ function subPrice(plan, cur){
   return v == null ? null : v;
 }
 const fmtMoney = (v, cur) => v == null ? t(UI.subPriceTbd) : (cur === "USD" ? "US$ " : cur === "TWD" ? "NT$ " : "") + Number(v).toLocaleString();
+function subValid(){
+  const f = SUBST.form, m = SUB_METHODS.find(x => x.id === f.method) || SUB_METHODS[0], ref = (f.ref || "").trim();
+  if (!f.ok) return false;
+  if (m.id === "paypal" && ref.length < 6) return false;
+  if (m.id === "twd" && !/^[0-9]{5}$/.test(ref)) return false;
+  return true;
+}
+function subCanSend(){
+  const f = SUBST.form, m = SUB_METHODS.find(x => x.id === f.method) || SUB_METHODS[0];
+  const price = m.contact && m.cur === "MXN" ? null : subPrice(f.plan, m.cur);
+  return (m.contact || price != null) && subValid();
+}
+function syncSend(){ const b = document.getElementById("subSendBtn"); if (b) b.disabled = !(subCanSend() && !SUBST.sending); }
+function readShot(file){
+  return new Promise((res, rej) => {
+    if (!file || !/^image\//.test(file.type) || file.size > 15e6) return rej(new Error("bad"));
+    const img = new Image(), url = URL.createObjectURL(file);
+    img.onload = () => {
+      const sc = Math.min(1, 1280 / Math.max(img.width, img.height)), c = document.createElement("canvas");
+      c.width = Math.round(img.width * sc); c.height = Math.round(img.height * sc);
+      c.getContext("2d").drawImage(img, 0, 0, c.width, c.height); URL.revokeObjectURL(url); res(c.toDataURL("image/jpeg", 0.8));
+    };
+    img.onerror = () => rej(new Error("bad")); img.src = url;
+  });
+}
+async function notifySite(req, id){
+  if (!SITE_NOTIFY_URL) return null;
+  const f = SUBST.form, m = SUB_METHODS.find(x => x.id === req.method);
+  try {
+    const r = await fetch(SITE_NOTIFY_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({
+      hp: "", id, email: SUBST.user.email, plan: req.plan, method: req.method, currency: req.currency,
+      amount: m && !(m.contact && m.cur === "MXN") ? subPrice(req.plan, m.cur) : null,
+      ref: req.ref, paidAt: req.paidAt || "", note: req.note, lang,
+      screenshot: f.shot ? { mime: "image/jpeg", data: f.shot.split(",")[1] } : null }) });
+    const j = await r.json(); return !!j.ok;
+  } catch (err) { console.warn("notify", err); return false; }
+}
 function renderSub(){
   const box = document.getElementById("subPanel"); if (!box) return;
+  if (isOff("sub-site")) { box.innerHTML = `<p class="sub-msg">🔧 ${esc(t(UI.fixing))}</p>`; return; }
   if (!SUBST.ready) { box.innerHTML = `<p class="sub-msg">${esc(t(UI.subLoading))}</p>`; return; }
   const f = SUBST.form, u = SUBST.user;
   const prices = `<div class="sub-prices">${["month", "year"].map(pl => `<div class="sub-price"><b>${esc(planLabel(pl))}</b>
@@ -1607,7 +1663,8 @@ function renderSub(){
     : `<div class="sub-state">${esc(p && p.expiresAt && p.plan !== "free" ? t(UI.subExpired) : t(UI.subFree))}</div>`;
   const m = SUB_METHODS.find(x => x.id === f.method) || SUB_METHODS[0];
   const price = m.contact && m.cur === "MXN" ? null : subPrice(f.plan, m.cur);
-  const canSend = m.contact || price != null;
+  const priceOk = m.contact || price != null;
+  const canSend = subCanSend();
   const igUrl = CONFIG.site.handleUrl || "";
   const pp = CONFIG.support.find(x => x.id === "paypal");
   let pay = "";
@@ -1620,9 +1677,15 @@ function renderSub(){
     <label><span>${esc(t(UI.subPlanLabel))}</span><select data-sub-field="plan">${["month", "year"].map(pl => `<option value="${pl}" ${f.plan === pl ? "selected" : ""}>${esc(planLabel(pl))}</option>`).join("")}</select></label>
     <label><span>${esc(t(UI.subMethodLabel))}</span><select data-sub-field="method">${SUB_METHODS.map(x => `<option value="${x.id}" ${f.method === x.id ? "selected" : ""}>${esc(t(x.label))}</option>`).join("")}</select></label>
     <div class="sub-pay">${pay}</div>
+    <label><span>${esc(t(m.id === "paypal" ? UI.subRefPaypal : m.id === "twd" ? UI.subRefTwd : UI.subRefOther))}</span><input type="text" data-sub-field="ref" maxlength="80" autocomplete="off" ${m.id === "twd" ? 'inputmode="numeric"' : ""} value="${esc(f.ref)}"></label>
+    <label><span>${esc(t(UI.subPaidAt))}</span><input type="datetime-local" data-sub-field="paidAt" value="${esc(f.paidAt)}"></label>
+    ${SITE_NOTIFY_URL ? `<div><span style="font-size:.86rem;font-weight:900">${esc(t(UI.subShot))}</span>
+      <div class="row" style="margin-top:6px"><label class="btn btn-line" style="cursor:pointer">${esc(t(UI.subShotPick))}<input type="file" accept="image/*" data-sub-shot hidden></label>
+      ${f.shot ? `<img src="${f.shot}" alt="" style="height:56px;border:2px solid var(--ink);border-radius:8px"><span>${esc(f.shotName)}</span><button type="button" class="btn" data-sub="shotdel">${esc(t(UI.subShotDel))}</button>` : ""}</div></div>` : ""}
     <label><span>${esc(t(UI.subNoteLabel))}</span><textarea maxlength="300" data-sub-field="note">${esc(f.note)}</textarea></label>
-    ${canSend ? "" : `<p class="sub-msg">${esc(t(UI.subNoPrice))}</p>`}
-    <div class="row"><button type="button" class="btn btn-brick" data-sub="send" ${canSend && !SUBST.sending ? "" : "disabled"}>${esc(t(SUBST.sending ? UI.subSending : UI.subSend))}</button></div>
+    <label style="flex-direction:row;align-items:center;gap:10px"><input type="checkbox" data-sub-field="ok" ${f.ok ? "checked" : ""} style="width:auto"><span>${esc(t(UI.subConfirm))}</span></label>
+    ${priceOk ? "" : `<p class="sub-msg">${esc(t(UI.subNoPrice))}</p>`}
+    <div class="row"><button type="button" class="btn btn-brick" id="subSendBtn" data-sub="send" ${canSend && !SUBST.sending ? "" : "disabled"}>${esc(t(SUBST.sending ? UI.subSending : UI.subSend))}</button></div>
     ${SUBST.msg ? `<p class="sub-msg">${esc(SUBST.msg)}</p>` : ""}${reqs}`;
 }
 async function refreshSubMe(){
@@ -1648,22 +1711,37 @@ document.getElementById("subPanel").addEventListener("click", async e => {
   try {
     if (b.dataset.sub === "login") { SUBST.msg = ""; await window.__sub.login(); }
     else if (b.dataset.sub === "logout") { await window.__sub.logout(); }
+    else if (b.dataset.sub === "shotdel") { SUBST.form.shot = null; SUBST.form.shotName = ""; renderSub(); }
     else if (b.dataset.sub === "send") {
       const f = SUBST.form, m = SUB_METHODS.find(x => x.id === f.method);
+      if (!subCanSend()) return;
       SUBST.sending = true; SUBST.msg = ""; renderSub();
-      await window.__sub.sendRequest({ plan: f.plan, method: f.method, currency: m.cur, note: (f.note || "").slice(0, 300) });
-      SUBST.sending = false; f.note = ""; SUBST.msg = t(UI.subSent);
+      const req = { plan: f.plan, method: f.method, currency: m.cur, note: (f.note || "").slice(0, 300), ref: (f.ref || "").trim(), paidAt: f.paidAt || "" };
+      const docRef = await window.__sub.sendRequest(req);
+      const sent = await notifySite(req, docRef.id);
+      SUBST.sending = false; Object.assign(f, { note: "", ref: "", paidAt: "", ok: false, shot: null, shotName: "" });
+      SUBST.msg = t(UI.subSent) + " " + t(UI.subRefNo) + "：" + docRef.id.slice(0, 8).toUpperCase() + (SITE_NOTIFY_URL ? " " + t(sent ? UI.subNotified : UI.subNotifyFail) : "");
       SUBST.requests = (await window.__sub.myRequests()).map(r => ({ ...r, when: r.ts ? fmtDay(r.ts) : "" }));
       renderSub();
     }
   } catch (err) { console.warn("sub", err.code || err); SUBST.sending = false; SUBST.msg = b.dataset.sub === "send" ? t(UI.subFail) : (err.code === "auth/popup-closed-by-user" ? "" : String(err.code || "")); renderSub(); }
 });
-document.getElementById("subPanel").addEventListener("change", e => {
-  const el = e.target.closest("[data-sub-field]"); if (!el || el.dataset.subField === "note") return;
-  SUBST.form[el.dataset.subField] = el.value; SUBST.msg = ""; renderSub();
+document.getElementById("subPanel").addEventListener("change", async e => {
+  const shot = e.target.closest("[data-sub-shot]");
+  if (shot) {
+    try { SUBST.form.shot = await readShot(shot.files[0]); SUBST.form.shotName = shot.files[0].name; SUBST.msg = ""; }
+    catch (err) { SUBST.form.shot = null; SUBST.form.shotName = ""; SUBST.msg = t(UI.subShotErr); }
+    renderSub(); return;
+  }
+  const el = e.target.closest("[data-sub-field]"); if (!el) return;
+  const k = el.dataset.subField;
+  if (k === "plan" || k === "method") { SUBST.form[k] = el.value; SUBST.msg = ""; renderSub(); }
+  else if (k === "ok") { SUBST.form.ok = el.checked; syncSend(); }
 });
 document.getElementById("subPanel").addEventListener("input", e => {
-  const el = e.target.closest("[data-sub-field='note']"); if (el) SUBST.form.note = el.value;
+  const el = e.target.closest("[data-sub-field]"); if (!el) return;
+  const k = el.dataset.subField;
+  if (k === "note" || k === "ref" || k === "paidAt") { SUBST.form[k] = el.value; syncSend(); }
 });
 
 /* 預設語言：上次選的 → 瀏覽器是中文就中文，否則西文 */
@@ -1747,8 +1825,8 @@ try {
         const o = {}; snap.forEach(d => { if (d.data().access === "sub") o[d.id] = true; }); return o;
       },
       async getPricing(){ const s = await getDoc(doc(db, "site_config", "pricing")); return s.exists() ? s.data() : null; },
-      sendRequest: ({ plan, method, currency, note }) => addDoc(collection(db, "site_requests"),
-        { uid: auth.currentUser.uid, plan, method, currency, note, status: "pending", createdAt: serverTimestamp() }),
+      sendRequest: ({ plan, method, currency, note, ref, paidAt }) => addDoc(collection(db, "site_requests"),
+        { uid: auth.currentUser.uid, plan, method, currency, note, ref, ...(paidAt ? { paidAt } : {}), status: "pending", createdAt: serverTimestamp() }),
       async myRequests(){
         const snap = await getDocs(query(collection(db, "site_requests"), where("uid", "==", auth.currentUser.uid)));
         return snap.docs.map(d => { const x = d.data(); return { id: d.id, plan: x.plan, method: x.method, status: x.status, ts: tms(x.createdAt) || Date.now() }; }).sort((a, b) => b.ts - a.ts);

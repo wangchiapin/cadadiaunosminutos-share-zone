@@ -413,6 +413,7 @@ try {
         const SW = [
           ["小遊戲", [["game-memorama", "翻牌記憶"], ["game-colores", "色數消消樂"], ["game-taiwan-life", "台灣生活情境對話（taiwan-life）"], ["game-corre-hanzi", "跑吧！漢字"], ["game-armario", "收納小達人"], ["game-compras", "幫媽媽買東西"], ["game-perrito", "小狗找寶藏"], ["game-numeros", "數字聽說練習"]]],
           ["教學小工具", [["tool-pinyin", "漢字加拼音"]]],
+          ["入口區塊（整塊開關）", [["wa-group", "WhatsApp 付費練習群組卡片"], ["sub-site", "網站訂閱區（訂閱中心）"], ["support-paypal", "贊助：PayPal"], ["support-bank", "贊助：銀行轉帳"]]],
           ["字體下載", [["dl-wenkai", "文楷拼音字體"], ["dl-kai", "正楷拼音字體"], ["dl-zhuyin", "正楷注音字體"], ["dl-ppt", "PowerPoint 外掛程式"], ["dl-guide", "圖解安裝說明（PDF）"]]]
         ];
         let SWOFF = new Set(), swLoaded = false, swMsg = "";
@@ -482,6 +483,19 @@ try {
           const per = Math.max(0, (p.periods || 0) + d);
           return savePlan(uid, { periods: per, expiresAt: calcExpires(p.plan, fdate(p.startAt), per) });
         }
+        async function logAct(type, email, text){
+          try {
+            await addDoc(collection(db, "site_activity"), { type, email: email || "", text: text || "", createdAt: serverTimestamp() });
+            if (SUB) SUB.act.unshift({ type, email: email || "", text: text || "", when: new Date().toLocaleString("zh-TW", { hour12: false }) });
+          } catch (e) { /* 紀錄失敗不影響主要操作 */ }
+        }
+        const ACT_NAME = { grant: "開通", renew: "續訂", change: "方案變更", reject: "退回", remind: "寄提醒" };
+        function remindMail(email, p){
+          const d = fdate(p.expiresAt), pn = PLAN_NAME[p.plan] || p.plan;
+          const subj = `Tu suscripción vence el ${d} / 你的訂閱將於 ${d} 到期`;
+          const body = `Hola,\n\nTu suscripción (${pn}) vence el ${d}. Si quieres renovarla, entra al sitio, ve a la sección de suscripción y envía una nueva solicitud de pago.\nhttps://wangchiapin.github.io/cadadiaunosminutos-share-zone/\n\n¡Gracias!\nBen\n\n------\n你好，\n\n你的訂閱（${pn}）將於 ${d} 到期。如要續訂，請到網站的訂閱區送出新的付款申請。\n\n謝謝！\nBen`;
+          return `mailto:${encodeURIComponent(email)}?subject=${encodeURIComponent(subj)}&body=${encodeURIComponent(body)}`;
+        }
         async function approveReq(id){
           const r = SUB.reqs.find(x => x.id === id); if (!r) return;
           const amt = prompt(`確認已收到款項？\n會員：${r.email || r.uid}\n方案：${PLAN_NAME[r.plan]}・${METHOD_NAME[r.method] || r.method}・${r.currency}\n\n請輸入實收金額（數字）：`);
@@ -489,24 +503,30 @@ try {
           const amount = Number(amt);
           if (!amt.trim() || !isFinite(amount) || amount < 0) { subMsg = "金額不正確，沒有開通。"; return drawSub(); }
           const p = SUB.plans[r.uid] || {};
-          if (planOk(p) && p.plan === r.plan && p.startAt) await renewPlan(r.uid, 1);   // 同方案還沒到期 → 續訂一期
+          const wasActiveSame = planOk(p) && p.plan === r.plan && !!p.startAt;
+          if (wasActiveSame) await renewPlan(r.uid, 1);   // 同方案還沒到期 → 續訂一期
           else await grantPlan(r.uid, r.plan);
           await addDoc(collection(db, "site_payments"), { uid: r.uid, email: r.email || "", plan: r.plan, method: r.method, currency: r.currency, amount, requestId: id, createdAt: serverTimestamp() });
           await updateDoc(doc(db, "site_requests", id), { status: "approved", approvedAt: serverTimestamp() });
           r.status = "approved";
+          await logAct(wasActiveSame ? "renew" : "grant", r.email, `${PLAN_NAME[r.plan]}・收款 ${amount} ${r.currency}・${METHOD_NAME[r.method] || r.method}`);
           subMsg = `已開通：${r.email || r.uid}（${PLAN_NAME[r.plan]}），並記錄收款 ${amount} ${r.currency}。`;
         }
         async function loadSub(){
           subBox.innerHTML = `<p class="msg">讀取中…</p>`;
           try {
-            const [mem, pl, rq, cat, cfgs] = await Promise.all([
+            const [mem, pl, rq, cat, cfgs, pay, act] = await Promise.all([
               getDocs(query(collection(db, "site_members"))),
               getDocs(query(collection(db, "site_plans"))),
               getDocs(query(collection(db, "site_requests"), orderBy("createdAt", "desc"), limit(100))),
               getDocs(query(collection(db, "site_catalog"))),
-              getDocs(query(collection(db, "site_config")))
+              getDocs(query(collection(db, "site_config"))),
+              getDocs(query(collection(db, "site_payments"), limit(2000))),
+              getDocs(query(collection(db, "site_activity"), orderBy("createdAt", "desc"), limit(30)))
             ]);
-            SUB = { members: mem.docs.map(d => ({ uid: d.id, ...d.data() })), plans: {}, reqs: [], catalog: {}, pricing: {} };
+            SUB = { members: mem.docs.map(d => ({ uid: d.id, ...d.data() })), plans: {}, reqs: [], catalog: {}, pricing: {}, revenue: {}, act: [], filter: (SUB && SUB.filter) || "all", q: (SUB && SUB.q) || "" };
+            pay.forEach(d => { const x = d.data(); if (isFinite(x.amount)) SUB.revenue[x.currency] = (SUB.revenue[x.currency] || 0) + x.amount; });
+            SUB.act = act.docs.map(d => { const x = d.data(); return { type: x.type, email: x.email || "", text: x.text || "", when: x.createdAt ? x.createdAt.toDate().toLocaleString("zh-TW", { hour12: false }) : "" }; });
             pl.forEach(d => { const x = d.data(); SUB.plans[d.id] = { plan: x.plan || "free", startAt: tms(x.startAt), expiresAt: tms(x.expiresAt), periods: x.periods || 0, trialUsed: !!x.trialUsed }; });
             const emailOf = Object.fromEntries(SUB.members.map(m => [m.uid, m.email]));
             SUB.reqs = rq.docs.map(d => { const x = d.data(); return { id: d.id, ...x, email: emailOf[x.uid] || "", when: x.createdAt ? x.createdAt.toDate().toLocaleString("zh-TW", { hour12: false }) : "" }; });
@@ -528,14 +548,25 @@ try {
           if (!SUB) return;
           const pr = SUB.pricing || {}, pv = (a, b) => (pr[a] && pr[a][b] != null) ? pr[a][b] : "";
           const pending = SUB.reqs.filter(r => r.status === "pending"), handled = SUB.reqs.length - pending.length;
-          const members = SUB.members.slice().sort((a, b) => (a.email || "").localeCompare(b.email || ""));
+          const soonT = Date.now() + 7 * 864e5, FL = SUB.filter || "all", q = (SUB.q || "").trim().toLowerCase();
+          const cls = m => { const p = SUB.plans[m.uid] || { plan: "free" }; if (p.plan === "free" || !p.expiresAt) return "free"; if (p.expiresAt <= Date.now()) return "expired"; return p.expiresAt <= soonT ? "soon" : "ok"; };
+          const exp = m => { const p = SUB.plans[m.uid]; return p && p.expiresAt ? p.expiresAt : Infinity; };
+          const allMembers = SUB.members;
+          const members = allMembers.filter(m => (FL === "all" || (FL === "attn" ? ["soon", "expired"].includes(cls(m)) : cls(m) === FL)) && (!q || (m.email || "").toLowerCase().includes(q) || (m.name || "").toLowerCase().includes(q)))
+            .sort((a, b) => FL === "all" ? (a.email || "").localeCompare(b.email || "") : exp(a) - exp(b));
+          const cnt = f => allMembers.filter(m => f === "all" || (f === "attn" ? ["soon", "expired"].includes(cls(m)) : cls(m) === f)).length;
+          const fltHtml = [["all", "全部"], ["attn", "需處理"], ["soon", "7 天內到期"], ["ok", "使用中"], ["expired", "已到期"], ["free", "免費"]].map(([k, n]) => `<button data-flt="${k}" style="${FL === k ? "background:var(--jade);color:#fff;border-color:var(--jade)" : ""}">${n} ${cnt(k)}</button>`).join("");
+          const revHtml = Object.keys(SUB.revenue).length ? Object.entries(SUB.revenue).map(([c, v]) => `<b>${v.toLocaleString()} ${esc(c)}</b>`).join("　") : "尚無收款紀錄";
+          const actHtml = SUB.act.length ? SUB.act.map(a => `<div class="sub-card" style="padding:6px 0"><small style="color:var(--soft)">${esc(a.when)}</small> <span class="sub-badge">${esc(ACT_NAME[a.type] || a.type)}</span> ${esc(a.email)} <small>${esc(a.text)}</small></div>`).join("") : `<p class="msg">還沒有紀錄。</p>`;
           const reqHtml = pending.length ? pending.map(r => `<div class="sub-card">
               <b style="word-break:break-all">${esc(r.email || r.uid)}</b> <span class="sub-badge">${esc(PLAN_NAME[r.plan] || r.plan)}</span>
               <span class="sub-badge">${esc(METHOD_NAME[r.method] || r.method)}・${esc(r.currency)}</span>
-              <br><small style="color:var(--soft)">${esc(r.when)}</small>${r.note ? `<p style="margin:4px 0 0;white-space:pre-wrap;word-break:break-word">${esc(r.note)}</p>` : ""}
+              <br><small style="color:var(--soft)">${esc(r.when)}</small>
+              ${r.ref ? `<br><small>${r.method === "twd" ? "帳號後 5 碼" : "交易編號"}：<b style="word-break:break-all">${esc(r.ref)}</b>${r.paidAt ? `・付款時間：${esc(r.paidAt)}` : ""}</small>` : ""}
+              <br><small style="color:var(--soft)">申請編號 ${esc(r.id.slice(0, 8).toUpperCase())}（截圖在你的信箱裡，用這個編號對照）</small>${r.note ? `<p style="margin:4px 0 0;white-space:pre-wrap;word-break:break-word">${esc(r.note)}</p>` : ""}
               <div class="ops"><button class="ok" data-approve="${esc(r.id)}">✓ 確認收款並開通</button><button data-reject="${esc(r.id)}">退回</button></div></div>`).join("")
             : `<p class="msg">沒有待確認的申請。${handled ? `（已處理 ${handled} 筆）` : ""}</p>`;
-          const catHtml = SW.map(([g, items]) => `<div class="sw-group"><h3>${esc(g)}</h3>${items.map(([id, name]) =>
+          const catHtml = SW.filter(([g]) => !g.startsWith("入口區塊")).map(([g, items]) => `<div class="sw-group"><h3>${esc(g)}</h3>${items.map(([id, name]) =>
             `<label class="sw-item"><input type="checkbox" data-cat="${id}" ${SUB.catalog[id] ? "checked" : ""}><span>${esc(name)}</span>${SUB.catalog[id] ? "<em style='color:var(--jade)'>★ 訂閱限定</em>" : ""}</label>`).join("")}</div>`).join("");
           const memHtml = members.length ? members.map(m => { const p = SUB.plans[m.uid] || { plan: "free" }; const paid = p.plan !== "free";
             return `<div class="sub-card"><b style="word-break:break-all">${esc(m.email || "")}</b> <small style="color:var(--soft)">${esc(m.name || "")}</small> ${subStatus(p)}
@@ -546,6 +577,7 @@ try {
                 <option value="month" ${p.plan === "month" ? "selected" : ""}>月訂</option>
                 <option value="year" ${p.plan === "year" ? "selected" : ""}>年訂</option></select>
                 ${paid ? `<span class="msg">到期 <b>${fdate(p.expiresAt)}</b></span>` : ""}
+                ${paid && m.email && ["soon", "expired"].includes(cls(m)) ? `<a class="sub-btn" style="text-decoration:none;border-radius:999px" data-remind="${esc(m.email)}" href="${remindMail(m.email, p)}">✉ 寄提醒信</a>` : ""}
                 ${["month", "year"].includes(p.plan) ? `<span class="msg">續訂 ×${p.periods || 0}</span><button data-renew="${esc(m.uid)}" data-d="1">＋ 續訂</button><button data-renew="${esc(m.uid)}" data-d="-1" ${(p.periods || 0) <= 0 ? "disabled" : ""}>－ 撤銷</button>` : ""}
               </div></div>`; }).join("")
             : `<p class="msg">還沒有會員登入過。</p>`;
@@ -561,7 +593,12 @@ try {
              <h3 class="sub-h">哪些項目是「訂閱限定」</h3>
              <p class="msg" style="margin:0 0 6px">勾選＝首頁該卡片顯示「訂閱限定」，沒有有效訂閱的人會看到「訂閱後使用」。這只是擋掉入口，不是真正的鎖；真正的鎖要把內容放在中心專案的 site_content，由規則判斷。</p>
              ${catHtml}
-             <h3 class="sub-h">會員與方案（共 ${members.length} 位）</h3>${memHtml}
+             <h3 class="sub-h">會員與方案（顯示 ${members.length} / 共 ${allMembers.length} 位）</h3>
+             <div class="row" style="gap:6px;flex-wrap:wrap;margin-bottom:6px">${fltHtml}</div>
+             <input id="subQ" type="search" placeholder="用 email 或名稱搜尋" value="${esc(SUB.q || "")}" style="width:100%;padding:6px 10px;border:1px solid var(--line);border-radius:8px;font:inherit;margin-bottom:6px">
+             ${memHtml}
+             <h3 class="sub-h">累計收款（已確認的）</h3><p class="msg">${revHtml}</p>
+             <h3 class="sub-h">最近動態（最新 30 筆）</h3>${actHtml}
              <div class="row" style="margin-top:10px"><button class="ghost" id="subReload">重新整理</button></div>`;
         }
         subBox.addEventListener("click", async e => {
@@ -572,9 +609,19 @@ try {
               if (!confirm("確定要退回這筆申請？（不會開通）")) return;
               await updateDoc(doc(db, "site_requests", rj.dataset.reject), { status: "rejected" });
               const r = SUB.reqs.find(x => x.id === rj.dataset.reject); if (r) r.status = "rejected";
+              await logAct("reject", r && r.email, r ? `${PLAN_NAME[r.plan]}・${METHOD_NAME[r.method] || r.method}` : "");
               subMsg = "已退回。"; drawSub();
             }
-            else if (rn) { subMsg = ""; await renewPlan(rn.dataset.renew, Number(rn.dataset.d)); drawSub(); }
+            else if (rn) {
+              subMsg = ""; await renewPlan(rn.dataset.renew, Number(rn.dataset.d));
+              const m = SUB.members.find(x => x.uid === rn.dataset.renew);
+              await logAct("renew", m && m.email, Number(rn.dataset.d) > 0 ? "手動＋續訂一期" : "撤銷一期");
+              drawSub();
+            }
+            else if (e.target.closest("[data-remind]")) {
+              const a = e.target.closest("[data-remind]"); await logAct("remind", a.dataset.remind, "開啟提醒信"); drawSub();
+            }
+            else if (e.target.closest("[data-flt]")) { SUB.filter = e.target.closest("[data-flt]").dataset.flt; drawSub(); }
             else if (e.target.id === "prSave") {
               const num = k => { const v = subBox.querySelector(`[data-pr="${k}"]`).value.trim(); return v === "" ? null : Number(v); };
               const o = { month: { twd: num("month.twd"), usd: num("month.usd") }, year: { twd: num("year.twd"), usd: num("year.usd") } };
@@ -584,10 +631,21 @@ try {
             else if (e.target.id === "subReload") { subMsg = ""; loadSub(); }
           } catch (err) { subMsg = `失敗（${err.code || err.message}）`; drawSub(); }
         });
+        subBox.addEventListener("input", e => {
+          if (e.target.id !== "subQ") return;
+          SUB.q = e.target.value; const pos = e.target.selectionStart; drawSub();
+          const el = subBox.querySelector("#subQ"); if (el) { el.focus(); el.setSelectionRange(pos, pos); }
+        });
         subBox.addEventListener("change", async e => {
           const sel = e.target.closest("[data-plan]"), cb = e.target.closest("[data-cat]");
           try {
-            if (sel) { subMsg = ""; await grantPlan(sel.dataset.plan, sel.value); drawSub(); }
+            if (sel) {
+              subMsg = ""; const before = (SUB.plans[sel.dataset.plan] || {}).plan;
+              await grantPlan(sel.dataset.plan, sel.value);
+              const m = SUB.members.find(x => x.uid === sel.dataset.plan);
+              if ((SUB.plans[sel.dataset.plan] || {}).plan !== before) await logAct("change", m && m.email, `${PLAN_NAME[before] || before} → ${PLAN_NAME[sel.value]}`);
+              drawSub();
+            }
             else if (cb) {
               await setDocSw(doc(db, "site_catalog", cb.dataset.cat), { access: cb.checked ? "sub" : "free", lock: "soft", updatedAt: serverTimestamp() });
               SUB.catalog[cb.dataset.cat] = cb.checked; subMsg = `已更新：${cb.dataset.cat}`; drawSub();
