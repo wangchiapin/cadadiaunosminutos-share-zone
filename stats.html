@@ -88,6 +88,14 @@ button.ghost{background:#fff;color:var(--ink);border:1px solid var(--line)}
 .lnk-btn{display:inline-block;padding:8px 16px;border-radius:8px;background:var(--jade);color:#fff;font-weight:700;text-decoration:none;font-size:.92rem}
 .sub-badge{display:inline-block;font-size:.72rem;font-weight:700;padding:1px 8px;border-radius:999px;background:#eee;margin-left:4px}
 .sub-badge.on{background:#cfe9de;color:#1d5a44}.sub-badge.warn{background:#ffcc80;color:#6a3a00}.sub-badge.off{background:#ddd;color:#555}
+.tabs{position:sticky;top:0;z-index:20;display:flex;gap:6px;overflow-x:auto;background:var(--cream);padding:8px 0;margin:10px 0 0;border-bottom:1px solid var(--line);-webkit-overflow-scrolling:touch}
+.tabs button,.subtabs button{flex:none;font:inherit;font-size:.9rem;font-weight:700;padding:7px 14px;border-radius:999px;border:1px solid var(--line);background:var(--paper);color:var(--ink);cursor:pointer;white-space:nowrap}
+.tabs button.on,.subtabs button.on{background:var(--jade);border-color:var(--jade);color:#fff}
+.tabs button .dot{display:inline-block;min-width:18px;padding:0 5px;margin-left:5px;border-radius:999px;background:var(--brick);color:#fff;font-size:.72rem;line-height:18px;text-align:center}
+.tabpane{display:none}.tabpane.on{display:block}
+.tabpane>h2:first-child{margin-top:18px}
+.subtabs{display:flex;gap:6px;margin:16px 0 4px;flex-wrap:wrap}
+.wa-card{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:16px}
 </style>
 </head>
 <body>
@@ -97,6 +105,16 @@ button.ghost{background:#fff;color:var(--ink);border:1px solid var(--line)}
 
   <label class="owner"><input type="checkbox" id="owner"> 這台裝置的瀏覽不計入統計（你自己的電腦、手機各勾一次）</label>
 
+  <nav class="tabs" id="tabs" aria-label="管理分頁">
+    <button data-tab="stats">📊 點擊統計</button>
+    <button data-tab="feedback">💬 回饋專區</button>
+    <button data-tab="votes">🗳 讀音投票</button>
+    <button data-tab="switch">🔧 卡片開關</button>
+    <button data-tab="sub">⭐ 訂閱管理<span class="dot" id="subDot" hidden></span></button>
+    <button data-tab="dl">⬇ 字體下載</button>
+  </nav>
+
+  <section class="tabpane" data-pane="stats">
   <h2>總計</h2>
   <div class="tiles" id="tiles"><p class="msg">讀取中…</p></div>
 
@@ -106,6 +124,9 @@ button.ghost{background:#fff;color:var(--ink);border:1px solid var(--line)}
   <h2>各項點擊（總計）</h2>
   <div class="box" id="clicks"><p class="msg">讀取中…</p></div>
 
+  </section>
+
+  <section class="tabpane" data-pane="feedback">
   <h2>留言（只有你登入後看得到）</h2>
   <div class="box" id="notes">
     <p class="msg">請用你的 Google 帳號登入才能看到留言。</p>
@@ -113,30 +134,80 @@ button.ghost{background:#fff;color:var(--ink);border:1px solid var(--line)}
   </div>
 
   <h2>回饋專區（只有你登入後看得到）</h2>
-  <div class="box" id="fbBox"><p class="msg">請先在上方「留言」區用 Google 登入。</p></div>
+  <div class="box" id="fbBox"><p class="msg">請先到「回饋專區」分頁用 Google 登入。</p></div>
 
+  </section>
+
+  <section class="tabpane" data-pane="votes">
   <h2>讀音投票</h2>
   <p class="note">把讀音錯誤的回饋整理成投票項目，會顯示在網站「GoodTeacher 拼音字體」區的左下角。票數任何人都看得到；新增、關閉、刪除要登入。每則回饋可以用「建立投票」直接整理成項目。</p>
   <div class="box" id="voteBox"><p class="msg">讀取中…</p></div>
 
+  </section>
+
+  <section class="tabpane" data-pane="switch">
   <h2>卡片開關（維修中）</h2>
   <p class="note">取消勾選＝該卡片在首頁顯示「🔧 維修中」並且無法使用；勾選＝正常使用（預設）。按下去馬上生效，訪客重新整理首頁就會看到。只擋首頁入口，直接知道遊戲網址的人還是能進去。要登入才能改。</p>
   <div class="box" id="swBox"><p class="msg">讀取中…</p></div>
 
-  <h2>訂閱管理</h2>
-  <p class="note">管理訂閱價格、哪些項目是「訂閱限定」、待確認的訂閱申請，以及會員的方案。付款維持手動：會員送出申請並付款後，你核對收款，按「確認收款」才會開通。要登入你的帳號才看得到。</p>
-  <p style="margin:0 0 10px"><a class="lnk-btn" href="https://wangchiapin.github.io/subscription/form/" target="_blank" rel="noopener">📋 WhatsApp 群組訂閱管理頁 ↗</a> <span class="msg">（付費群組的成員、到期日與申請，在另一個管理頁，不在下面的網站訂閱）</span></p>
-  <div class="box" id="subBox"><p class="msg">請先在上方「留言」區用 Google 登入。</p></div>
+  </section>
 
+  <section class="tabpane" data-pane="sub">
+  <div class="subtabs" id="subtabs">
+    <button data-subtab="site">🌐 入口網站訂閱</button>
+    <button data-subtab="wa">💬 WhatsApp 群組訂閱</button>
+  </div>
+  <div data-subpane="wa" hidden>
+    <h2>WhatsApp 群組訂閱</h2>
+    <div class="wa-card">
+      <p class="note" style="margin-top:0">付費群組的成員、到期日、申請與提醒，都在另一個管理頁處理（資料在另一個 Firebase 專案，這裡不會顯示）。</p>
+      <a class="lnk-btn" href="https://wangchiapin.github.io/subscription/form/" target="_blank" rel="noopener">📋 開啟 WhatsApp 群組訂閱管理頁 ↗</a>
+      <p class="note" style="margin:12px 0 0">要暫停首頁的群組報名入口，到「卡片開關」分頁關掉「WhatsApp 付費練習群組卡片」。</p>
+    </div>
+  </div>
+  <div data-subpane="site">
+  <h2>入口網站訂閱</h2>
+  <p class="note">管理訂閱價格、哪些項目是「訂閱限定」、待確認的訂閱申請，以及會員的方案。付款維持手動：會員送出申請並付款後，你核對收款，按「確認收款」才會開通。要登入你的帳號才看得到。</p>
+  <div class="box" id="subBox"><p class="msg">請先到「回饋專區」分頁用 Google 登入。</p></div>
+
+  </div>
+  </section>
+
+  <section class="tabpane" data-pane="dl">
   <h2>字體實際下載（GitHub Releases）</h2>
   <div class="row">
     <input type="text" id="repo" value="wangchiapin/GoodTeacher" aria-label="repo">
     <button id="go">更新</button>
   </div>
   <div id="out"></div>
+  </section>
 </div>
 
 <script>
+/* ---- 分頁（網址 #sub 之類可直接開到某一頁；記住上次的分頁）---- */
+(function(){
+  const TABS = ["stats", "feedback", "votes", "switch", "sub", "dl"];
+  const get = k => { try { return localStorage.getItem(k); } catch (e) { return null; } };
+  const put = (k, v) => { try { localStorage.setItem(k, v); } catch (e) {} };
+  function showTab(t, push){
+    if (!TABS.includes(t)) t = "stats";
+    document.querySelectorAll("#tabs [data-tab]").forEach(b => b.classList.toggle("on", b.dataset.tab === t));
+    document.querySelectorAll("[data-pane]").forEach(p => p.classList.toggle("on", p.dataset.pane === t));
+    put("statsTab", t); if (push) history.replaceState(null, "", "#" + t);
+  }
+  function showSub(k){
+    if (!["site", "wa"].includes(k)) k = "site";
+    document.querySelectorAll("#subtabs [data-subtab]").forEach(b => b.classList.toggle("on", b.dataset.subtab === k));
+    document.querySelectorAll("[data-subpane]").forEach(p => p.hidden = p.dataset.subpane !== k);
+    put("statsSub", k);
+  }
+  document.getElementById("tabs").addEventListener("click", e => { const b = e.target.closest("[data-tab]"); if (b) { showTab(b.dataset.tab, true); window.scrollTo(0, 0); } });
+  document.getElementById("subtabs").addEventListener("click", e => { const b = e.target.closest("[data-subtab]"); if (b) showSub(b.dataset.subtab); });
+  window.addEventListener("hashchange", () => showTab(location.hash.slice(1), false));
+  showTab(location.hash.slice(1) || get("statsTab") || "stats", false);
+  showSub(get("statsSub") || "site");
+  window.__showTab = showTab;
+})();
 /* ---- 自己的裝置不計入 ---- */
 const ownerBox = document.getElementById("owner");
 try { ownerBox.checked = localStorage.getItem("portal-owner") === "1"; } catch(e){}
@@ -418,7 +489,7 @@ try {
         ];
         let SWOFF = new Set(), swLoaded = false, swMsg = "";
         function drawSw(){
-          swBox.innerHTML = (me ? "" : `<p class="msg">請先在上方「留言」區用 Google 登入才能修改開關。</p>`) +
+          swBox.innerHTML = (me ? "" : `<p class="msg">請先到「回饋專區」分頁用 Google 登入才能修改開關。</p>`) +
             SW.map(([g, items]) => `<div class="sw-group"><h3>${esc(g)}</h3>${items.map(([id, name]) => {
               const off = SWOFF.has(id);
               return `<label class="sw-item${off ? " off" : ""}"><input type="checkbox" data-sw="${id}" ${off ? "" : "checked"} ${me && swLoaded ? "" : "disabled"}><span>${esc(name)}</span>${off ? "<em>🔧 維修中</em>" : ""}</label>`;
@@ -581,6 +652,7 @@ try {
                 ${["month", "year"].includes(p.plan) ? `<span class="msg">續訂 ×${p.periods || 0}</span><button data-renew="${esc(m.uid)}" data-d="1">＋ 續訂</button><button data-renew="${esc(m.uid)}" data-d="-1" ${(p.periods || 0) <= 0 ? "disabled" : ""}>－ 撤銷</button>` : ""}
               </div></div>`; }).join("")
             : `<p class="msg">還沒有會員登入過。</p>`;
+          { const dot = document.getElementById("subDot"); if (dot) { dot.hidden = !pending.length; dot.textContent = pending.length; } }
           subBox.innerHTML = (subMsg ? `<p class="msg" style="color:var(--jade);font-weight:700">${esc(subMsg)}</p>` : "") +
             `<h3 class="sub-h">待確認的訂閱申請（${pending.length}）</h3>${reqHtml}
              <h3 class="sub-h">價格（空白＝尚未公布，首頁會顯示「價格即將公布」）</h3>
@@ -657,7 +729,7 @@ try {
           me = user || null;
           drawSw();
           if (user) { loadNotes(user); loadFeedback(); loadSub(); }
-          else { loginUI(); fbBox.innerHTML = `<p class="msg">請先在上方「留言」區用 Google 登入。</p>`; SUB = null; subBox.innerHTML = `<p class="msg">請先在上方「留言」區用 Google 登入。</p>`; }
+          else { loginUI(); fbBox.innerHTML = `<p class="msg">請先到「回饋專區」分頁用 Google 登入。</p>`; SUB = null; subBox.innerHTML = `<p class="msg">請先到「回饋專區」分頁用 Google 登入。</p>`; }
           loadVotes();
           loadSw();
         });
