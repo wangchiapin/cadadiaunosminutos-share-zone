@@ -269,6 +269,23 @@ const CONFIG = {
 }
 *{box-sizing:border-box}
 [hidden]{display:none !important}
+.sub-tag{background:var(--yellow) !important; border-color:var(--ink) !important; font-weight:900}
+.btn-sub{background:var(--yellow)}
+.subbox{display:flex; flex-direction:column; gap:14px}
+.subbox .row{display:flex; flex-wrap:wrap; gap:10px; align-items:center}
+.subbox label{display:flex; flex-direction:column; gap:5px; font-size:.86rem; font-weight:900; min-width:0}
+.subbox select, .subbox textarea{font:inherit; font-size:.95rem; font-weight:400; padding:9px 11px; border:2px solid var(--ink); border-radius:10px; background:#fff; width:100%}
+.subbox textarea{resize:vertical; min-height:80px}
+.sub-state{padding:12px 14px; border:2px solid var(--ink); border-radius:12px; background:var(--yellow-soft); font-weight:700}
+.sub-state.on{background:#d9f2e6}
+.sub-prices{display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:12px}
+.sub-price{border:2px solid var(--ink); border-radius:12px; padding:12px 14px; background:var(--paper)}
+.sub-price b{display:block; font-size:1.05rem}
+.sub-pay{padding:12px 14px; border:2px dashed var(--ink); border-radius:12px; background:#fff; font-size:.93rem}
+.sub-pay p{margin:0 0 8px}
+.sub-msg{font-weight:700; margin:0}
+.sub-req{display:flex; flex-wrap:wrap; gap:6px 12px; align-items:center; padding:8px 0; border-top:1px dashed var(--ink-faint); font-size:.9rem}
+.sub-req:first-child{border-top:0}
 html{scroll-behavior:smooth; scroll-padding-top:76px}
 body{
   margin:0; font-family:var(--sans); color:var(--ink); line-height:1.65;
@@ -553,6 +570,7 @@ footer a{color:var(--ink); font-weight:700}
       <a href="#tools" data-i="navTools"></a>
       <a href="#font" data-i="navFont"></a>
       <a href="#feedback" data-i="navFeedback"></a>
+      <a href="#subscribe" data-i="navSub"></a>
       <a href="#support" data-i="navSupport"></a>
     </nav>
     <div class="lang" role="group" aria-label="Language">
@@ -653,6 +671,12 @@ footer a{color:var(--ink); font-weight:700}
         <p class="fb-status" id="fbStatus" role="status"></p>
       </div>
     </form>
+  </section>
+
+  <section id="subscribe">
+    <div class="sec-head"><span class="mark" style="background:var(--yellow)"></span><h2 data-i="subTitle"></h2></div>
+    <p class="sec-intro" data-i="subIntro"></p>
+    <div class="panel subbox" id="subPanel"></div>
   </section>
 
   <section id="support">
@@ -788,6 +812,43 @@ const UI = {
   logTitle:   { zh: "更新紀錄", es: "Historial de versiones" },
   report:     { zh: "發現讀音錯誤？回報給我 →", es: "¿Un pinyin incorrecto? Avísame →" },
   supportTitle:{ zh: "請我喝杯咖啡", es: "Invítame a un café" },
+  navSub:     { zh: "訂閱", es: "Suscripción" },
+  subTitle:   { zh: "訂閱", es: "Suscripción" },
+  subIntro:   { zh: "一個訂閱，就能使用本站所有標示「訂閱限定」的遊戲、工具和字體更新。付款是手動確認的：付款後送出申請，我核對收款就會開通。", es: "Una suscripción te da acceso a todos los juegos, herramientas y actualizaciones de fuentes marcados como «Solo suscripción». El pago se confirma manualmente: paga, envía tu solicitud y la activo al verificar el pago." },
+  subOnly:    { zh: "訂閱後使用", es: "Con suscripción" },
+  subBadge:   { zh: "訂閱限定", es: "Solo suscripción" },
+  subLocked:  { zh: "訂閱限定", es: "Solo suscripción" },
+  subLogin:   { zh: "用 Google 登入", es: "Entrar con Google" },
+  subLogout:  { zh: "登出", es: "Salir" },
+  subLoginHint:{ zh: "先用 Google 登入，才能看到你的訂閱狀態和送出申請。", es: "Entra con Google para ver tu estado y enviar una solicitud." },
+  subLoading: { zh: "讀取中…", es: "Cargando…" },
+  subOffline: { zh: "訂閱功能暫時無法使用，請稍後再試。", es: "La suscripción no está disponible por ahora. Inténtalo más tarde." },
+  subFree:    { zh: "目前沒有有效的訂閱。", es: "Ahora no tienes una suscripción activa." },
+  subActive:  { zh: "訂閱中", es: "Suscripción activa" },
+  subUntil:   { zh: "到期日", es: "Vence" },
+  subExpired: { zh: "你的訂閱已到期。", es: "Tu suscripción ha vencido." },
+  planTrial:  { zh: "試用", es: "Prueba" },
+  planMonth:  { zh: "月訂", es: "Mensual" },
+  planYear:   { zh: "年訂", es: "Anual" },
+  planPro:    { zh: "訂閱", es: "Suscripción" },
+  subPlanLabel:{ zh: "選擇方案", es: "Elige un plan" },
+  subMethodLabel:{ zh: "付款方式", es: "Forma de pago" },
+  subNoteLabel:{ zh: "備註（選填：付款帳號末五碼、PayPal 帳號、付款時間等，方便我核對）", es: "Nota (opcional: últimos dígitos de la cuenta, correo de PayPal, hora del pago…)" },
+  subPriceTbd:{ zh: "價格即將公布", es: "Precio próximamente" },
+  subSend:    { zh: "我已付款，送出申請", es: "Ya pagué, enviar solicitud" },
+  subSending: { zh: "送出中…", es: "Enviando…" },
+  subSent:    { zh: "已送出！我核對收款後會開通，開通後重新整理頁面就會看到。", es: "¡Enviada! La activaré al verificar el pago. Actualiza la página para ver el cambio." },
+  subFail:    { zh: "送出失敗，請稍後再試。", es: "No se pudo enviar. Inténtalo más tarde." },
+  subNoPrice: { zh: "這個方案和付款方式還沒有公布價格，暫時無法申請。", es: "Aún no hay precio para este plan y forma de pago." },
+  subPayPaypal:{ zh: "請先用 PayPal 付款，再回來送出申請：", es: "Paga primero con PayPal y luego envía la solicitud:" },
+  subPayBank: { zh: "請先轉帳，再回來送出申請：", es: "Haz primero la transferencia y luego envía la solicitud:" },
+  subPayContact:{ zh: "這個付款方式要先聯絡我，我再提供付款資訊，付款後再回來送出申請：", es: "Para esta forma de pago contáctame primero y te daré los datos. Después de pagar, envía la solicitud:" },
+  subAmount:  { zh: "金額", es: "Importe" },
+  subContact: { zh: "到 Instagram 聯絡我", es: "Escríbeme en Instagram" },
+  subMine:    { zh: "我的申請", es: "Mis solicitudes" },
+  reqPending: { zh: "等待確認", es: "En revisión" },
+  reqApproved:{ zh: "已開通", es: "Activada" },
+  reqRejected:{ zh: "已退回", es: "Rechazada" },
   supportIntro:{ zh: "所有遊戲和字體都免費。如果它們對你有幫助，歡迎隨喜支持，讓我繼續做下去。謝謝你！",
                  es: "Los juegos y la fuente son y seguirán siendo gratis. Si te resultan útiles, un pequeño aporte me ayuda a seguir creando. ¡Gracias!" },
   give:       { zh: "前往支持", es: "Apoyar" },
@@ -958,6 +1019,23 @@ let lang = "zh";
 const t = v => (v == null ? "" : typeof v === "string" ? v : (v[lang] ?? v.zh ?? ""));
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[c]));
 
+/* ===== 訂閱（資料在中心專案 subscription-48d3c）=====
+   sub_catalog：哪些項目是「訂閱限定」（id 與卡片開關相同：game-xxx / tool-xxx / dl-xxx）
+   sub_plans/{uid}：會員的方案與到期日（只有管理員能寫）；sub_requests：會員送出的申請
+   注意：這裡只負責「顯示入口」，不是真正的鎖。真正要鎖的內容要放在 sub_content，由 Firestore 規則判斷。 */
+var SUBITEMS = {};
+var SUBST = { ready: false, loading: false, user: null, plan: null, requests: [], pricing: null, msg: "", sending: false, form: { plan: "month", method: "paypal", note: "" } };
+const SUB_METHODS = [
+  { id: "paypal",  cur: "USD", label: { zh: "PayPal（美金）", es: "PayPal (USD)" } },
+  { id: "twd",     cur: "TWD", label: { zh: "台灣銀行轉帳（新台幣）", es: "Transferencia en Taiwán (TWD)" } },
+  { id: "linepay", cur: "TWD", contact: true, label: { zh: "LINE Pay（新台幣，要先聯絡我）", es: "LINE Pay (TWD, contáctame primero)" } },
+  { id: "mxn",     cur: "MXN", contact: true, label: { zh: "墨西哥披索（要先聯絡我）", es: "Pesos mexicanos (contáctame primero)" } }
+];
+const subActive = () => { const p = SUBST.plan; return !!p && ["month", "year", "trial", "pro"].includes(p.plan) && !!p.expiresAt && p.expiresAt > Date.now(); };
+const isSubItem = id => !!SUBITEMS[id];
+const subLocked = id => isSubItem(id) && !subActive();
+const subTag = id => isSubItem(id) ? `<span class="sub-tag">★ ${esc(t(UI.subBadge))}</span>` : "";
+
 /* ===== 卡片開關：統計頁勾掉的項目會顯示「維修中」（資料在 Firestore 的 portalStatus；讀不到就當作全部開啟）===== */
 var OFF = new Set();
 const isOff = id => OFF.has(id);
@@ -1005,6 +1083,8 @@ function render(){
     const off = isOff("game-" + g.id);
     const btn = off
       ? `<span class="btn btn-fix" aria-disabled="true">🔧 ${esc(t(UI.fixing))}</span>`
+      : (g.url && subLocked("game-" + g.id))
+      ? `<a class="btn btn-sub" href="#subscribe">🔒 ${esc(t(UI.subOnly))}</a>`
       : g.url
       ? `<a class="btn btn-brick" href="${esc(g.url)}" target="_blank" rel="noopener" data-track="game_${esc(g.id)}">${esc(t(UI.play))} ▸</a>`
       : `<span class="btn" aria-disabled="true">${esc(t(UI.soon))}</span>`;
@@ -1014,7 +1094,7 @@ function render(){
         <div><h3>${esc(t(g.title))}</h3><div class="alt">${esc(other)}</div></div>
       </div>
       <p>${esc(t(g.desc))}</p>
-      <div class="tags">${(g.tags||[]).map(x => `<span>${esc(t(x))}</span>`).join("")}</div>
+      <div class="tags">${subTag("game-" + g.id)}${(g.tags||[]).map(x => `<span>${esc(t(x))}</span>`).join("")}</div>
       <div class="card-actions">${btn}<a class="fb-link" href="#feedback" data-fb="game" data-fb-target="${esc(g.id)}">${esc(t(UI.fbCardLink))}</a></div>
     </article>`;
   }).join("");
@@ -1023,9 +1103,12 @@ function render(){
   document.getElementById("toolGrid").innerHTML = CONFIG.tools.map(g => {
     const other = lang === "zh" ? g.title.es : g.title.zh;
     const off = isOff("tool-" + g.id);
-    const ready = !!g.url && !off;
+    const gated = !!g.url && !off && subLocked("tool-" + g.id);
+    const ready = !!g.url && !off && !gated;
     const actions = off
       ? `<span class="btn btn-fix" aria-disabled="true">🔧 ${esc(t(UI.fixing))}</span>`
+      : gated
+      ? `<a class="btn btn-sub" href="#subscribe">🔒 ${esc(t(UI.subOnly))}</a>`
       : ready
       ? `<button type="button" class="btn btn-line" data-guide="${esc(g.id)}">${esc(t(UI.toolGuide))}</button>
          <a class="btn btn-brick" href="${esc(g.url)}" target="_blank" rel="noopener" data-track="tool_${esc(g.id)}">${esc(t(UI.toolOpen))} ▸</a>`
@@ -1036,7 +1119,7 @@ function render(){
         <div><h3>${esc(t(g.title))}</h3><div class="alt">${esc(other)}</div></div>
       </div>
       <p>${esc(t(g.desc))}</p>
-      <div class="tags">${(g.tags||[]).map(x => `<span>${esc(t(x))}</span>`).join("")}</div>
+      <div class="tags">${subTag("tool-" + g.id)}${(g.tags||[]).map(x => `<span>${esc(t(x))}</span>`).join("")}</div>
       <div class="card-actions">${actions}<a class="fb-link" href="#feedback" data-fb="tool" data-fb-target="tool-${esc(g.id)}">${esc(t(UI.fbToolCardLink))}</a></div>
     </article>`;
   }).join("");
@@ -1049,10 +1132,11 @@ function render(){
   document.getElementById("fontDesc").textContent = t(f.desc);
   document.getElementById("dlList").innerHTML = f.downloads.map(d => {
     const off = isOff("dl-" + d.id);
-    const ok = !!d.url && !off;
-    return `<a class="dl" ${ok ? `href="${esc(d.url)}" data-track="download_${esc(d.id)}"` : 'aria-disabled="true"'}>
+    const gated = !!d.url && !off && subLocked("dl-" + d.id);
+    const ok = !!d.url && !off && !gated;
+    return `<a class="dl" ${ok ? `href="${esc(d.url)}" data-track="download_${esc(d.id)}"` : gated ? 'href="#subscribe"' : 'aria-disabled="true"'}>
       <span class="ic">${DL_ICON}</span>
-      <span><b>${esc(t(d.label))}${d.version ? ` <em class="ver">${esc(d.version)}</em>` : ""}</b><small>${esc(ok ? t(d.note) : off ? "🔧 " + t(UI.fixing) : t(UI.soon))}</small></span>
+      <span><b>${esc(t(d.label))}${d.version ? ` <em class="ver">${esc(d.version)}</em>` : ""}${isSubItem("dl-" + d.id) ? ` <em class="ver">★ ${esc(t(UI.subBadge))}</em>` : ""}</b><small>${esc(ok ? t(d.note) : gated ? "🔒 " + t(UI.subOnly) : off ? "🔧 " + t(UI.fixing) : t(UI.soon))}</small></span>
     </a>`;
   }).join("");
   document.getElementById("fontReq").textContent = t(f.requirements);
@@ -1067,6 +1151,7 @@ function render(){
 
   renderFeedback();
   renderVotes();
+  renderSub();
 
   // support（下方區塊）
   const BANK_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10 12 4l9 6"/><path d="M5 10v8M9.5 10v8M14.5 10v8M19 10v8"/><path d="M3 20h18"/></svg>';
@@ -1485,6 +1570,92 @@ document.getElementById("voteList").addEventListener("click", async e => {
   }
 });
 
+/* ===== 訂閱區塊 ===== */
+const fmtDay = ms => ms ? new Date(ms).toLocaleDateString("sv-SE", { timeZone: "Asia/Taipei" }) : "";
+const planLabel = p => p === "trial" ? t(UI.planTrial) : p === "month" ? t(UI.planMonth) : p === "year" ? t(UI.planYear) : t(UI.planPro);
+function subPrice(plan, cur){
+  const pr = SUBST.pricing; if (!pr || !pr[plan]) return null;
+  const v = cur === "USD" ? pr[plan].usd : cur === "TWD" ? pr[plan].twd : null;
+  return v == null ? null : v;
+}
+const fmtMoney = (v, cur) => v == null ? t(UI.subPriceTbd) : (cur === "USD" ? "US$ " : cur === "TWD" ? "NT$ " : "") + Number(v).toLocaleString();
+function renderSub(){
+  const box = document.getElementById("subPanel"); if (!box) return;
+  if (!SUBST.ready) { box.innerHTML = `<p class="sub-msg">${esc(t(UI.subLoading))}</p>`; return; }
+  const f = SUBST.form, u = SUBST.user;
+  const prices = `<div class="sub-prices">${["month", "year"].map(pl => `<div class="sub-price"><b>${esc(planLabel(pl))}</b>
+      <div>${esc(fmtMoney(subPrice(pl, "TWD"), "TWD"))}　/　${esc(fmtMoney(subPrice(pl, "USD"), "USD"))}</div></div>`).join("")}</div>`;
+  if (!u) {
+    box.innerHTML = `${prices}<p class="sub-msg">${esc(t(UI.subLoginHint))}</p>
+      <div class="row"><button type="button" class="btn btn-brick" data-sub="login">${esc(t(UI.subLogin))}</button></div>
+      ${SUBST.msg ? `<p class="sub-msg">${esc(SUBST.msg)}</p>` : ""}`;
+    return;
+  }
+  const active = subActive(), p = SUBST.plan;
+  const state = active
+    ? `<div class="sub-state on">✓ ${esc(t(UI.subActive))}：${esc(planLabel(p.plan))}　${esc(t(UI.subUntil))} ${esc(fmtDay(p.expiresAt))}</div>`
+    : `<div class="sub-state">${esc(p && p.expiresAt && p.plan !== "free" ? t(UI.subExpired) : t(UI.subFree))}</div>`;
+  const m = SUB_METHODS.find(x => x.id === f.method) || SUB_METHODS[0];
+  const price = m.contact && m.cur === "MXN" ? null : subPrice(f.plan, m.cur);
+  const canSend = m.contact || price != null;
+  const igUrl = CONFIG.site.handleUrl || "";
+  const pp = CONFIG.support.find(x => x.id === "paypal");
+  let pay = "";
+  if (m.id === "paypal") pay = `<p>${esc(t(UI.subPayPaypal))}</p><p><b>${esc(t(UI.subAmount))}：${esc(fmtMoney(price, "USD"))}</b></p>${pp && pp.url ? `<a class="btn btn-jade" href="${esc(pp.url)}" target="_blank" rel="noopener">PayPal ▸</a>` : ""}`;
+  else if (m.id === "twd") pay = `<p>${esc(t(UI.subPayBank))}</p><p><b>${esc(t(UI.subAmount))}：${esc(fmtMoney(price, "TWD"))}</b></p><button type="button" class="btn btn-bank" data-bank>${esc(t(UI.showBank))}</button>`;
+  else pay = `<p>${esc(t(UI.subPayContact))}</p>${igUrl ? `<a class="btn btn-line" href="${esc(igUrl)}" target="_blank" rel="noopener">${esc(t(UI.subContact))} ▸</a>` : ""}`;
+  const reqs = SUBST.requests.length ? `<div><b>${esc(t(UI.subMine))}</b>${SUBST.requests.map(r => `<div class="sub-req"><span>${esc(r.when)}</span><span>${esc(planLabel(r.plan))}</span><span>${esc((SUB_METHODS.find(x => x.id === r.method) || { label: { zh: r.method, es: r.method } }).label[lang] || r.method)}</span><b>${esc(t(r.status === "approved" ? UI.reqApproved : r.status === "rejected" ? UI.reqRejected : UI.reqPending))}</b></div>`).join("")}</div>` : "";
+  box.innerHTML = `<div class="row"><span>${esc(u.email)}</span><button type="button" class="btn" data-sub="logout">${esc(t(UI.subLogout))}</button></div>
+    ${state}${prices}
+    <label><span>${esc(t(UI.subPlanLabel))}</span><select data-sub-field="plan">${["month", "year"].map(pl => `<option value="${pl}" ${f.plan === pl ? "selected" : ""}>${esc(planLabel(pl))}</option>`).join("")}</select></label>
+    <label><span>${esc(t(UI.subMethodLabel))}</span><select data-sub-field="method">${SUB_METHODS.map(x => `<option value="${x.id}" ${f.method === x.id ? "selected" : ""}>${esc(t(x.label))}</option>`).join("")}</select></label>
+    <div class="sub-pay">${pay}</div>
+    <label><span>${esc(t(UI.subNoteLabel))}</span><textarea maxlength="300" data-sub-field="note">${esc(f.note)}</textarea></label>
+    ${canSend ? "" : `<p class="sub-msg">${esc(t(UI.subNoPrice))}</p>`}
+    <div class="row"><button type="button" class="btn btn-brick" data-sub="send" ${canSend && !SUBST.sending ? "" : "disabled"}>${esc(t(SUBST.sending ? UI.subSending : UI.subSend))}</button></div>
+    ${SUBST.msg ? `<p class="sub-msg">${esc(SUBST.msg)}</p>` : ""}${reqs}`;
+}
+async function refreshSubMe(){
+  try {
+    await window.__sub.ensureMember();
+    SUBST.plan = await window.__sub.getPlan();
+    SUBST.requests = (await window.__sub.myRequests()).map(r => ({ ...r, when: r.ts ? fmtDay(r.ts) : "" }));
+  } catch (err) { console.warn("sub", err.code || err); SUBST.msg = t(UI.subOffline); }
+  renderSub(); render();
+}
+window.initSub = function(){
+  SUBST.ready = true; renderSub();
+  window.__sub.getCatalog().then(c => { SUBITEMS = c; render(); }).catch(err => console.warn("catalog", err.code));
+  window.__sub.getPricing().then(pr => { SUBST.pricing = pr; renderSub(); }).catch(err => console.warn("pricing", err.code));
+  window.__sub.onChange(u => {
+    SUBST.user = u ? { uid: u.uid, email: u.email || "" } : null; SUBST.plan = null; SUBST.requests = []; SUBST.msg = "";
+    renderSub();
+    if (u) refreshSubMe(); else render();
+  });
+};
+document.getElementById("subPanel").addEventListener("click", async e => {
+  const b = e.target.closest("[data-sub]"); if (!b) return;
+  try {
+    if (b.dataset.sub === "login") { SUBST.msg = ""; await window.__sub.login(); }
+    else if (b.dataset.sub === "logout") { await window.__sub.logout(); }
+    else if (b.dataset.sub === "send") {
+      const f = SUBST.form, m = SUB_METHODS.find(x => x.id === f.method);
+      SUBST.sending = true; SUBST.msg = ""; renderSub();
+      await window.__sub.sendRequest({ plan: f.plan, method: f.method, currency: m.cur, note: (f.note || "").slice(0, 300) });
+      SUBST.sending = false; f.note = ""; SUBST.msg = t(UI.subSent);
+      SUBST.requests = (await window.__sub.myRequests()).map(r => ({ ...r, when: r.ts ? fmtDay(r.ts) : "" }));
+      renderSub();
+    }
+  } catch (err) { console.warn("sub", err.code || err); SUBST.sending = false; SUBST.msg = b.dataset.sub === "send" ? t(UI.subFail) : (err.code === "auth/popup-closed-by-user" ? "" : String(err.code || "")); renderSub(); }
+});
+document.getElementById("subPanel").addEventListener("change", e => {
+  const el = e.target.closest("[data-sub-field]"); if (!el || el.dataset.subField === "note") return;
+  SUBST.form[el.dataset.subField] = el.value; SUBST.msg = ""; renderSub();
+});
+document.getElementById("subPanel").addEventListener("input", e => {
+  const el = e.target.closest("[data-sub-field='note']"); if (el) SUBST.form.note = el.value;
+});
+
 /* 預設語言：上次選的 → 瀏覽器是中文就中文，否則西文 */
 (function init(){
   let saved = null;
@@ -1495,6 +1666,8 @@ document.getElementById("voteList").addEventListener("click", async e => {
   render();
   countVisit();
   loadVotes();
+  // Firebase 一直沒載入（被擋或沒網路）時，不要停在「讀取中」
+  setTimeout(() => { if (!SUBST.ready) { const b = document.getElementById("subPanel"); if (b) b.innerHTML = `<p class="sub-msg">${esc(t(UI.subOffline))}</p>`; } }, 10000);
 })();
 </script>
 
@@ -1507,8 +1680,11 @@ try {
     const V = "10.12.2";
     const { initializeApp } = await import(`https://www.gstatic.com/firebasejs/${V}/firebase-app.js`);
     const { initializeFirestore, doc, setDoc, getDoc, addDoc, collection, increment, serverTimestamp, getDocs, query, where, documentId } = await import(`https://www.gstatic.com/firebasejs/${V}/firebase-firestore.js`);
+    const { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } = await import(`https://www.gstatic.com/firebasejs/${V}/firebase-auth.js`);
     // 用「長輪詢」連線：在手機網路、部分瀏覽器上比較不會卡住
-    const db = initializeFirestore(initializeApp(cfg, "portal"), { experimentalForceLongPolling: true });
+    const papp = initializeApp(cfg, "portal");
+    const db = initializeFirestore(papp, { experimentalForceLongPolling: true });
+    const auth = getAuth(papp);
     window.__statWrite = field => Promise.all(
       ["total", "d_" + todayTW()].map(id =>
         setDoc(doc(db, "portalStats", id + "__" + field), { n: increment(1) }, { merge: true })
@@ -1541,6 +1717,34 @@ try {
     window.__getStatus().then(ids => { if (ids.length) { OFF = new Set(ids); render(); } }).catch(err => console.warn("status", err.code));
     window.__sendVote = (id, choice) =>
       setDoc(doc(db, "portalVoteCount", id + "__" + choice), { n: increment(1) }, { merge: true });
+    // 訂閱：會員資料 sub_members、方案 sub_plans（只有管理員能寫）、申請 sub_requests、目錄 sub_catalog、價格 sub_config/pricing
+    const tms = t => t && t.toMillis ? t.toMillis() : null;
+    window.__sub = {
+      onChange: fn => onAuthStateChanged(auth, fn),
+      login: () => signInWithPopup(auth, new GoogleAuthProvider()),
+      logout: () => signOut(auth),
+      async ensureMember(){
+        const u = auth.currentUser, ref = doc(db, "sub_members", u.uid);
+        if (!(await getDoc(ref)).exists()) await setDoc(ref, { email: u.email || "", name: u.displayName || "", createdAt: serverTimestamp() });
+      },
+      async getPlan(){
+        const s = await getDoc(doc(db, "sub_plans", auth.currentUser.uid));
+        if (!s.exists()) return { plan: "free", startAt: null, expiresAt: null };
+        const x = s.data(); return { plan: x.plan || "free", startAt: tms(x.startAt), expiresAt: tms(x.expiresAt) };
+      },
+      async getCatalog(){
+        const snap = await getDocs(query(collection(db, "sub_catalog")));
+        const o = {}; snap.forEach(d => { if (d.data().access === "sub") o[d.id] = true; }); return o;
+      },
+      async getPricing(){ const s = await getDoc(doc(db, "sub_config", "pricing")); return s.exists() ? s.data() : null; },
+      sendRequest: ({ plan, method, currency, note }) => addDoc(collection(db, "sub_requests"),
+        { uid: auth.currentUser.uid, plan, method, currency, note, status: "pending", createdAt: serverTimestamp() }),
+      async myRequests(){
+        const snap = await getDocs(query(collection(db, "sub_requests"), where("uid", "==", auth.currentUser.uid)));
+        return snap.docs.map(d => { const x = d.data(); return { id: d.id, plan: x.plan, method: x.method, status: x.status, ts: tms(x.createdAt) || Date.now() }; }).sort((a, b) => b.ts - a.ts);
+      }
+    };
+    if (window.initSub) window.initSub();
   }
 } catch (e) { console.warn("stats off", e); }
 </script>

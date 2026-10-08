@@ -74,6 +74,19 @@ button.ghost{background:#fff;color:var(--ink);border:1px solid var(--line)}
 .sw-item input{width:18px;height:18px;accent-color:var(--jade)}
 .sw-item.off span{color:var(--brick);font-weight:700}
 .sw-item em{font-style:normal;font-size:.78rem;color:var(--brick);margin-left:auto}
+.sub-h{font-size:.9rem;margin:16px 0 6px;color:var(--soft)}
+.sub-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:8px}
+.sub-grid label{display:flex;flex-direction:column;gap:3px;font-size:.8rem;color:var(--soft);font-weight:700}
+.sub-grid input{font:inherit;padding:6px 8px;border:1px solid var(--line);border-radius:8px;min-width:0}
+@media(max-width:560px){.sub-grid{grid-template-columns:1fr 1fr}}
+.sub-card{padding:10px 0;border-top:1px dashed var(--line)}
+.sub-card:first-of-type{border-top:0}
+.sub-card .ops{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:6px}
+.sub-card select{font:inherit;padding:4px 8px;border:1px solid var(--line);border-radius:8px;background:#fff}
+.sub-card button,.sub-btn{font-size:.78rem;padding:3px 10px;background:#fff;color:var(--ink);border:1px solid var(--line)}
+.sub-card button.ok{background:var(--jade);color:#fff;border-color:var(--jade)}
+.sub-badge{display:inline-block;font-size:.72rem;font-weight:700;padding:1px 8px;border-radius:999px;background:#eee;margin-left:4px}
+.sub-badge.on{background:#cfe9de;color:#1d5a44}.sub-badge.warn{background:#ffcc80;color:#6a3a00}.sub-badge.off{background:#ddd;color:#555}
 </style>
 </head>
 <body>
@@ -108,6 +121,10 @@ button.ghost{background:#fff;color:var(--ink);border:1px solid var(--line)}
   <h2>卡片開關（維修中）</h2>
   <p class="note">取消勾選＝該卡片在首頁顯示「🔧 維修中」並且無法使用；勾選＝正常使用（預設）。按下去馬上生效，訪客重新整理首頁就會看到。只擋首頁入口，直接知道遊戲網址的人還是能進去。要登入才能改。</p>
   <div class="box" id="swBox"><p class="msg">讀取中…</p></div>
+
+  <h2>訂閱管理</h2>
+  <p class="note">管理訂閱價格、哪些項目是「訂閱限定」、待確認的訂閱申請，以及會員的方案。付款維持手動：會員送出申請並付款後，你核對收款，按「確認收款」才會開通。要登入你的帳號才看得到。</p>
+  <div class="box" id="subBox"><p class="msg">請先在上方「留言」區用 Google 登入。</p></div>
 
   <h2>字體實際下載（GitHub Releases）</h2>
   <div class="row">
@@ -422,11 +439,165 @@ try {
           drawSw();
         });
 
+        /* ---- 訂閱管理（資料在 subscription-48d3c：sub_members / sub_plans / sub_requests / sub_catalog / sub_config / sub_payments）---- */
+        const subBox = document.getElementById("subBox");
+        const { Timestamp } = await import(`https://www.gstatic.com/firebasejs/${V}/firebase-firestore.js`);
+        const TRIAL_DAYS = 7;   // 免費試用天數（管理員手動發放）
+        let SUB = null, subMsg = "";
+        const tms = t => t && t.toMillis ? t.toMillis() : null;
+        const fdate = x => x ? new Date(x).toLocaleDateString("sv-SE", { timeZone: "Asia/Taipei" }) : "—";
+        const PLAN_NAME = { free: "免費", trial: "試用", month: "月訂", year: "年訂", pro: "舊版 Pro" };
+        const METHOD_NAME = { paypal: "PayPal", twd: "台幣銀行轉帳", linepay: "LINE Pay", mxn: "墨西哥披索" };
+        const planOk = p => !!p && ["month", "year", "trial", "pro"].includes(p.plan) && !!p.expiresAt && p.expiresAt > Date.now();
+        function addMonthsEnd(str, months){
+          const [y, m, dd] = str.split("-").map(Number);
+          const tt = (m - 1) + months, yy = y + Math.floor(tt / 12), mm = ((tt % 12) + 12) % 12;
+          const last = new Date(yy, mm + 1, 0).getDate();
+          return new Date(yy, mm, Math.min(dd, last), 23, 59, 59).getTime();
+        }
+        const calcExpires = (plan, startStr, periods) => addMonthsEnd(startStr, (plan === "month" ? 1 : 12) * ((periods || 0) + 1));
+        async function savePlan(uid, f){
+          const o = {};
+          for (const k of ["plan", "periods", "trialUsed"]) if (k in f) o[k] = f[k];
+          for (const k of ["startAt", "expiresAt"]) if (k in f) o[k] = f[k] ? Timestamp.fromMillis(f[k]) : null;
+          await setDocSw(doc(db, "sub_plans", uid), o, { merge: true });
+          SUB.plans[uid] = { plan: "free", startAt: null, expiresAt: null, periods: 0, trialUsed: false, ...(SUB.plans[uid] || {}), ...f };
+        }
+        async function grantPlan(uid, v){
+          const p = SUB.plans[uid] || {};
+          if (v === "free") return savePlan(uid, { plan: "free", startAt: null, periods: 0, expiresAt: null });
+          if (v === "trial") {
+            if (p.trialUsed && !confirm("這位會員已經試用過了，要再開一次嗎？")) return;
+            const now = Date.now();
+            return savePlan(uid, { plan: "trial", startAt: now, periods: 0, expiresAt: now + TRIAL_DAYS * 864e5, trialUsed: true });
+          }
+          const today = fdate(Date.now());
+          return savePlan(uid, { plan: v, startAt: new Date(today + "T00:00:00").getTime(), periods: 0, expiresAt: calcExpires(v, today, 0) });
+        }
+        async function renewPlan(uid, d){
+          const p = SUB.plans[uid];
+          if (!p || !p.startAt || !["month", "year"].includes(p.plan)) return;
+          const per = Math.max(0, (p.periods || 0) + d);
+          return savePlan(uid, { periods: per, expiresAt: calcExpires(p.plan, fdate(p.startAt), per) });
+        }
+        async function approveReq(id){
+          const r = SUB.reqs.find(x => x.id === id); if (!r) return;
+          const amt = prompt(`確認已收到款項？\n會員：${r.email || r.uid}\n方案：${PLAN_NAME[r.plan]}・${METHOD_NAME[r.method] || r.method}・${r.currency}\n\n請輸入實收金額（數字）：`);
+          if (amt === null) return;
+          const amount = Number(amt);
+          if (!amt.trim() || !isFinite(amount) || amount < 0) { subMsg = "金額不正確，沒有開通。"; return drawSub(); }
+          const p = SUB.plans[r.uid] || {};
+          if (planOk(p) && p.plan === r.plan && p.startAt) await renewPlan(r.uid, 1);   // 同方案還沒到期 → 續訂一期
+          else await grantPlan(r.uid, r.plan);
+          await addDoc(collection(db, "sub_payments"), { uid: r.uid, email: r.email || "", plan: r.plan, method: r.method, currency: r.currency, amount, requestId: id, createdAt: serverTimestamp() });
+          await updateDoc(doc(db, "sub_requests", id), { status: "approved", approvedAt: serverTimestamp() });
+          r.status = "approved";
+          subMsg = `已開通：${r.email || r.uid}（${PLAN_NAME[r.plan]}），並記錄收款 ${amount} ${r.currency}。`;
+        }
+        async function loadSub(){
+          subBox.innerHTML = `<p class="msg">讀取中…</p>`;
+          try {
+            const [mem, pl, rq, cat, cfgs] = await Promise.all([
+              getDocs(query(collection(db, "sub_members"))),
+              getDocs(query(collection(db, "sub_plans"))),
+              getDocs(query(collection(db, "sub_requests"), orderBy("createdAt", "desc"), limit(100))),
+              getDocs(query(collection(db, "sub_catalog"))),
+              getDocs(query(collection(db, "sub_config")))
+            ]);
+            SUB = { members: mem.docs.map(d => ({ uid: d.id, ...d.data() })), plans: {}, reqs: [], catalog: {}, pricing: {} };
+            pl.forEach(d => { const x = d.data(); SUB.plans[d.id] = { plan: x.plan || "free", startAt: tms(x.startAt), expiresAt: tms(x.expiresAt), periods: x.periods || 0, trialUsed: !!x.trialUsed }; });
+            const emailOf = Object.fromEntries(SUB.members.map(m => [m.uid, m.email]));
+            SUB.reqs = rq.docs.map(d => { const x = d.data(); return { id: d.id, ...x, email: emailOf[x.uid] || "", when: x.createdAt ? x.createdAt.toDate().toLocaleString("zh-TW", { hour12: false }) : "" }; });
+            cat.forEach(d => { SUB.catalog[d.id] = d.data().access === "sub"; });
+            cfgs.forEach(d => { if (d.id === "pricing") SUB.pricing = d.data(); });
+            drawSub();
+          } catch (err) {
+            subBox.innerHTML = `<p class="msg">${err.code === "timeout" ? esc(explain(err)) : `讀不到訂閱資料（${esc(err.code || err.message)}）。請確認登入的是你的帳號，且訂閱規則已發佈。`}</p>`;
+          }
+        }
+        function subStatus(p){
+          if (!p || p.plan === "free" || !p.expiresAt) return "";
+          const left = p.expiresAt - Date.now();
+          if (left <= 0) return `<span class="sub-badge off">已到期</span>`;
+          if (left <= 7 * 864e5) return `<span class="sub-badge warn">7 天內到期</span>`;
+          return `<span class="sub-badge on">使用中</span>`;
+        }
+        function drawSub(){
+          if (!SUB) return;
+          const pr = SUB.pricing || {}, pv = (a, b) => (pr[a] && pr[a][b] != null) ? pr[a][b] : "";
+          const pending = SUB.reqs.filter(r => r.status === "pending"), handled = SUB.reqs.length - pending.length;
+          const members = SUB.members.slice().sort((a, b) => (a.email || "").localeCompare(b.email || ""));
+          const reqHtml = pending.length ? pending.map(r => `<div class="sub-card">
+              <b style="word-break:break-all">${esc(r.email || r.uid)}</b> <span class="sub-badge">${esc(PLAN_NAME[r.plan] || r.plan)}</span>
+              <span class="sub-badge">${esc(METHOD_NAME[r.method] || r.method)}・${esc(r.currency)}</span>
+              <br><small style="color:var(--soft)">${esc(r.when)}</small>${r.note ? `<p style="margin:4px 0 0;white-space:pre-wrap;word-break:break-word">${esc(r.note)}</p>` : ""}
+              <div class="ops"><button class="ok" data-approve="${esc(r.id)}">✓ 確認收款並開通</button><button data-reject="${esc(r.id)}">退回</button></div></div>`).join("")
+            : `<p class="msg">沒有待確認的申請。${handled ? `（已處理 ${handled} 筆）` : ""}</p>`;
+          const catHtml = SW.map(([g, items]) => `<div class="sw-group"><h3>${esc(g)}</h3>${items.map(([id, name]) =>
+            `<label class="sw-item"><input type="checkbox" data-cat="${id}" ${SUB.catalog[id] ? "checked" : ""}><span>${esc(name)}</span>${SUB.catalog[id] ? "<em style='color:var(--jade)'>★ 訂閱限定</em>" : ""}</label>`).join("")}</div>`).join("");
+          const memHtml = members.length ? members.map(m => { const p = SUB.plans[m.uid] || { plan: "free" }; const paid = p.plan !== "free";
+            return `<div class="sub-card"><b style="word-break:break-all">${esc(m.email || "")}</b> <small style="color:var(--soft)">${esc(m.name || "")}</small> ${subStatus(p)}
+              <div class="ops"><select data-plan="${esc(m.uid)}">
+                ${p.plan === "pro" ? `<option value="pro" selected>舊版 Pro</option>` : ""}
+                <option value="free" ${p.plan === "free" ? "selected" : ""}>免費</option>
+                <option value="trial" ${p.plan === "trial" ? "selected" : ""}>試用（${TRIAL_DAYS} 天）${p.trialUsed && p.plan !== "trial" ? "・已試用過" : ""}</option>
+                <option value="month" ${p.plan === "month" ? "selected" : ""}>月訂</option>
+                <option value="year" ${p.plan === "year" ? "selected" : ""}>年訂</option></select>
+                ${paid ? `<span class="msg">到期 <b>${fdate(p.expiresAt)}</b></span>` : ""}
+                ${["month", "year"].includes(p.plan) ? `<span class="msg">續訂 ×${p.periods || 0}</span><button data-renew="${esc(m.uid)}" data-d="1">＋ 續訂</button><button data-renew="${esc(m.uid)}" data-d="-1" ${(p.periods || 0) <= 0 ? "disabled" : ""}>－ 撤銷</button>` : ""}
+              </div></div>`; }).join("")
+            : `<p class="msg">還沒有會員登入過。</p>`;
+          subBox.innerHTML = (subMsg ? `<p class="msg" style="color:var(--jade);font-weight:700">${esc(subMsg)}</p>` : "") +
+            `<h3 class="sub-h">待確認的訂閱申請（${pending.length}）</h3>${reqHtml}
+             <h3 class="sub-h">價格（空白＝尚未公布，首頁會顯示「價格即將公布」）</h3>
+             <div class="sub-grid">
+               <label>月訂 台幣<input type="number" min="0" data-pr="month.twd" value="${esc(pv("month", "twd"))}"></label>
+               <label>月訂 美金<input type="number" min="0" data-pr="month.usd" value="${esc(pv("month", "usd"))}"></label>
+               <label>年訂 台幣<input type="number" min="0" data-pr="year.twd" value="${esc(pv("year", "twd"))}"></label>
+               <label>年訂 美金<input type="number" min="0" data-pr="year.usd" value="${esc(pv("year", "usd"))}"></label>
+             </div><button id="prSave">儲存價格</button>
+             <h3 class="sub-h">哪些項目是「訂閱限定」</h3>
+             <p class="msg" style="margin:0 0 6px">勾選＝首頁該卡片顯示「訂閱限定」，沒有有效訂閱的人會看到「訂閱後使用」。這只是擋掉入口，不是真正的鎖；真正的鎖要把內容放在中心專案的 sub_content，由規則判斷。</p>
+             ${catHtml}
+             <h3 class="sub-h">會員與方案（共 ${members.length} 位）</h3>${memHtml}
+             <div class="row" style="margin-top:10px"><button class="ghost" id="subReload">重新整理</button></div>`;
+        }
+        subBox.addEventListener("click", async e => {
+          const ap = e.target.closest("[data-approve]"), rj = e.target.closest("[data-reject]"), rn = e.target.closest("[data-renew]");
+          try {
+            if (ap) { ap.disabled = true; subMsg = ""; await approveReq(ap.dataset.approve); drawSub(); }
+            else if (rj) {
+              if (!confirm("確定要退回這筆申請？（不會開通）")) return;
+              await updateDoc(doc(db, "sub_requests", rj.dataset.reject), { status: "rejected" });
+              const r = SUB.reqs.find(x => x.id === rj.dataset.reject); if (r) r.status = "rejected";
+              subMsg = "已退回。"; drawSub();
+            }
+            else if (rn) { subMsg = ""; await renewPlan(rn.dataset.renew, Number(rn.dataset.d)); drawSub(); }
+            else if (e.target.id === "prSave") {
+              const num = k => { const v = subBox.querySelector(`[data-pr="${k}"]`).value.trim(); return v === "" ? null : Number(v); };
+              const o = { month: { twd: num("month.twd"), usd: num("month.usd") }, year: { twd: num("year.twd"), usd: num("year.usd") } };
+              if ([o.month.twd, o.month.usd, o.year.twd, o.year.usd].some(v => v !== null && (!isFinite(v) || v < 0))) { subMsg = "價格要是 0 以上的數字。"; return drawSub(); }
+              await setDocSw(doc(db, "sub_config", "pricing"), o); SUB.pricing = o; subMsg = "價格已儲存。"; drawSub();
+            }
+            else if (e.target.id === "subReload") { subMsg = ""; loadSub(); }
+          } catch (err) { subMsg = `失敗（${err.code || err.message}）`; drawSub(); }
+        });
+        subBox.addEventListener("change", async e => {
+          const sel = e.target.closest("[data-plan]"), cb = e.target.closest("[data-cat]");
+          try {
+            if (sel) { subMsg = ""; await grantPlan(sel.dataset.plan, sel.value); drawSub(); }
+            else if (cb) {
+              await setDocSw(doc(db, "sub_catalog", cb.dataset.cat), { access: cb.checked ? "sub" : "free", lock: "soft", updatedAt: serverTimestamp() });
+              SUB.catalog[cb.dataset.cat] = cb.checked; subMsg = `已更新：${cb.dataset.cat}`; drawSub();
+            }
+          } catch (err) { subMsg = `失敗（${err.code || err.message}）`; drawSub(); }
+        });
+
         onAuthStateChanged(auth, user => {
           me = user || null;
           drawSw();
-          if (user) { loadNotes(user); loadFeedback(); }
-          else { loginUI(); fbBox.innerHTML = `<p class="msg">請先在上方「留言」區用 Google 登入。</p>`; }
+          if (user) { loadNotes(user); loadFeedback(); loadSub(); }
+          else { loginUI(); fbBox.innerHTML = `<p class="msg">請先在上方「留言」區用 Google 登入。</p>`; SUB = null; subBox.innerHTML = `<p class="msg">請先在上方「留言」區用 Google 登入。</p>`; }
           loadVotes();
           loadSw();
         });
