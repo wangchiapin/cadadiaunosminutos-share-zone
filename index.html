@@ -286,6 +286,9 @@ const CONFIG = {
 .sub-msg{font-weight:700; margin:0}
 .sub-req{display:flex; flex-wrap:wrap; gap:6px 12px; align-items:center; padding:8px 0; border-top:1px dashed var(--ink-faint); font-size:.9rem}
 .sub-req:first-child{border-top:0}
+.wa-box{display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px 20px; margin-top:20px}
+.wa-box h3{margin:0 0 4px; font-size:1.05rem}
+.wa-box p{margin:0; color:var(--ink-soft); max-width:38em}
 html{scroll-behavior:smooth; scroll-padding-top:76px}
 body{
   margin:0; font-family:var(--sans); color:var(--ink); line-height:1.65;
@@ -677,6 +680,10 @@ footer a{color:var(--ink); font-weight:700}
     <div class="sec-head"><span class="mark" style="background:var(--yellow)"></span><h2 data-i="subTitle"></h2></div>
     <p class="sec-intro" data-i="subIntro"></p>
     <div class="panel subbox" id="subPanel"></div>
+    <div class="panel wa-box" id="waBox">
+      <div><h3 data-i="waTitle"></h3><p data-i="waDesc"></p></div>
+      <a class="btn btn-jade" href="https://wangchiapin.github.io/subscription/" target="_blank" rel="noopener"><span data-i="waBtn"></span> ▸</a>
+    </div>
   </section>
 
   <section id="support">
@@ -813,6 +820,9 @@ const UI = {
   report:     { zh: "發現讀音錯誤？回報給我 →", es: "¿Un pinyin incorrecto? Avísame →" },
   supportTitle:{ zh: "請我喝杯咖啡", es: "Invítame a un café" },
   navSub:     { zh: "訂閱", es: "Suscripción" },
+  waTitle:    { zh: "WhatsApp 付費練習群組", es: "Grupos de práctica de WhatsApp" },
+  waDesc:     { zh: "想加入付費的 WhatsApp 練習群組？選擇群組和方案，付款後送出申請，我確認收款後會把你加入群組。這和上面的網站訂閱是分開的。", es: "¿Quieres unirte a un grupo de práctica de WhatsApp de pago? Elige el grupo y el plan, paga y envía tu solicitud; al confirmar el pago te agrego al grupo. Es independiente de la suscripción al sitio." },
+  waBtn:      { zh: "前往 WhatsApp 群組訂閱", es: "Ir a la suscripción de grupos" },
   subTitle:   { zh: "訂閱", es: "Suscripción" },
   subIntro:   { zh: "一個訂閱，就能使用本站所有標示「訂閱限定」的遊戲、工具和字體更新。付款是手動確認的：付款後送出申請，我核對收款就會開通。", es: "Una suscripción te da acceso a todos los juegos, herramientas y actualizaciones de fuentes marcados como «Solo suscripción». El pago se confirma manualmente: paga, envía tu solicitud y la activo al verificar el pago." },
   subOnly:    { zh: "訂閱後使用", es: "Con suscripción" },
