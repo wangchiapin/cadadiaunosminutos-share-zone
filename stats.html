@@ -489,21 +489,35 @@ try {
           ["字體下載", [["dl-wenkai", "文楷拼音字體"], ["dl-kai", "正楷拼音字體"], ["dl-zhuyin", "正楷注音字體"], ["dl-ppt", "PowerPoint 外掛程式"], ["dl-guide", "圖解安裝說明（PDF）"]]]
         ];
         let SWOFF = new Set(), swLoaded = false, swMsg = "";
+        const GST = { "group-basic": "soon", "group-vip": "open" };   // 群組介紹頁的報名狀態（portalStatus 的 state 欄位）
+        const GST_NAME = [["open", "報名中"], ["waitlist", "候補中（已滿）"], ["soon", "即將開放"], ["closed", "暫停報名"]];
+        const grpHtml = () => `<div class="sw-group"><h3>WhatsApp 群組介紹頁：報名狀態</h3>
+          <p class="note" style="margin:0 0 6px">顯示在群組介紹頁（wangchiapin.github.io/subscription/groups/）。「候補中」會把按鈕改成加入候補；「暫停報名」會隱藏按鈕。選了馬上生效。</p>
+          ${[["group-basic", "零基礎群組"], ["group-vip", "VIP 高階群組"]].map(([id, n]) => `<label class="sw-item" style="cursor:default"><span style="flex:1">${n}</span>
+            <select data-gst="${id}" ${me && swLoaded ? "" : "disabled"} style="font:inherit;padding:4px 8px;border:1px solid var(--line);border-radius:8px;background:#fff">${GST_NAME.map(([v, t]) => `<option value="${v}" ${GST[id] === v ? "selected" : ""}>${t}</option>`).join("")}</select></label>`).join("")}</div>`;
         function drawSw(){
           swBox.innerHTML = (me ? "" : `<p class="msg">請先到「回饋專區」分頁用 Google 登入才能修改開關。</p>`) +
             SW.map(([g, items]) => `<div class="sw-group"><h3>${esc(g)}</h3>${items.map(([id, name]) => {
               const off = SWOFF.has(id);
               return `<label class="sw-item${off ? " off" : ""}"><input type="checkbox" data-sw="${id}" ${off ? "" : "checked"} ${me && swLoaded ? "" : "disabled"}><span>${esc(name)}</span>${off ? "<em>🔧 維修中</em>" : ""}</label>`;
-            }).join("")}</div>`).join("") + (swMsg ? `<p class="msg">${esc(swMsg)}</p>` : "");
+            }).join("")}</div>`).join("") + grpHtml() + (swMsg ? `<p class="msg">${esc(swMsg)}</p>` : "");
         }
         async function loadSw(){
           try {
             const snap = await getDocs(query(collection(db, "portalStatus")));
             SWOFF = new Set(snap.docs.filter(d => d.data().off === true).map(d => d.id)); swLoaded = true; swMsg = "";
+            snap.docs.forEach(d => { const st = d.data().state; if (d.id in GST && ["open", "waitlist", "soon", "closed"].includes(st)) GST[d.id] = st; });
           } catch (err) { swMsg = err.code === "timeout" ? explain(err) : `讀不到開關資料（${err.code || err.message}）。請確認 Firestore 規則已更新（新增 portalStatus）。`; }
           drawSw();
         }
         swBox.addEventListener("change", async e => {
+          const gs = e.target.closest("select[data-gst]");
+          if (gs) {
+            gs.disabled = true;
+            try { await setDocSw(doc(db, "portalStatus", gs.dataset.gst), { state: gs.value }); GST[gs.dataset.gst] = gs.value; swMsg = `已更新報名狀態：${gs.options[gs.selectedIndex].text}`; }
+            catch (err) { swMsg = `儲存失敗（${err.code || err.message}）`; }
+            drawSw(); return;
+          }
           const cb = e.target.closest("input[data-sw]"); if (!cb) return;
           const id = cb.dataset.sw, off = !cb.checked; cb.disabled = true;
           try {
