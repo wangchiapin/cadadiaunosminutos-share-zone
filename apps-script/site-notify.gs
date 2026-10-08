@@ -25,6 +25,7 @@ function doPost(e) {
   const out = o => ContentService.createTextOutput(JSON.stringify(o)).setMimeType(ContentService.MimeType.JSON);
   try {
     const d = JSON.parse(e.postData.contents);
+    console.log("收到申請 " + String(d.id || "").slice(0, 8) + "，有截圖：" + !!(d.screenshot && d.screenshot.data));
     if (d.hp) return out({ ok: true });                       // 蜜罐：機器人才會填，假裝成功
     const s = (v, n) => String(v == null ? "" : v).slice(0, n);
 
@@ -81,6 +82,7 @@ function doPost(e) {
     });
     return out({ ok: true });
   } catch (err) {
-    return out({ ok: false, error: "server" });
+    console.error(err && err.stack ? err.stack : String(err));
+    return out({ ok: false, error: "server", detail: String(err && err.message ? err.message : err).slice(0, 200) });
   }
 }
