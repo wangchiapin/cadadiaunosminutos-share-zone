@@ -409,7 +409,7 @@ try {
         const swBox = document.getElementById("swBox");
         const { setDoc: setDocSw } = await import(`https://www.gstatic.com/firebasejs/${V}/firebase-firestore.js`);
         const SW = [
-          ["小遊戲", [["game-memorama", "翻牌記憶"], ["game-bebidas", "飲料店冒險（簡體版）"], ["game-bebidas-tw", "飲料店冒險（繁體版）"], ["game-corre-hanzi", "跑吧！漢字"], ["game-armario", "收納小達人"], ["game-compras", "幫媽媽買東西"], ["game-perrito", "小狗找寶藏"], ["game-numeros", "數字聽說練習"]]],
+          ["小遊戲", [["game-memorama", "翻牌記憶"], ["game-colores", "色數消消樂"], ["game-taiwan-life", "台灣生活情境對話（taiwan-life）"], ["game-corre-hanzi", "跑吧！漢字"], ["game-armario", "收納小達人"], ["game-compras", "幫媽媽買東西"], ["game-perrito", "小狗找寶藏"], ["game-numeros", "數字聽說練習"]]],
           ["教學小工具", [["tool-pinyin", "漢字加拼音"]]],
           ["字體下載", [["dl-wenkai", "文楷拼音字體"], ["dl-kai", "正楷拼音字體"], ["dl-zhuyin", "正楷注音字體"], ["dl-ppt", "PowerPoint 外掛程式"], ["dl-guide", "圖解安裝說明（PDF）"]]]
         ];
@@ -439,7 +439,7 @@ try {
           drawSw();
         });
 
-        /* ---- 訂閱管理（資料在 subscription-48d3c：sub_members / sub_plans / sub_requests / sub_catalog / sub_config / sub_payments）---- */
+        /* ---- 訂閱管理（資料在 subscription-48d3c：site_members / site_plans / site_requests / site_catalog / site_config / site_payments）---- */
         const subBox = document.getElementById("subBox");
         const { Timestamp } = await import(`https://www.gstatic.com/firebasejs/${V}/firebase-firestore.js`);
         const TRIAL_DAYS = 7;   // 免費試用天數（管理員手動發放）
@@ -460,7 +460,7 @@ try {
           const o = {};
           for (const k of ["plan", "periods", "trialUsed"]) if (k in f) o[k] = f[k];
           for (const k of ["startAt", "expiresAt"]) if (k in f) o[k] = f[k] ? Timestamp.fromMillis(f[k]) : null;
-          await setDocSw(doc(db, "sub_plans", uid), o, { merge: true });
+          await setDocSw(doc(db, "site_plans", uid), o, { merge: true });
           SUB.plans[uid] = { plan: "free", startAt: null, expiresAt: null, periods: 0, trialUsed: false, ...(SUB.plans[uid] || {}), ...f };
         }
         async function grantPlan(uid, v){
@@ -489,8 +489,8 @@ try {
           const p = SUB.plans[r.uid] || {};
           if (planOk(p) && p.plan === r.plan && p.startAt) await renewPlan(r.uid, 1);   // 同方案還沒到期 → 續訂一期
           else await grantPlan(r.uid, r.plan);
-          await addDoc(collection(db, "sub_payments"), { uid: r.uid, email: r.email || "", plan: r.plan, method: r.method, currency: r.currency, amount, requestId: id, createdAt: serverTimestamp() });
-          await updateDoc(doc(db, "sub_requests", id), { status: "approved", approvedAt: serverTimestamp() });
+          await addDoc(collection(db, "site_payments"), { uid: r.uid, email: r.email || "", plan: r.plan, method: r.method, currency: r.currency, amount, requestId: id, createdAt: serverTimestamp() });
+          await updateDoc(doc(db, "site_requests", id), { status: "approved", approvedAt: serverTimestamp() });
           r.status = "approved";
           subMsg = `已開通：${r.email || r.uid}（${PLAN_NAME[r.plan]}），並記錄收款 ${amount} ${r.currency}。`;
         }
@@ -498,11 +498,11 @@ try {
           subBox.innerHTML = `<p class="msg">讀取中…</p>`;
           try {
             const [mem, pl, rq, cat, cfgs] = await Promise.all([
-              getDocs(query(collection(db, "sub_members"))),
-              getDocs(query(collection(db, "sub_plans"))),
-              getDocs(query(collection(db, "sub_requests"), orderBy("createdAt", "desc"), limit(100))),
-              getDocs(query(collection(db, "sub_catalog"))),
-              getDocs(query(collection(db, "sub_config")))
+              getDocs(query(collection(db, "site_members"))),
+              getDocs(query(collection(db, "site_plans"))),
+              getDocs(query(collection(db, "site_requests"), orderBy("createdAt", "desc"), limit(100))),
+              getDocs(query(collection(db, "site_catalog"))),
+              getDocs(query(collection(db, "site_config")))
             ]);
             SUB = { members: mem.docs.map(d => ({ uid: d.id, ...d.data() })), plans: {}, reqs: [], catalog: {}, pricing: {} };
             pl.forEach(d => { const x = d.data(); SUB.plans[d.id] = { plan: x.plan || "free", startAt: tms(x.startAt), expiresAt: tms(x.expiresAt), periods: x.periods || 0, trialUsed: !!x.trialUsed }; });
@@ -557,7 +557,7 @@ try {
                <label>年訂 美金<input type="number" min="0" data-pr="year.usd" value="${esc(pv("year", "usd"))}"></label>
              </div><button id="prSave">儲存價格</button>
              <h3 class="sub-h">哪些項目是「訂閱限定」</h3>
-             <p class="msg" style="margin:0 0 6px">勾選＝首頁該卡片顯示「訂閱限定」，沒有有效訂閱的人會看到「訂閱後使用」。這只是擋掉入口，不是真正的鎖；真正的鎖要把內容放在中心專案的 sub_content，由規則判斷。</p>
+             <p class="msg" style="margin:0 0 6px">勾選＝首頁該卡片顯示「訂閱限定」，沒有有效訂閱的人會看到「訂閱後使用」。這只是擋掉入口，不是真正的鎖；真正的鎖要把內容放在中心專案的 site_content，由規則判斷。</p>
              ${catHtml}
              <h3 class="sub-h">會員與方案（共 ${members.length} 位）</h3>${memHtml}
              <div class="row" style="margin-top:10px"><button class="ghost" id="subReload">重新整理</button></div>`;
@@ -568,7 +568,7 @@ try {
             if (ap) { ap.disabled = true; subMsg = ""; await approveReq(ap.dataset.approve); drawSub(); }
             else if (rj) {
               if (!confirm("確定要退回這筆申請？（不會開通）")) return;
-              await updateDoc(doc(db, "sub_requests", rj.dataset.reject), { status: "rejected" });
+              await updateDoc(doc(db, "site_requests", rj.dataset.reject), { status: "rejected" });
               const r = SUB.reqs.find(x => x.id === rj.dataset.reject); if (r) r.status = "rejected";
               subMsg = "已退回。"; drawSub();
             }
@@ -577,7 +577,7 @@ try {
               const num = k => { const v = subBox.querySelector(`[data-pr="${k}"]`).value.trim(); return v === "" ? null : Number(v); };
               const o = { month: { twd: num("month.twd"), usd: num("month.usd") }, year: { twd: num("year.twd"), usd: num("year.usd") } };
               if ([o.month.twd, o.month.usd, o.year.twd, o.year.usd].some(v => v !== null && (!isFinite(v) || v < 0))) { subMsg = "價格要是 0 以上的數字。"; return drawSub(); }
-              await setDocSw(doc(db, "sub_config", "pricing"), o); SUB.pricing = o; subMsg = "價格已儲存。"; drawSub();
+              await setDocSw(doc(db, "site_config", "pricing"), o); SUB.pricing = o; subMsg = "價格已儲存。"; drawSub();
             }
             else if (e.target.id === "subReload") { subMsg = ""; loadSub(); }
           } catch (err) { subMsg = `失敗（${err.code || err.message}）`; drawSub(); }
@@ -587,7 +587,7 @@ try {
           try {
             if (sel) { subMsg = ""; await grantPlan(sel.dataset.plan, sel.value); drawSub(); }
             else if (cb) {
-              await setDocSw(doc(db, "sub_catalog", cb.dataset.cat), { access: cb.checked ? "sub" : "free", lock: "soft", updatedAt: serverTimestamp() });
+              await setDocSw(doc(db, "site_catalog", cb.dataset.cat), { access: cb.checked ? "sub" : "free", lock: "soft", updatedAt: serverTimestamp() });
               SUB.catalog[cb.dataset.cat] = cb.checked; subMsg = `已更新：${cb.dataset.cat}`; drawSub();
             }
           } catch (err) { subMsg = `失敗（${err.code || err.message}）`; drawSub(); }
@@ -644,6 +644,6 @@ try {
   fail(explain(e) + "<br>" + RETRY);
 }
 </script>
-<a class="go-site" href="https://wangchiapin.github.io/" target="_blank" rel="noopener" title="開啟華語老師分享區">🏠 華語老師分享區 <small>↗</small></a>
+<a class="go-site" href="https://wangchiapin.github.io/cadadiaunosminutos-share-zone/" target="_blank" rel="noopener" title="開啟華語老師分享區">🏠 華語老師分享區 <small>↗</small></a>
 </body>
 </html>

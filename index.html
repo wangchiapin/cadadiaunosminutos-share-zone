@@ -45,26 +45,26 @@ const CONFIG = {
       url: "https://wangchiapin.github.io/Memorama/"
     },
     {
-      id: "bebidas",
-      glyph: "茶", color: "jade",
-      title: { zh: "飲料店冒險(簡體版)", es: "Aventura en la tienda de bebidas (simplificado)" },
+      id: "colores",
+      glyph: "色", color: "gold",
+      title: { zh: "色數消消樂", es: "Pop Colores y Números" },
       desc: {
-        zh: "在台灣的手搖飲料店點一杯飲料：甜度、冰塊、大小，一步步用中文完成。",
-        es: "Pide tu bebida en una tienda de té de Taiwán: azúcar, hielo y tamaño, todo en chino."
+        zh: "聽數字找顏色，或聽顏色輸入數字，把方塊一個個消掉，練習中文的顏色和數字。老師也可以自訂題目。",
+        es: "Escucha un número y elige su color, o escucha un color y escribe el número. Practica colores y números en chino; los profesores pueden crear sus propios retos."
       },
-      tags: [{ zh: "對話", es: "Diálogo" }, { zh: "點餐", es: "Pedir" }, { zh: "簡體", es: "Simplificado" }],
-      url: "https://wangchiapin.github.io/Aventura-en-la-tienda-de-bebidas/"
+      tags: [{ zh: "顏色", es: "Colores" }, { zh: "數字", es: "Números" }, { zh: "聽力", es: "Comprensión" }],
+      url: "https://wangchiapin.github.io/pop-colores-numeros/"
     },
     {
-      id: "bebidas-tw",
-      glyph: "茶", color: "brick",
-      title: { zh: "飲料店冒險(繁體版)", es: "Aventura en la tienda de bebidas (tradicional)" },
+      id: "taiwan-life",
+      glyph: "台", color: "jade",
+      title: { zh: "台灣生活情境對話", es: "Conversaciones de la vida en Taiwán" },
       desc: {
-        zh: "繁體字版本：在台灣的手搖飲料店點一杯飲料，甜度、冰塊、大小，一步步用中文完成。",
-        es: "Versión en caracteres tradicionales: pide tu bebida en una tienda de té de Taiwán."
+        zh: "一系列台灣日常情境的對話遊戲：飲料店、訂位、早餐店、診所、捷運、夜市等，一步步用中文完成。",
+        es: "Una serie de juegos de conversación de la vida diaria en Taiwán: tienda de bebidas, reservar mesa, desayuno, clínica, metro, mercado nocturno y más."
       },
-      tags: [{ zh: "對話", es: "Diálogo" }, { zh: "點餐", es: "Pedir" }, { zh: "繁體", es: "Tradicional" }],
-      url: ""                         // ← 繁體版做好後，把網址填在這裡
+      tags: [{ zh: "對話", es: "Diálogo" }, { zh: "生活", es: "Vida diaria" }],
+      url: "https://wangchiapin.github.io/taiwan-life/"
     },
     {
       id: "corre-hanzi",
@@ -1020,9 +1020,9 @@ const t = v => (v == null ? "" : typeof v === "string" ? v : (v[lang] ?? v.zh ??
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[c]));
 
 /* ===== 訂閱（資料在中心專案 subscription-48d3c）=====
-   sub_catalog：哪些項目是「訂閱限定」（id 與卡片開關相同：game-xxx / tool-xxx / dl-xxx）
-   sub_plans/{uid}：會員的方案與到期日（只有管理員能寫）；sub_requests：會員送出的申請
-   注意：這裡只負責「顯示入口」，不是真正的鎖。真正要鎖的內容要放在 sub_content，由 Firestore 規則判斷。 */
+   site_catalog：哪些項目是「訂閱限定」（id 與卡片開關相同：game-xxx / tool-xxx / dl-xxx）
+   site_plans/{uid}：會員的方案與到期日（只有管理員能寫）；site_requests：會員送出的申請
+   注意：這裡只負責「顯示入口」，不是真正的鎖。真正要鎖的內容要放在 site_content，由 Firestore 規則判斷。 */
 var SUBITEMS = {};
 var SUBST = { ready: false, loading: false, user: null, plan: null, requests: [], pricing: null, msg: "", sending: false, form: { plan: "month", method: "paypal", note: "" } };
 const SUB_METHODS = [
@@ -1717,30 +1717,30 @@ try {
     window.__getStatus().then(ids => { if (ids.length) { OFF = new Set(ids); render(); } }).catch(err => console.warn("status", err.code));
     window.__sendVote = (id, choice) =>
       setDoc(doc(db, "portalVoteCount", id + "__" + choice), { n: increment(1) }, { merge: true });
-    // 訂閱：會員資料 sub_members、方案 sub_plans（只有管理員能寫）、申請 sub_requests、目錄 sub_catalog、價格 sub_config/pricing
+    // 訂閱：會員資料 site_members、方案 site_plans（只有管理員能寫）、申請 site_requests、目錄 site_catalog、價格 site_config/pricing
     const tms = t => t && t.toMillis ? t.toMillis() : null;
     window.__sub = {
       onChange: fn => onAuthStateChanged(auth, fn),
       login: () => signInWithPopup(auth, new GoogleAuthProvider()),
       logout: () => signOut(auth),
       async ensureMember(){
-        const u = auth.currentUser, ref = doc(db, "sub_members", u.uid);
+        const u = auth.currentUser, ref = doc(db, "site_members", u.uid);
         if (!(await getDoc(ref)).exists()) await setDoc(ref, { email: u.email || "", name: u.displayName || "", createdAt: serverTimestamp() });
       },
       async getPlan(){
-        const s = await getDoc(doc(db, "sub_plans", auth.currentUser.uid));
+        const s = await getDoc(doc(db, "site_plans", auth.currentUser.uid));
         if (!s.exists()) return { plan: "free", startAt: null, expiresAt: null };
         const x = s.data(); return { plan: x.plan || "free", startAt: tms(x.startAt), expiresAt: tms(x.expiresAt) };
       },
       async getCatalog(){
-        const snap = await getDocs(query(collection(db, "sub_catalog")));
+        const snap = await getDocs(query(collection(db, "site_catalog")));
         const o = {}; snap.forEach(d => { if (d.data().access === "sub") o[d.id] = true; }); return o;
       },
-      async getPricing(){ const s = await getDoc(doc(db, "sub_config", "pricing")); return s.exists() ? s.data() : null; },
-      sendRequest: ({ plan, method, currency, note }) => addDoc(collection(db, "sub_requests"),
+      async getPricing(){ const s = await getDoc(doc(db, "site_config", "pricing")); return s.exists() ? s.data() : null; },
+      sendRequest: ({ plan, method, currency, note }) => addDoc(collection(db, "site_requests"),
         { uid: auth.currentUser.uid, plan, method, currency, note, status: "pending", createdAt: serverTimestamp() }),
       async myRequests(){
-        const snap = await getDocs(query(collection(db, "sub_requests"), where("uid", "==", auth.currentUser.uid)));
+        const snap = await getDocs(query(collection(db, "site_requests"), where("uid", "==", auth.currentUser.uid)));
         return snap.docs.map(d => { const x = d.data(); return { id: d.id, plan: x.plan, method: x.method, status: x.status, ts: tms(x.createdAt) || Date.now() }; }).sort((a, b) => b.ts - a.ts);
       }
     };
