@@ -1048,7 +1048,7 @@ const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&":"&amp;", "<":"&lt;", 
    注意：這裡只負責「顯示入口」，不是真正的鎖。真正要鎖的內容要放在 site_content，由 Firestore 規則判斷。 */
 var SUBITEMS = {};
 /* 收款通知信：部署 apps-script/site-notify.gs 之後，把網址貼在這裡（沒貼就不寄信、也不顯示截圖上傳）。步驟見該檔案開頭。 */
-const SITE_NOTIFY_URL = "";
+const SITE_NOTIFY_URL = "https://script.google.com/macros/s/AKfycbzmIhHhapen8vK5DT8zXM_DQRLLoJ9geZmxbkhHHZ2Zgi6pNBzu7cfTufurYAUKP-dgvQ/exec";
 var SUBST = { ready: false, loading: false, user: null, plan: null, requests: [], pricing: null, msg: "", sending: false, form: { plan: "month", method: "paypal", note: "", ref: "", paidAt: "", ok: false, shot: null, shotName: "" } };
 const SUB_METHODS = [
   { id: "paypal",  cur: "USD", label: { zh: "PayPal（美金）", es: "PayPal (USD)" } },
