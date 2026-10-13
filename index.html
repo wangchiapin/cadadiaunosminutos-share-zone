@@ -163,38 +163,44 @@ const CONFIG = {
   /* ---------------- 字體 ---------------- */
   font: {
     name: "GoodTeacher",
-    updated: "2026-10-03",          // ← 每次發新版改這裡（和 GitHub Release 的 tag 一樣）
+    updated: "2026-10-13",          // ← 每次發新版改這裡（和 GitHub Release 的 tag 一樣）
     desc: {
-      zh: "此字體可自動校正拼音（以台灣讀音為主）。共有文楷拼音、正楷拼音、正楷注音三種字體，簡體、繁體輸入法皆適用。詳細用法請看圖解安裝說明。",
-      es: "Esta fuente corrige automáticamente el pinyin (según la pronunciación de Taiwán). Incluye tres fuentes: WenKai Pinyin, Kai Pinyin y Kai Zhuyin, y funciona con la entrada de caracteres simplificados y tradicionales. Consulta la guía de instalación ilustrada para más detalles."
+      zh: "此字體可自動校正拼音（以台灣讀音為主）。共有文楷拼音、正楷拼音、正楷注音三種字體，簡體、繁體輸入法皆適用。PowerPoint、Word 另有外掛程式，可以單字更換讀音、一鍵換字型。詳細用法請看圖解安裝說明。",
+      es: "Esta fuente corrige automáticamente el pinyin (según la pronunciación de Taiwán). Incluye tres fuentes: WenKai Pinyin, Kai Pinyin y Kai Zhuyin, y funciona con la entrada de caracteres simplificados y tradicionales. Para PowerPoint y Word hay complementos que permiten cambiar la lectura de un carácter y cambiar de fuente con un clic. Consulta la guía de instalación ilustrada para más detalles."
     },
     // 檔案放在 GitHub Releases。zip 檔名固定不變 → 這裡網址永遠不用改
-    // ⚠ 每次發新版，四個 zip 都要重新上傳到新的 Release，否則按鈕會下載失敗
+    // ⚠ 每次發新版，六個檔案（五個 zip＋PDF）都要重新上傳到新的 Release，否則按鈕會下載失敗
     // version：只要改這裡的數字，網站上就會顯示
     downloads: [
       {
-        id: "wenkai", version: "v9",
+        id: "wenkai", version: "v10",
         label: { zh: "文楷拼音字體", es: "Fuente pinyin WenKai" },
         note:  { zh: "手寫感、適合講義。含字體檔與 OFL.txt", es: "Estilo manuscrito, ideal para fichas. Incluye la licencia OFL.txt" },
         url: "https://github.com/wangchiapin/GoodTeacher/releases/latest/download/GoodTeacher-WenKai.zip"
       },
       {
-        id: "kai", version: "v2",
+        id: "kai", version: "v3",
         label: { zh: "正楷拼音字體", es: "Fuente pinyin Kai" },
         note:  { zh: "標準楷書。含字體檔與授權說明", es: "Caligrafía Kai estándar. Incluye las licencias" },
         url: "https://github.com/wangchiapin/GoodTeacher/releases/latest/download/GoodTeacher-KaiPinyin.zip"
       },
       {
-        id: "zhuyin", version: "v2",
+        id: "zhuyin", version: "v3",
         label: { zh: "正楷注音字體", es: "Fuente Kai zhuyin (bopomofo)" },
         note:  { zh: "字旁顯示注音。含字體檔與授權說明", es: "Muestra zhuyin junto a cada carácter. Incluye las licencias" },
         url: "https://github.com/wangchiapin/GoodTeacher/releases/latest/download/GoodTeacher-Zhuyin.zip"
       },
       {
-        id: "ppt", version: "",
+        id: "ppt", version: "v2",
         label: { zh: "PowerPoint 外掛程式", es: "Complemento de PowerPoint" },
         note:  { zh: "PowerPoint 使用者必須安裝", es: "Imprescindible para usuarios de PowerPoint" },
         url: "https://github.com/wangchiapin/GoodTeacher/releases/latest/download/GoodTeacher-PPT.zip"
+      },
+      {
+        id: "word", version: "v2",
+        label: { zh: "Word 外掛程式", es: "Complemento de Word" },
+        note:  { zh: "Word 想要單字更換讀音、一鍵換字型時安裝（選用，Windows）", es: "Opcional: cambiar la lectura de un carácter y cambiar de fuente con un clic (Windows)" },
+        url: "https://github.com/wangchiapin/GoodTeacher/releases/latest/download/GoodTeacher-Word.zip"
       },
       {
         id: "guide", version: "",
@@ -209,12 +215,16 @@ const CONFIG = {
     },
     steps: [
       { zh: "選一種字體下載（文楷、正楷或注音），解壓縮。", es: "Elige una fuente (WenKai, Kai o Zhuyin), descárgala y descomprímela." },
-      { zh: "在字體檔（.ttf）上按右鍵 →「為所有使用者安裝」。", es: "Clic derecho en el archivo .ttf → «Instalar para todos los usuarios»." },
+      { zh: "在字體檔（.ttf）上按兩下 →「安裝」。", es: "Haz doble clic en el archivo .ttf → «Instalar»." },
       { zh: "重新開啟 Word，字型清單選 GoodTeacher 開頭的字型，直接打字即可。", es: "Abre Word de nuevo, elige la fuente que empieza por GoodTeacher y escribe." },
-      { zh: "PowerPoint：下載外掛程式後，先在檔案上按右鍵 → 內容 → 勾選「解除封鎖」，再依 PDF 說明載入。", es: "PowerPoint: tras descargar el complemento, clic derecho → Propiedades → marca «Desbloquear» y sigue la guía PDF." }
+      { zh: "PowerPoint：另外下載 PPT 外掛程式，先在 zip 檔上按右鍵 → 內容 → 勾選「解除封鎖」，再依 PDF 說明安裝。", es: "PowerPoint: descarga aparte el complemento de PPT, clic derecho en el zip → Propiedades → marca «Desbloquear» y sigue la guía PDF." },
+      { zh: "Word 想要單字更換讀音、一鍵換字型：另外下載 Word 外掛程式，安裝方式見 PDF。", es: "Word, si quieres cambiar la lectura de un carácter y cambiar de fuente con un clic: descarga aparte el complemento de Word; la instalación está en la guía PDF." },
+      { zh: "已經裝過、出新版時：關掉 Word、PowerPoint，重新安裝字體、覆蓋 GoodTeacher 資料夾，詳見 PDF 第 6 部分。", es: "Si ya lo tenías instalado y sale una versión nueva: cierra Word y PowerPoint, reinstala la fuente y sobrescribe la carpeta GoodTeacher (ver la parte 6 de la guía PDF)." }
     ],
     changelog: [
       // 新版本加在最上面
+     { version: "2026-10-13", date: "",
+       notes: { zh: "部分讀音規則更新。", es: "Actualización de algunas reglas de lectura." } },
      { version: "2026-10-03", date: "",
        notes: { zh: "文楷拼音 v9、正楷拼音 v2、正楷注音 v2", es: "WenKai v9, Kai v2, Zhuyin v2." } },
       { version: "2026-10-02", date: "",
