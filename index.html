@@ -296,6 +296,16 @@ const CONFIG = {
 .sub-msg{font-weight:700; margin:0}
 .sub-req{display:flex; flex-wrap:wrap; gap:6px 12px; align-items:center; padding:8px 0; border-top:1px dashed var(--ink-faint); font-size:.9rem}
 .sub-req:first-child{border-top:0}
+.cmp-box{margin-bottom:20px}
+.cmp-box h3{margin:0 0 12px; font-size:1.05rem}
+.cmp{width:100%; border-collapse:collapse; font-size:.92rem; table-layout:fixed}
+.cmp th,.cmp td{border-top:1px dashed var(--ink-faint); padding:9px 6px; vertical-align:top; text-align:left; overflow-wrap:anywhere}
+.cmp thead th{border-top:0; border-bottom:2px solid var(--ink); font-weight:900}
+.cmp th:first-child{width:42%}
+.cmp td{text-align:center}
+.cmp thead th:not(:first-child){text-align:center}
+.cmp-sum{margin:14px 0 12px; font-weight:700}
+@media (max-width:560px){ .cmp{font-size:.82rem} .cmp th,.cmp td{padding:8px 3px} }
 .wa-box{display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px 20px; margin-top:20px}
 .wa-box h3{margin:0 0 4px; font-size:1.05rem}
 .wa-box p{margin:0; color:var(--ink-soft); max-width:38em}
@@ -689,6 +699,7 @@ footer a{color:var(--ink); font-weight:700}
   <section id="subscribe">
     <div class="sec-head"><span class="mark" style="background:var(--yellow)"></span><h2 data-i="subTitle"></h2></div>
     <p class="sec-intro" data-i="subIntro"></p>
+    <div class="panel cmp-box" id="subCompare"></div>
     <div class="panel subbox" id="subPanel"></div>
     <div class="panel wa-box" id="waBox">
       <div><h3 data-i="waTitle"></h3><p data-i="waDesc"></p></div>
@@ -835,7 +846,14 @@ const UI = {
   waDesc:     { zh: "想加入付費的 WhatsApp 練習群組？選擇群組和方案，付款後送出申請，我確認收款後會把你加入群組。這和上面的網站訂閱是分開的。", es: "¿Quieres unirte a un grupo de práctica de WhatsApp de pago? Elige el grupo y el plan, paga y envía tu solicitud; al confirmar el pago te agrego al grupo. Es independiente de la suscripción al sitio." },
   waBtn:      { zh: "前往 WhatsApp 群組訂閱", es: "Ir a la suscripción de grupos" },
   subTitle:   { zh: "訂閱", es: "Suscripción" },
-  subIntro:   { zh: "一個訂閱，就能使用本站所有標示「訂閱限定」的遊戲、工具和字體更新。付款是手動確認的：付款後送出申請，我核對收款就會開通。", es: "Una suscripción te da acceso a todos los juegos, herramientas y actualizaciones de fuentes marcados como «Solo suscripción». El pago se confirma manualmente: paga, envía tu solicitud y la activo al verificar el pago." },
+  subIntro:   { zh: "一個訂閱，就能使用老師管理中心的訂閱功能，以及本站所有標示「訂閱限定」的遊戲、工具和字體更新。付款是手動確認的：付款後送出申請，我核對收款就會開通。", es: "Una suscripción te da acceso a las funciones de suscripción del Centro del profesor y a todos los juegos, herramientas y actualizaciones de fuentes marcados como «Solo suscripción». El pago se confirma manualmente: paga, envía tu solicitud y la activo al verificar el pago." },
+  cmpTitle:   { zh: "老師管理中心：免費和訂閱的差別", es: "Centro del profesor: gratis y con suscripción" },
+  cmpFeat:    { zh: "功能", es: "Función" },
+  cmpFree:    { zh: "免費", es: "Gratis" },
+  cmpPro:     { zh: "訂閱", es: "Suscripción" },
+  cmpSum:     { zh: "免費版可以建立自己的題目、用連結讓學生練習；訂閱後可以開班級、自動收成績、看學生常錯的地方，還能做學習單。",
+                es: "Gratis puedes crear tus propios ejercicios y compartirlos con un enlace; con la suscripción puedes crear clases, recibir las notas automáticamente, ver los errores frecuentes de tus alumnos y hacer fichas." },
+  cmpGo:      { zh: "前往老師管理中心", es: "Ir al Centro del profesor" },
   subOnly:    { zh: "訂閱後使用", es: "Con suscripción" },
   subBadge:   { zh: "訂閱限定", es: "Solo suscripción" },
   subLocked:  { zh: "訂閱限定", es: "Solo suscripción" },
@@ -1654,7 +1672,27 @@ async function notifySite(req, id){
     const j = await r.json(); return !!j.ok;
   } catch (err) { console.warn("notify", err); return false; }
 }
+const CENTER_URL = "https://wangchiapin.github.io/profesor/";
+const CMP_ROWS = [
+  [{ zh: "三款遊戲自己玩", es: "Jugar a los tres juegos" }, "✅", "✅"],
+  [{ zh: "跑吧！漢字 句庫", es: "¡Corre, Hanzi!: bancos de frases" }, { zh: "1 個，每庫 50 句", es: "1 banco, 50 frases" }, { zh: "5 個，每庫 80 句，可自訂干擾字", es: "5 bancos, 80 frases cada uno, distractores propios" }],
+  [{ zh: "色數消消樂 設定組", es: "Pop Colores y Números: configuraciones" }, { zh: "3 組", es: "3" }, { zh: "15 組，可自訂顏色與數字", es: "15, con colores y números propios" }],
+  [{ zh: "比比看 練習範圍", es: "Compara y Adivina: rangos de práctica" }, { zh: "3 組", es: "3" }, { zh: "15 組", es: "15" }],
+  [{ zh: "練習連結（不用班級，直接傳給學生玩）", es: "Enlaces de práctica (sin clase, se envían directo al alumno)" }, "✅", "✅"],
+  [{ zh: "建立班級、成績自動回傳、成績冊", es: "Clases, notas automáticas y libro de notas" }, "❌", { zh: "✅ 最多 3 班", es: "✅ hasta 3 clases" }],
+  [{ zh: "比比看常錯統計、匯出 CSV", es: "Errores frecuentes en Compara y Adivina, exportar CSV" }, "❌", "✅"],
+  [{ zh: "三款遊戲的學習單（列印／PDF）", es: "Fichas de los tres juegos (imprimir / PDF)" }, "❌", "✅"],
+];
+function renderCompare(){
+  const box = document.getElementById("subCompare"); if (!box) return;
+  box.innerHTML = `<h3>${esc(t(UI.cmpTitle))}</h3>
+    <table class="cmp"><thead><tr><th>${esc(t(UI.cmpFeat))}</th><th>${esc(t(UI.cmpFree))}</th><th>${esc(t(UI.cmpPro))}</th></tr></thead>
+    <tbody>${CMP_ROWS.map(r => `<tr><th scope="row">${esc(t(r[0]))}</th><td>${esc(t(r[1]))}</td><td>${esc(t(r[2]))}</td></tr>`).join("")}</tbody></table>
+    <p class="cmp-sum">${esc(t(UI.cmpSum))}</p>
+    <a class="btn btn-jade" href="${CENTER_URL}" target="_blank" rel="noopener">${esc(t(UI.cmpGo))} ▸</a>`;
+}
 function renderSub(){
+  renderCompare();
   const box = document.getElementById("subPanel"); if (!box) return;
   if (isOff("sub-site")) { box.innerHTML = `<p class="sub-msg">🔧 ${esc(t(UI.fixing))}</p>`; return; }
   if (!SUBST.ready) { box.innerHTML = `<p class="sub-msg">${esc(t(UI.subLoading))}</p>`; return; }
