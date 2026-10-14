@@ -296,8 +296,10 @@ const CONFIG = {
 .sub-msg{font-weight:700; margin:0}
 .sub-req{display:flex; flex-wrap:wrap; gap:6px 12px; align-items:center; padding:8px 0; border-top:1px dashed var(--ink-faint); font-size:.9rem}
 .sub-req:first-child{border-top:0}
-.cmp-box{margin-bottom:20px}
-.cmp-box h3{margin:0 0 12px; font-size:1.05rem}
+.subbox > h3{margin:0; font-size:1.15rem}
+.sub-sec{margin:4px 0 -4px; font-size:1rem}
+.sub-renew summary{cursor:pointer; font-weight:900; padding:6px 0}
+.sub-renew[open]{display:flex; flex-direction:column; gap:14px}
 .cmp{width:100%; border-collapse:collapse; font-size:.92rem; table-layout:fixed}
 .cmp th,.cmp td{border-top:1px dashed var(--ink-faint); padding:9px 6px; vertical-align:top; text-align:left; overflow-wrap:anywhere}
 .cmp thead th{border-top:0; border-bottom:2px solid var(--ink); font-weight:900}
@@ -699,7 +701,6 @@ footer a{color:var(--ink); font-weight:700}
   <section id="subscribe">
     <div class="sec-head"><span class="mark" style="background:var(--yellow)"></span><h2 data-i="subTitle"></h2></div>
     <p class="sec-intro" data-i="subIntro"></p>
-    <div class="panel cmp-box" id="subCompare"></div>
     <div class="panel subbox" id="subPanel"></div>
     <div class="panel wa-box" id="waBox">
       <div><h3 data-i="waTitle"></h3><p data-i="waDesc"></p></div>
@@ -859,7 +860,12 @@ const UI = {
   subLocked:  { zh: "訂閱限定", es: "Solo suscripción" },
   subLogin:   { zh: "用 Google 登入", es: "Entrar con Google" },
   subLogout:  { zh: "登出", es: "Salir" },
-  subLoginHint:{ zh: "先用 Google 登入，才能看到你的訂閱狀態和送出申請。", es: "Entra con Google para ver tu estado y enviar una solicitud." },
+  subLoginHint:{ zh: "用 Google 登入，就能看到你的訂閱狀態、送出申請。登入後，老師管理中心也會自動登入。", es: "Entra con Google para ver tu estado y enviar una solicitud. Al entrar, también quedas conectado en el Centro del profesor." },
+  cardTitle:  { zh: "老師管理中心訂閱", es: "Suscripción al Centro del profesor" },
+  cmpTitle2:  { zh: "免費和訂閱的差別", es: "Gratis y con suscripción" },
+  priceTitle: { zh: "價格", es: "Precios" },
+  freeGoHint: { zh: "還沒訂閱也可以先用免費版。", es: "Mientras tanto, puedes usar la versión gratuita." },
+  renewTitle: { zh: "續訂", es: "Renovar" },
   subLoading: { zh: "讀取中…", es: "Cargando…" },
   subOffline: { zh: "訂閱功能暫時無法使用，請稍後再試。", es: "La suscripción no está disponible por ahora. Inténtalo más tarde." },
   subFree:    { zh: "目前沒有有效的訂閱。", es: "Ahora no tienes una suscripción activa." },
@@ -1683,24 +1689,23 @@ const CMP_ROWS = [
   [{ zh: "比比看常錯統計、匯出 CSV", es: "Errores frecuentes en Compara y Adivina, exportar CSV" }, "❌", "✅"],
   [{ zh: "三款遊戲的學習單（列印／PDF）", es: "Fichas de los tres juegos (imprimir / PDF)" }, "❌", "✅"],
 ];
-function renderCompare(){
-  const box = document.getElementById("subCompare"); if (!box) return;
-  box.innerHTML = `<h3>${esc(t(UI.cmpTitle))}</h3>
+function compareHtml(){
+  return `<h3 class="sub-sec">${esc(t(UI.cmpTitle2))}</h3>
     <table class="cmp"><thead><tr><th>${esc(t(UI.cmpFeat))}</th><th>${esc(t(UI.cmpFree))}</th><th>${esc(t(UI.cmpPro))}</th></tr></thead>
     <tbody>${CMP_ROWS.map(r => `<tr><th scope="row">${esc(t(r[0]))}</th><td>${esc(t(r[1]))}</td><td>${esc(t(r[2]))}</td></tr>`).join("")}</tbody></table>
-    <p class="cmp-sum">${esc(t(UI.cmpSum))}</p>
-    <a class="btn btn-jade" href="${CENTER_URL}" target="_blank" rel="noopener">${esc(t(UI.cmpGo))} ▸</a>`;
+    <p class="cmp-sum">${esc(t(UI.cmpSum))}</p>`;
 }
+const goCenterBtn = () => `<a class="btn btn-jade" href="${CENTER_URL}" target="_blank" rel="noopener">${esc(t(UI.cmpGo))} ▸</a>`;
 function renderSub(){
-  renderCompare();
   const box = document.getElementById("subPanel"); if (!box) return;
-  if (isOff("sub-site")) { box.innerHTML = `<p class="sub-msg">🔧 ${esc(t(UI.fixing))}</p>`; return; }
-  if (!SUBST.ready) { box.innerHTML = `<p class="sub-msg">${esc(t(UI.subLoading))}</p>`; return; }
+  const head = `<h3>${esc(t(UI.cardTitle))}</h3>`;
+  if (isOff("sub-site")) { box.innerHTML = `${head}<p class="sub-msg">🔧 ${esc(t(UI.fixing))}</p>`; return; }
+  if (!SUBST.ready) { box.innerHTML = `${head}${compareHtml()}<p class="sub-msg">${esc(t(UI.subLoading))}</p>`; return; }
   const f = SUBST.form, u = SUBST.user;
-  const prices = `<div class="sub-prices">${["month", "year"].map(pl => `<div class="sub-price"><b>${esc(planLabel(pl))}</b>
+  const prices = `<h3 class="sub-sec">${esc(t(UI.priceTitle))}</h3><div class="sub-prices">${["month", "year"].map(pl => `<div class="sub-price"><b>${esc(planLabel(pl))}</b>
       <div>${esc(fmtMoney(subPrice(pl, "TWD"), "TWD"))}　/　${esc(fmtMoney(subPrice(pl, "USD"), "USD"))}</div></div>`).join("")}</div>`;
   if (!u) {
-    box.innerHTML = `${prices}<p class="sub-msg">${esc(t(UI.subLoginHint))}</p>
+    box.innerHTML = `${head}${compareHtml()}${prices}<p class="sub-msg">${esc(t(UI.subLoginHint))}</p>
       <div class="row"><button type="button" class="btn btn-brick" data-sub="login">${esc(t(UI.subLogin))}</button></div>
       ${SUBST.msg ? `<p class="sub-msg">${esc(SUBST.msg)}</p>` : ""}`;
     return;
@@ -1720,9 +1725,7 @@ function renderSub(){
   else if (m.id === "twd") pay = `<p>${esc(t(UI.subPayBank))}</p><p><b>${esc(t(UI.subAmount))}：${esc(fmtMoney(price, "TWD"))}</b></p><button type="button" class="btn btn-bank" data-bank>${esc(t(UI.showBank))}</button>`;
   else pay = `<p>${esc(t(UI.subPayContact))}</p>${igUrl ? `<a class="btn btn-line" href="${esc(igUrl)}" target="_blank" rel="noopener">${esc(t(UI.subContact))} ▸</a>` : ""}`;
   const reqs = SUBST.requests.length ? `<div><b>${esc(t(UI.subMine))}</b>${SUBST.requests.map(r => `<div class="sub-req"><span>${esc(r.when)}</span><span>${esc(planLabel(r.plan))}</span><span>${esc((SUB_METHODS.find(x => x.id === r.method) || { label: { zh: r.method, es: r.method } }).label[lang] || r.method)}</span><b>${esc(t(r.status === "approved" ? UI.reqApproved : r.status === "rejected" ? UI.reqRejected : UI.reqPending))}</b></div>`).join("")}</div>` : "";
-  box.innerHTML = `<div class="row"><span>${esc(u.email)}</span><button type="button" class="btn" data-sub="logout">${esc(t(UI.subLogout))}</button></div>
-    ${state}${prices}
-    <label><span>${esc(t(UI.subPlanLabel))}</span><select data-sub-field="plan">${["month", "year"].map(pl => `<option value="${pl}" ${f.plan === pl ? "selected" : ""}>${esc(planLabel(pl))}</option>`).join("")}</select></label>
+  const form = `<label><span>${esc(t(UI.subPlanLabel))}</span><select data-sub-field="plan">${["month", "year"].map(pl => `<option value="${pl}" ${f.plan === pl ? "selected" : ""}>${esc(planLabel(pl))}</option>`).join("")}</select></label>
     <label><span>${esc(t(UI.subMethodLabel))}</span><select data-sub-field="method">${SUB_METHODS.map(x => `<option value="${x.id}" ${f.method === x.id ? "selected" : ""}>${esc(t(x.label))}</option>`).join("")}</select></label>
     <div class="sub-pay">${pay}</div>
     <label><span>${esc(t(m.id === "paypal" ? UI.subRefPaypal : m.id === "twd" ? UI.subRefTwd : UI.subRefOther))}</span><input type="text" data-sub-field="ref" maxlength="80" autocomplete="off" ${m.id === "twd" ? 'inputmode="numeric"' : ""} value="${esc(f.ref)}"></label>
@@ -1734,7 +1737,14 @@ function renderSub(){
     <label style="flex-direction:row;align-items:center;gap:10px"><input type="checkbox" data-sub-field="ok" ${f.ok ? "checked" : ""} style="width:auto"><span>${esc(t(UI.subConfirm))}</span></label>
     ${priceOk ? "" : `<p class="sub-msg">${esc(t(UI.subNoPrice))}</p>`}
     <div class="row"><button type="button" class="btn btn-brick" id="subSendBtn" data-sub="send" ${canSend && !SUBST.sending ? "" : "disabled"}>${esc(t(SUBST.sending ? UI.subSending : UI.subSend))}</button></div>
+    `;
+  box.innerHTML = `${head}${compareHtml()}${prices}
+    <div class="row"><span>${esc(u.email)}</span><button type="button" class="btn" data-sub="logout">${esc(t(UI.subLogout))}</button></div>
+    ${state}
+    <div class="row">${goCenterBtn()}${active ? "" : `<span>${esc(t(UI.freeGoHint))}</span>`}</div>
+    ${active ? `<details class="sub-renew" ${SUBST.renewOpen ? "open" : ""}><summary>${esc(t(UI.renewTitle))}</summary>${form}</details>` : form}
     ${SUBST.msg ? `<p class="sub-msg">${esc(SUBST.msg)}</p>` : ""}${reqs}`;
+  const rd = box.querySelector(".sub-renew"); if (rd) rd.addEventListener("toggle", () => { SUBST.renewOpen = rd.open; });
 }
 async function refreshSubMe(){
   try {
