@@ -157,6 +157,12 @@ button.ghost{background:#fff;color:var(--ink);border:1px solid var(--line)}
   <div class="subtabs" id="subtabs">
     <button data-subtab="site">🌐 入口網站訂閱</button>
     <button data-subtab="wa">💬 WhatsApp 群組訂閱</button>
+    <button data-subtab="center">👩‍🏫 老師管理中心回饋<span id="cfbCount"></span></button>
+  </div>
+  <div data-subpane="center" hidden>
+    <h2>老師管理中心回饋</h2>
+    <p class="note">老師在「老師管理中心」右上角按「💬 意見回饋」送出的內容。只有你登入後看得到；可以標記已處理、刪除、匯出。 <a class="lnk-btn" href="https://wangchiapin.github.io/profesor/" target="_blank" rel="noopener">開老師管理中心 ↗</a></p>
+    <div class="box" id="cfbBox"><p class="msg">請先到「回饋專區」分頁用 Google 登入。</p></div>
   </div>
   <div data-subpane="wa" hidden>
     <h2>WhatsApp 群組訂閱</h2>
@@ -196,7 +202,7 @@ button.ghost{background:#fff;color:var(--ink);border:1px solid var(--line)}
     put("statsTab", t); if (push) history.replaceState(null, "", "#" + t);
   }
   function showSub(k){
-    if (!["site", "wa"].includes(k)) k = "site";
+    if (!["site", "wa", "center"].includes(k)) k = "site";
     document.querySelectorAll("#subtabs [data-subtab]").forEach(b => b.classList.toggle("on", b.dataset.subtab === k));
     document.querySelectorAll("[data-subpane]").forEach(p => p.hidden = p.dataset.subpane !== k);
     put("statsSub", k);
@@ -733,11 +739,65 @@ try {
           } catch (err) { subMsg = `失敗（${err.code || err.message}）`; drawSub(); }
         });
 
+        /* ---- 老師管理中心回饋（center_feedback；中心 profesor 寫入，只有你讀得到）---- */
+        const cfbBox = document.getElementById("cfbBox"), cfbCount = document.getElementById("cfbCount");
+        const CFB_TYPE = { idea: "建議", bug: "問題", other: "其他" };
+        const CFB_LANG = { tc: "繁中", sc: "簡中", es: "西文", en: "英文" };
+        const cfbPage = h => { const m = String(h || "").replace(/^#\/?/, "").split("/"); return ({ home: "首頁", classes: "班級", class: "班級頁", settings: "遊戲設定", bank: "句庫編輯", print: "學習單" })[m[0]] || h; };
+        let CFB = [], cfbFilter = "open";
+        function drawCfb(){
+          const open = CFB.filter(x => !x.done).length;
+          cfbCount.textContent = open ? `（${open}）` : "";
+          const list = CFB.filter(x => cfbFilter === "all" || (cfbFilter === "open" ? !x.done : x.type === cfbFilter));
+          cfbBox.innerHTML = `<div class="fb-bar">${[["open","未處理"],["all","全部"],["idea","建議"],["bug","問題"],["other","其他"]].map(([k,l]) => `<button data-cf="${k}" class="${k===cfbFilter?"on":""}">${l}</button>`).join("")}
+              <span class="sp"></span><button id="cfbReload">重新整理</button><button id="cfbCsv">匯出 CSV</button></div>` +
+            (list.length ? list.map(x => `<div class="fbi ${x.done ? "done" : ""}">
+              <span class="acts"><button data-cdone="${esc(x.id)}">${x.done ? "改回未處理" : "✓ 已處理"}</button><button data-cdel="${esc(x.id)}">刪除</button></span>
+              <span class="tag ${x.type === "bug" ? "pinyin" : x.type === "idea" ? "game" : ""}">${esc(CFB_TYPE[x.type] || x.type)}</span>
+              <b>${esc(x.email || "（沒有 email）")}</b>
+              <br><small>${esc(x.when)} · ${esc(CFB_LANG[x.lang] || x.lang || "")}${x.page ? " · 在「" + esc(cfbPage(x.page)) + "」頁" : ""}</small>
+              <p>${esc(x.message)}</p></div>`).join("") : `<p class="msg">沒有符合的回饋。</p>`);
+        }
+        async function loadCfb(){
+          cfbBox.innerHTML = `<p class="msg">讀取中…</p>`;
+          try {
+            const snap = await getDocs(query(collection(db, "center_feedback"), orderBy("createdAt", "desc"), limit(500)));
+            CFB = snap.docs.map(d => { const x = d.data(); return { id: d.id, ...x,
+              when: x.createdAt ? x.createdAt.toDate().toLocaleString("zh-TW", { hour12: false }) : "" }; });
+            drawCfb();
+          } catch (err) {
+            cfbCount.textContent = "";
+            cfbBox.innerHTML = `<p class="msg">${err.code === "timeout" ? esc(explain(err)) : `讀不到老師回饋（${esc(err.code || err.message)}）。請確認登入的是你的帳號，且已貼上步驟 5-1 的規則（center_feedback）。`}</p>`;
+          }
+        }
+        cfbBox.addEventListener("click", async e => {
+          const f = e.target.closest("[data-cf]");
+          if (f) { cfbFilter = f.dataset.cf; drawCfb(); return; }
+          if (e.target.id === "cfbReload") { loadCfb(); return; }
+          if (e.target.id === "cfbCsv") {
+            const q = v => '"' + String(v ?? "").replace(/"/g, '""') + '"';
+            const rows = [["時間","類型","email","語言","頁面","內容","已處理"]]
+              .concat(CFB.map(x => [x.when, CFB_TYPE[x.type] || x.type, x.email, CFB_LANG[x.lang] || x.lang, cfbPage(x.page), x.message, x.done ? "是" : ""]));
+            const blob = new Blob(["\ufeff" + rows.map(r => r.map(q).join(",")).join("\r\n")], { type: "text/csv;charset=utf-8" });
+            const a = document.createElement("a"); a.href = URL.createObjectURL(blob);
+            a.download = `老師中心回饋-${new Date().toISOString().slice(0,10)}.csv`; a.click();
+            return;
+          }
+          try {
+            const d = e.target.closest("[data-cdone]"), del = e.target.closest("[data-cdel]");
+            if (d) { const x = CFB.find(y => y.id === d.dataset.cdone); await updateDoc(doc(db, "center_feedback", x.id), { done: !x.done }); x.done = !x.done; drawCfb(); }
+            else if (del) {
+              if (!confirm("確定要刪除這則回饋？")) return;
+              await deleteDoc(doc(db, "center_feedback", del.dataset.cdel)); CFB = CFB.filter(y => y.id !== del.dataset.cdel); drawCfb();
+            }
+          } catch (err) { alert("失敗：" + (err.code || err.message)); }
+        });
+
         onAuthStateChanged(auth, user => {
           me = user || null;
           drawSw();
-          if (user) { loadNotes(user); loadFeedback(); loadSub(); }
-          else { loginUI(); fbBox.innerHTML = `<p class="msg">請先到「回饋專區」分頁用 Google 登入。</p>`; SUB = null; subBox.innerHTML = `<p class="msg">請先到「回饋專區」分頁用 Google 登入。</p>`; }
+          if (user) { loadNotes(user); loadFeedback(); loadSub(); loadCfb(); }
+          else { loginUI(); fbBox.innerHTML = `<p class="msg">請先到「回饋專區」分頁用 Google 登入。</p>`; SUB = null; subBox.innerHTML = `<p class="msg">請先到「回饋專區」分頁用 Google 登入。</p>`; CFB = []; cfbCount.textContent = ""; cfbBox.innerHTML = `<p class="msg">請先到「回饋專區」分頁用 Google 登入。</p>`; }
           loadVotes();
           loadSw();
         });
