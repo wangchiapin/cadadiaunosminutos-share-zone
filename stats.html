@@ -52,6 +52,12 @@ button{font:inherit;font-weight:700;padding:8px 16px;border:0;border-radius:8px;
 .fbi small{color:var(--soft);font-size:.78rem}
 .fbi .acts{float:right;display:flex;gap:6px}
 .fbi .acts button{font-size:.75rem;padding:2px 8px;background:#fff;color:var(--ink);border:1px solid var(--line)}
+.bbr-ppl{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0 2px}
+.bbr-ppl figure{margin:0;text-align:center;font-size:.72rem;color:var(--soft)}
+.bbr-ppl img{display:block;width:56px;height:70px;object-fit:cover;object-position:top;border-radius:8px;background:#f3f6fa;border:1px solid var(--line)}
+.bbr-tb{margin:6px 0 0;font-size:.9rem;line-height:1.6}
+.bbr-tb b{display:inline-block;min-width:4.5em;color:var(--soft);font-weight:700}
+.bbr-tb .no{color:#c0392b}
 .note .del{float:right;font-size:.75rem;padding:2px 8px;background:#fff;color:var(--brick);border:1px solid var(--line)}
 .vform{background:#fff;border:1px dashed var(--line);border-radius:10px;padding:10px;margin:10px 0}
 .vf-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
@@ -158,6 +164,12 @@ button.ghost{background:#fff;color:var(--ink);border:1px solid var(--line)}
     <button data-subtab="site">🌐 入口網站訂閱</button>
     <button data-subtab="wa">💬 WhatsApp 群組訂閱</button>
     <button data-subtab="center">👩‍🏫 老師管理中心回饋<span id="cfbCount"></span></button>
+    <button data-subtab="bbk">🚩 比比看題目回報<span id="bbrCount"></span></button>
+  </div>
+  <div data-subpane="bbk" hidden>
+    <h2>比比看題目回報</h2>
+    <p class="note">學生在比比看每題答完後按「🚩 這題怪怪的」送出的回報（一般模式、班級連結都可以送）。只有你登入後看得到；可以標記已處理、刪除、匯出。 <a class="lnk-btn" href="https://wangchiapin.github.io/compara-y-adivina/" target="_blank" rel="noopener">開比比看 ↗</a></p>
+    <div class="box" id="bbrBox"><p class="msg">請先到「回饋專區」分頁用 Google 登入。</p></div>
   </div>
   <div data-subpane="center" hidden>
     <h2>老師管理中心回饋</h2>
@@ -202,7 +214,7 @@ button.ghost{background:#fff;color:var(--ink);border:1px solid var(--line)}
     put("statsTab", t); if (push) history.replaceState(null, "", "#" + t);
   }
   function showSub(k){
-    if (!["site", "wa", "center"].includes(k)) k = "site";
+    if (!["site", "wa", "center", "bbk"].includes(k)) k = "site";
     document.querySelectorAll("#subtabs [data-subtab]").forEach(b => b.classList.toggle("on", b.dataset.subtab === k));
     document.querySelectorAll("[data-subpane]").forEach(p => p.hidden = p.dataset.subpane !== k);
     put("statsSub", k);
@@ -793,11 +805,69 @@ try {
           } catch (err) { alert("失敗：" + (err.code || err.message)); }
         });
 
+        /* ---- 比比看題目回報（bbk_reports；學生在比比看按「🚩 這題怪怪的」寫入，只有你讀得到）---- */
+        const bbrBox = document.getElementById("bbrBox"), bbrCount = document.getElementById("bbrCount");
+        const BBR_WHY = { wrong: "答案好像不對", image: "圖看不清楚", other: "其他" };
+        const BBR_TYPE = { decode: "看句子找人", tf: "對錯題", pick: "看圖選句子", more: "選人：誰比較＿？", whobi: "選人：誰比 A ＿？", biwho: "選人：A 比誰＿？", fill: "選比較詞", adj: "選形容詞", chain: "連鎖解碼", most: "選人：誰最＿？" };
+        const BBR_DIM = { height: "身高", age: "年齡", build: "胖瘦", hair: "頭髮長短", eyes: "眼睛大小", nose: "鼻子大小", muscle: "壯不壯", tex: "髮質（直／捲）", skin: "膚色" };
+        const BBR_LANG = { es: "西文", en: "英文", zh: "只有中文" };
+        const BBR_IMG = "https://wangchiapin.github.io/compara-y-adivina/img/";
+        let BBR = [], bbrFilter = "open";
+        function drawBbr(){
+          const open = BBR.filter(x => !x.done).length;
+          bbrCount.textContent = open ? `（${open}）` : "";
+          const list = BBR.filter(x => bbrFilter === "all" || (bbrFilter === "open" ? !x.done : x.why === bbrFilter));
+          bbrBox.innerHTML = `<div class="fb-bar">${[["open","未處理"],["all","全部"],["wrong","答案不對"],["image","圖不清楚"],["other","其他"]].map(([k,l]) => `<button data-bf="${k}" class="${k===bbrFilter?"on":""}">${l}</button>`).join("")}
+              <span class="sp"></span><button id="bbrReload">重新整理</button><button id="bbrCsv">匯出 CSV</button></div>` +
+            (list.length ? list.map(x => `<div class="fbi ${x.done ? "done" : ""}">
+              <span class="acts"><button data-bdone="${esc(x.id)}">${x.done ? "改回未處理" : "✓ 已處理"}</button><button data-bdel="${esc(x.id)}">刪除</button></span>
+              <span class="tag ${x.why === "wrong" ? "pinyin" : x.why === "image" ? "game" : ""}">${esc(BBR_WHY[x.why] || x.why)}</span>
+              <b>${esc(BBR_TYPE[x.type] || x.type)}</b> · ${esc(BBR_DIM[x.d] || x.d)}${x.f ? ` <small>(${esc(x.f)})</small>` : ""}
+              <br><small>${esc(x.when)} · 第 ${esc(x.lv)} 關${x.r ? " · 老師範圍 " + esc(x.r) : " · 一般模式"} · ${esc(BBR_LANG[x.lang] || x.lang || "")} · ${esc(x.ver || "")}</small>
+              <div class="bbr-ppl">${(x.ids || []).map(id => `<figure><img src="${BBR_IMG}${encodeURIComponent(id)}.webp" alt="${esc(id)}" loading="lazy">${esc(id)}</figure>`).join("")}</div>
+              <div class="bbr-tb"><div><b>題目</b>${esc(x.q)}</div><div><b>正確答案</b>${esc(x.ans)}</div><div><b>學生選的</b><span class="${x.pick && x.pick.split(" → ").pop() !== x.ans ? "no" : ""}">${esc(x.pick || "—")}</span></div></div>
+              ${x.note ? `<p>💬 ${esc(x.note)}</p>` : ""}</div>`).join("") : `<p class="msg">沒有符合的回報。</p>`);
+        }
+        async function loadBbr(){
+          bbrBox.innerHTML = `<p class="msg">讀取中…</p>`;
+          try {
+            const snap = await getDocs(query(collection(db, "bbk_reports"), orderBy("at", "desc"), limit(500)));
+            BBR = snap.docs.map(d => { const x = d.data(); return { id: d.id, ...x,
+              when: x.at ? x.at.toDate().toLocaleString("zh-TW", { hour12: false }) : "" }; });
+            drawBbr();
+          } catch (err) {
+            bbrCount.textContent = "";
+            bbrBox.innerHTML = `<p class="msg">${err.code === "timeout" ? esc(explain(err)) : `讀不到題目回報（${esc(err.code || err.message)}）。請確認登入的是你的帳號，且已貼上新版規則（bbk_reports）。`}</p>`;
+          }
+        }
+        bbrBox.addEventListener("click", async e => {
+          const f = e.target.closest("[data-bf]");
+          if (f) { bbrFilter = f.dataset.bf; drawBbr(); return; }
+          if (e.target.id === "bbrReload") { loadBbr(); return; }
+          if (e.target.id === "bbrCsv") {
+            const q = v => '"' + String(v ?? "").replace(/"/g, '""') + '"';
+            const rows = [["時間","原因","留言","題型","特徵","句型","人物","題目","正確答案","學生選的","關卡","範圍碼","語言","版本","已處理"]]
+              .concat(BBR.map(x => [x.when, BBR_WHY[x.why] || x.why, x.note, BBR_TYPE[x.type] || x.type, BBR_DIM[x.d] || x.d, x.f, (x.ids || []).join(" "), x.q, x.ans, x.pick, x.lv, x.r, BBR_LANG[x.lang] || x.lang, x.ver, x.done ? "是" : ""]));
+            const blob = new Blob(["\ufeff" + rows.map(r => r.map(q).join(",")).join("\r\n")], { type: "text/csv;charset=utf-8" });
+            const a = document.createElement("a"); a.href = URL.createObjectURL(blob);
+            a.download = `比比看題目回報-${new Date().toISOString().slice(0,10)}.csv`; a.click();
+            return;
+          }
+          try {
+            const d = e.target.closest("[data-bdone]"), del = e.target.closest("[data-bdel]");
+            if (d) { const x = BBR.find(y => y.id === d.dataset.bdone); await updateDoc(doc(db, "bbk_reports", x.id), { done: !x.done }); x.done = !x.done; drawBbr(); }
+            else if (del) {
+              if (!confirm("確定要刪除這則回報？")) return;
+              await deleteDoc(doc(db, "bbk_reports", del.dataset.bdel)); BBR = BBR.filter(y => y.id !== del.dataset.bdel); drawBbr();
+            }
+          } catch (err) { alert("失敗：" + (err.code || err.message)); }
+        });
+
         onAuthStateChanged(auth, user => {
           me = user || null;
           drawSw();
-          if (user) { loadNotes(user); loadFeedback(); loadSub(); loadCfb(); }
-          else { loginUI(); fbBox.innerHTML = `<p class="msg">請先到「回饋專區」分頁用 Google 登入。</p>`; SUB = null; subBox.innerHTML = `<p class="msg">請先到「回饋專區」分頁用 Google 登入。</p>`; CFB = []; cfbCount.textContent = ""; cfbBox.innerHTML = `<p class="msg">請先到「回饋專區」分頁用 Google 登入。</p>`; }
+          if (user) { loadNotes(user); loadFeedback(); loadSub(); loadCfb(); loadBbr(); }
+          else { loginUI(); fbBox.innerHTML = `<p class="msg">請先到「回饋專區」分頁用 Google 登入。</p>`; SUB = null; subBox.innerHTML = `<p class="msg">請先到「回饋專區」分頁用 Google 登入。</p>`; CFB = []; cfbCount.textContent = ""; cfbBox.innerHTML = `<p class="msg">請先到「回饋專區」分頁用 Google 登入。</p>`; BBR = []; bbrCount.textContent = ""; bbrBox.innerHTML = `<p class="msg">請先到「回饋專區」分頁用 Google 登入。</p>`; }
           loadVotes();
           loadSw();
         });
