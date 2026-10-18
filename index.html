@@ -38,11 +38,22 @@ const CONFIG = {
       color: "brick",                   // brick 磚紅 / jade 玉綠 / gold 金
       title: { zh: "翻牌記憶", es: "Memorama" },
       desc: {
-        zh: "把圖片和中文詞配對，記住日常物品的說法。可選繁體或簡體，拼音可開關。",
-        es: "Empareja imágenes con palabras en chino. Elige caracteres tradicionales o simplificados."
+        zh: "把圖片和中文詞配對，記住日常物品的說法。可選繁體或簡體，拼音可開關，還有前 10 名排行榜可以挑戰。",
+        es: "Empareja imágenes con palabras en chino. Elige caracteres tradicionales o simplificados, activa o desactiva el pinyin y compite en el ranking Top 10."
       },
       tags: [{ zh: "詞彙", es: "Vocabulario" }, { zh: "記憶", es: "Memoria" }],
       url: "https://wangchiapin.github.io/Memorama/"
+    },
+    {
+      id: "numeros",
+      glyph: "數", color: "jade",
+      title: { zh: "數字聽力練習", es: "Práctica de números" },
+      desc: {
+        zh: "聽中文念出數字，輸入你聽到的數字，每回合 1 分鐘，範圍 0 到 9999。可以調整語速，練到一聽就懂。",
+        es: "Escucha un número en chino y escribe el que oigas. Cada ronda dura 1 minuto y los números van de 0 a 9999. Con velocidad ajustable."
+      },
+      tags: [{ zh: "數字", es: "Números" }, { zh: "聽力", es: "Comprensión" }],
+      url: "https://wangchiapin.github.io/numeros/"
     },
     {
       id: "colores",
@@ -56,12 +67,23 @@ const CONFIG = {
       url: "https://wangchiapin.github.io/pop-colores-numeros/"
     },
     {
+      id: "compara",
+      glyph: "比", color: "brick",
+      title: { zh: "比比看", es: "Compara y Adivina" },
+      desc: {
+        zh: "看圖中的人物，用「比、比較、一樣、沒有那麼」等比較句選出正確的人。有三個難度，每回合 10 題，老師也可以自訂練習範圍。",
+        es: "Observa a los personajes y elige a la persona correcta usando comparativos en chino (比, 比較, 一樣, 沒有那麼…). Tres niveles, 10 preguntas por ronda; los profesores pueden elegir el alcance de la práctica."
+      },
+      tags: [{ zh: "比較句", es: "Comparativos" }, { zh: "語法", es: "Gramática" }],
+      url: "https://wangchiapin.github.io/compara-y-adivina/"
+    },
+    {
       id: "taiwan-life",
       glyph: "台", color: "jade",
-      title: { zh: "台灣生活情境對話", es: "Conversaciones de la vida en Taiwán" },
+      title: { zh: "台灣生存日記", es: "Sobrevive en Taiwán" },
       desc: {
-        zh: "一系列台灣日常情境的對話遊戲：飲料店、訂位、早餐店、診所、捷運、夜市等，一步步用中文完成。",
-        es: "Una serie de juegos de conversación de la vida diaria en Taiwán: tienda de bebidas, reservar mesa, desayuno, clínica, metro, mercado nocturno y más."
+        zh: "在地圖上走進台灣的日常場景，一步步用中文完成任務：飲料店、訂位、早餐店、超商、夜市、診所、捷運等 10 個情境，還會陸續新增。介面有繁體、簡體、西班牙文、英文。",
+        es: "Recorre el mapa y entra en escenas de la vida diaria en Taiwán para completar misiones en chino: tienda de bebidas, reservar mesa, desayuno, tienda de conveniencia, mercado nocturno, clínica, metro y más (10 escenas, y seguirán llegando). Interfaz en chino tradicional, simplificado, español e inglés."
       },
       tags: [{ zh: "對話", es: "Diálogo" }, { zh: "生活", es: "Vida diaria" }],
       url: "https://wangchiapin.github.io/taiwan-life/"
@@ -71,10 +93,10 @@ const CONFIG = {
       glyph: "跑", color: "gold",
       title: { zh: "跑吧！漢字", es: "¡Corre, Hanzi!" },
       desc: {
-        zh: "一路奔跑收集正確的漢字金幣，閃開干擾字，挑戰魔王關卡。",
-        es: "Corre y recoge las monedas con el carácter correcto. ¡Evita las trampas y vence al jefe!"
+        zh: "一路奔跑，照順序吃下詞語，拼出完整的句子。魔王關卡要聽整句語音。有簡單、普通、困難三種難度，成績可上排行榜。",
+        es: "Corre y recoge las palabras en el orden correcto para formar la frase completa. En el nivel del jefe tendrás que escuchar la frase entera. Tres dificultades (fácil, normal y difícil) y ranking."
       },
-      tags: [{ zh: "漢字", es: "Caracteres" }, { zh: "反應", es: "Reflejos" }],
+      tags: [{ zh: "句子", es: "Frases" }, { zh: "漢字", es: "Caracteres" }, { zh: "反應", es: "Reflejos" }],
       url: "https://wangchiapin.github.io/corre/"
     },
     {
@@ -82,10 +104,10 @@ const CONFIG = {
       glyph: "收", color: "jade",
       title: { zh: "收納小達人", es: "Ordena el armario" },
       desc: {
-        zh: "把東西拖到正確的位置：上面、下面、裡面、旁邊，邊玩邊學方位詞。",
-        es: "Arrastra cada cosa a su lugar: arriba, abajo, dentro, al lado. Aprende las palabras de posición."
+        zh: "聽中文指示，把東西拖到正確的位置：上面、下面、裡面、旁邊，邊玩邊學方位詞。初學者可以打開指令文字幫忙。",
+        es: "Escucha las instrucciones en chino y arrastra cada cosa a su lugar: arriba, abajo, dentro, al lado. Aprende las palabras de posición; los principiantes pueden mostrar el texto de la instrucción."
       },
-      tags: [{ zh: "方位", es: "Posición" }, { zh: "詞彙", es: "Vocabulario" }],
+      tags: [{ zh: "方位", es: "Posición" }, { zh: "聽力", es: "Comprensión" }, { zh: "詞彙", es: "Vocabulario" }],
       url: "https://wangchiapin.github.io/Ordena-el-Armario/"
     },
     {
@@ -93,8 +115,8 @@ const CONFIG = {
       glyph: "買", color: "brick",
       title: { zh: "幫媽媽買東西", es: "Compras para mamá" },
       desc: {
-        zh: "拿著錢去買東西，算一算要找多少錢，練習數字和購物對話。",
-        es: "Ve de compras con dinero de verdad, calcula el cambio y practica números y diálogos."
+        zh: "（即將推出）拿著錢去買東西，算一算要找多少錢，練習數字和購物對話。",
+        es: "(Próximamente) Ve de compras con dinero virtual, calcula el cambio y practica números y diálogos."
       },
       tags: [{ zh: "數字", es: "Números" }, { zh: "對話", es: "Diálogo" }],
       url: ""
@@ -109,17 +131,6 @@ const CONFIG = {
       },
       tags: [{ zh: "方向", es: "Direcciones" }, { zh: "聽力", es: "Comprensión" }],
       url: "https://wangchiapin.github.io/El-Perrito-Busca-el-Tesoro/"
-    },
-    {
-      id: "numeros",
-      glyph: "數", color: "jade",
-      title: { zh: "數字聽說練習", es: "Práctica de números" },
-      desc: {
-        zh: "聽數字、說數字，可調整速度，練到一聽就懂。",
-        es: "Escucha y di números en chino, con velocidad ajustable."
-      },
-      tags: [{ zh: "數字", es: "Números" }, { zh: "聽說", es: "Escuchar y hablar" }],
-      url: "https://wangchiapin.github.io/numeros/"
     }
   ],
 
@@ -816,8 +827,8 @@ const UI = {
   ctaTools:   { zh: "使用小工具", es: "Ver las herramientas" },
   ctaFont:    { zh: "下載拼音字體", es: "Descargar la fuente" },
   gamesTitle: { zh: "中文小遊戲", es: "Juegos para aprender chino" },
-  gamesIntro: { zh: "全部免費，打開瀏覽器就能玩，手機也可以。介面是西班牙文，中文附台灣讀音拼音。",
-                es: "Todos gratis, directamente en el navegador, también en el móvil. Chino con pinyin según la pronunciación de Taiwán." },
+  gamesIntro: { zh: "全部免費，打開瀏覽器就能玩，手機也可以。中文內容附台灣讀音拼音。",
+                es: "Todos gratis, directamente en el navegador, también en el móvil. El chino incluye pinyin según la pronunciación de Taiwán." },
   navTools:   { zh: "小工具", es: "Herramientas" },
   toolsTitle: { zh: "教學小工具", es: "Herramientas para enseñar" },
   toolsIntro: { zh: "給華語老師的小幫手，打開瀏覽器就能用，手機也可以。",
