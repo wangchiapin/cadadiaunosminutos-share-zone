@@ -15,6 +15,10 @@
    - 每個文字欄位都是 { zh: "中文", es: "Español" }
    - 網址留空 "" → 該項目會顯示「即將推出 / 尚未設定」
    - 要新增遊戲：複製一整段 { ... } 貼到 games 清單裡，記得逗號
+   - ★ 規則：每個遊戲都必須有 guide（詳細說明）——先讀該遊戲的 repo 程式再寫，
+     內容含 learn 練什麼／level 適合程度／steps 怎麼玩／features 設定與功能／teacher 給老師／tip 小提醒，
+     中西文都要。steps 每一步可以加 img: "img/xxx.jpg" 放截圖。還沒上線的遊戲加 soon: true。
+     沒有 guide 的遊戲不會出現「詳細說明」按鈕，瀏覽器主控台會出現提醒。
    ===================================================================== */
 const CONFIG = {
 
@@ -38,11 +42,38 @@ const CONFIG = {
       color: "brick",                   // brick 磚紅 / jade 玉綠 / gold 金
       title: { zh: "翻牌記憶", es: "Memorama" },
       desc: {
-        zh: "把圖片和中文詞配對，記住日常物品的說法。可選繁體或簡體，拼音可開關，還有前 10 名排行榜可以挑戰。",
-        es: "Empareja imágenes con palabras en chino. Elige caracteres tradicionales o simplificados, activa o desactiva el pinyin y compite en el ranking Top 10."
+        zh: "把圖片和中文詞配對，記住日常物品的說法。可選繁體或簡體，可顯示拼音或注音，還有前 10 名排行榜可以挑戰。",
+        es: "Empareja imágenes con palabras en chino. Elige caracteres tradicionales o simplificados, muestra pinyin o zhuyin y compite en el ranking Top 10."
       },
       tags: [{ zh: "詞彙", es: "Vocabulario" }, { zh: "記憶", es: "Memoria" }],
-      url: "https://wangchiapin.github.io/Memorama/"
+      url: "https://wangchiapin.github.io/Memorama/",
+      guide: {
+        learn: { zh: "50 個日常生活物品的中文說法，例如手機、床、蘋果、筷子、雨傘、鑰匙。每局隨機抽 18 組（36 張牌）。",
+                 es: "Cómo se dicen en chino 50 objetos de la vida diaria: móvil, cama, manzana, palillos, paraguas, llaves… En cada partida salen 18 parejas al azar (36 cartas)." },
+        level: { zh: "入門程度就能玩，不需要先會認字。", es: "Desde nivel principiante; no hace falta saber leer caracteres." },
+        steps: [
+          { zh: "<b>輸入名字</b>，選擇模式：一個人玩、兩人同一台輪流，或連線（對戰或一起玩，用 4 位數房間代碼）。",
+            es: "<b>Escribe tu nombre</b> y elige el modo: individual, dos jugadores en el mismo dispositivo, o en línea (contra otra persona o en equipo, con un código de sala de 4 cifras)." },
+          { zh: "<b>翻兩張牌</b>：一張是圖片，一張是中文詞。每翻一張，都會用台灣讀音唸出那個詞。",
+            es: "<b>Da la vuelta a dos cartas</b>: una es una imagen y la otra una palabra en chino. Cada carta se pronuncia en voz alta con acento de Taiwán." },
+          { zh: "<b>配對成功</b>，兩張牌就會留著；配錯會自動蓋回去，也可以直接點下一張，不用等。",
+            es: "<b>Si forman pareja</b>, se quedan abiertas; si no, se vuelven a tapar solas, o puedes tocar otra carta sin esperar." },
+          { zh: "<b>18 組都配完</b>就結束。旁邊的紀錄會列出翻過的詞、拼音和意思，可以拿來複習。",
+            es: "<b>La partida termina</b> cuando encuentras las 18 parejas. El registro lateral muestra las palabras, su pinyin y su significado para repasar." }
+        ],
+        features: [
+          { zh: "字體：簡體（預設）或繁體。", es: "Caracteres: simplificados (por defecto) o tradicionales." },
+          { zh: "發音標示：不顯示、拼音或注音，玩到一半也可以換。", es: "Pronunciación: sin ayuda, pinyin o zhuyin; se puede cambiar en cualquier momento." },
+          { zh: "介面語言：西班牙文或英文。", es: "Idioma de la interfaz: español o inglés." },
+          { zh: "牌背可以顯示編號，方便兩人玩的時候說「我要翻 12 號」。", es: "Las cartas pueden mostrar números en el reverso, útil para jugar en pareja («¡la 12!»)." },
+          { zh: "分數看嘗試次數和時間，越少次、越快越高分。單人模式的成績會上前 10 名排行榜。", es: "La puntuación depende de los intentos y del tiempo: menos intentos y más rapidez, más puntos. En modo individual entras en el ranking Top 10." }
+        ],
+        teacher: [
+          { zh: "上課時可以用「連線一起玩」，老師和學生各用一台裝置翻牌。", es: "En clase puedes usar el modo «en equipo» en línea: el profesor y el alumno juegan cada uno desde su dispositivo." },
+          { zh: "請學生翻到牌時跟著唸一次，練發音。", es: "Pide al alumno que repita cada palabra en voz alta al darle la vuelta." }
+        ],
+        tip: { zh: "如果聽不到聲音，代表裝置沒有中文語音，遊戲會提示你安裝「中文（台灣）」語音。", es: "Si no se oye nada, tu dispositivo no tiene voz en chino; el juego te indicará cómo instalar la voz «chino (Taiwán)»." }
+      }
     },
     {
       id: "numeros",
@@ -53,7 +84,29 @@ const CONFIG = {
         es: "Escucha un número en chino y escribe el que oigas. Cada ronda dura 1 minuto y los números van de 0 a 9999. Con velocidad ajustable."
       },
       tags: [{ zh: "數字", es: "Números" }, { zh: "聽力", es: "Comprensión" }],
-      url: "https://wangchiapin.github.io/numeros/"
+      url: "https://wangchiapin.github.io/numeros/",
+      guide: {
+        learn: { zh: "聽懂 0 到 9999 的中文數字，特別是「兩百、兩千」、「十五」這些容易聽錯的說法。大部分題目是三位數和四位數。",
+                 es: "Entender números en chino del 0 al 9999, sobre todo formas que confunden, como «兩百 / 兩千» (200 / 2000) o «十五» (15). La mayoría son de tres y cuatro cifras." },
+        level: { zh: "學過數字之後的練習，適合入門到初級。", es: "Para practicar después de aprender los números; nivel principiante a básico." },
+        steps: [
+          { zh: "<b>按「Modo Escucha」</b>開始，一回合 1 分鐘。", es: "<b>Pulsa «Modo Escucha»</b> para empezar. Cada ronda dura 1 minuto." },
+          { zh: "<b>聽數字</b>，用阿拉伯數字輸入你聽到的數字，按 Enter 或「Confirmar」。", es: "<b>Escucha el número</b> y escríbelo con cifras; pulsa Enter o «Confirmar»." },
+          { zh: "<b>馬上看結果</b>：答對打勾，答錯會顯示正確答案，然後自動出下一題。沒聽清楚可以按「🔊 Escuchar de nuevo」重聽，不限次數。", es: "<b>Ves el resultado al instante</b>: ✓ si aciertas, o la respuesta correcta si fallas, y pasa solo al siguiente. Si no lo oíste bien, pulsa «🔊 Escuchar de nuevo» las veces que quieras." },
+          { zh: "<b>時間到</b>會顯示答對、答錯和總題數，還有每種語速各答對幾題。", es: "<b>Al acabar el tiempo</b> verás aciertos, errores, total de preguntas y cuántas acertaste con cada velocidad." }
+        ],
+        features: [
+          { zh: "語速四段：Súper Fácil（非常慢）、Lento、Normal、Rápido，作答時隨時可以換。", es: "Cuatro velocidades: Súper Fácil, Lento, Normal y Rápido; puedes cambiarla mientras juegas." },
+          { zh: "答錯不扣分，可以放心多試。", es: "Los errores no restan puntos: prueba sin miedo." },
+          { zh: "手機上會自動跳出數字鍵盤。", es: "En el móvil aparece directamente el teclado numérico." },
+          { zh: "沒有排行榜，也不用登入或輸入名字。", es: "No tiene ranking ni hace falta registrarse o escribir tu nombre." }
+        ],
+        teacher: [
+          { zh: "很適合當作上課前的暖身，或給學生回家每天練 1 分鐘。", es: "Ideal como calentamiento al empezar la clase o como práctica diaria de 1 minuto en casa." },
+          { zh: "可以請學生截圖結果傳給你，比較每週的進步。", es: "Puedes pedir a tus alumnos que te envíen una captura del resultado para ver su progreso cada semana." }
+        ],
+        tip: { zh: "語音是瀏覽器內建的，聽起來可能有點像機器人。建議用 Chrome 或 Safari，並確認裝置有中文語音。", es: "La voz la genera el navegador y puede sonar algo robótica. Usa Chrome o Safari y comprueba que tu dispositivo tenga voz en chino." }
+      }
     },
     {
       id: "colores",
@@ -64,29 +117,111 @@ const CONFIG = {
         es: "Escucha un número y elige su color, o escucha un color y escribe el número. Practica colores y números en chino; los profesores pueden crear sus propios retos."
       },
       tags: [{ zh: "顏色", es: "Colores" }, { zh: "數字", es: "Números" }, { zh: "聽力", es: "Comprensión" }],
-      url: "https://wangchiapin.github.io/pop-colores-numeros/"
+      url: "https://wangchiapin.github.io/pop-colores-numeros/",
+      guide: {
+        learn: { zh: "中文的顏色和數字。基本色有紅、黃、藍、綠、黑、白、灰、橘、紫 9 種；進階色有 14 種，多了粉紅、咖啡、深淺灰、深淺藍、深淺綠。數字可選 0–999 或 0–9999。",
+                 es: "Los colores y los números en chino. Colores básicos (9): rojo, amarillo, azul, verde, negro, blanco, gris, naranja y morado. Colores avanzados (14): añaden rosa, marrón y tonos claros y oscuros de gris, azul y verde. Números de 0 a 999 o de 0 a 9999." },
+        level: { zh: "入門到初級。用基本色和 0–999 開始，熟了再換進階色和四位數。", es: "Principiante a básico. Empieza con colores básicos y 0–999; cuando te sientas seguro, pasa a los avanzados y a cuatro cifras." },
+        steps: [
+          { zh: "<b>選玩法</b>：A「聽數字，選顏色」或 B「聽顏色，輸入數字」，再選格數（20、30 或 42 格）、顏色組和數字範圍。",
+            es: "<b>Elige el modo</b>: A «escucha un número y elige el color» o B «escucha un color y escribe el número». Después elige el tamaño (20, 30 o 42 casillas), los colores y el rango de números." },
+          { zh: "<b>玩法 A</b>：聽到一個數字，找到寫著那個數字的方塊，點下面跟它一樣顏色的按鈕。",
+            es: "<b>Modo A</b>: escucha un número, busca la casilla con ese número y pulsa el botón de su color." },
+          { zh: "<b>玩法 B</b>：聽到一個顏色，用畫面上的<b>中文數字鍵</b>（零到九、兩、十、百、千）打出任一個那個顏色方塊上的數字，再按「確認」。像「三百五」這種省略說法也算對。",
+            es: "<b>Modo B</b>: escucha un color y, con el <b>teclado de números chinos</b> de la pantalla (零–九, 兩, 十, 百, 千), escribe el número de cualquier casilla de ese color y pulsa «確認». Las formas abreviadas como «三百五» también valen." },
+          { zh: "<b>答對方塊就消掉</b>。答錯扣 5 分、少一顆愛心（一共 5 顆）。玩法 A 同一題錯 3 次，答案會閃一下提示你。",
+            es: "<b>Si aciertas, la casilla desaparece.</b> Cada error resta 5 puntos y un corazón (tienes 5). En el modo A, tras 3 fallos en la misma pregunta, la respuesta parpadea para ayudarte." },
+          { zh: "<b>清空整個板子或愛心用完</b>就結束。數字越長、越快答對、連續答對，分數越高。",
+            es: "<b>La partida termina</b> al vaciar el tablero o quedarte sin corazones. Más puntos con números largos, respuestas rápidas y rachas de aciertos." }
+        ],
+        features: [
+          { zh: "⚙️ 設定：繁體或簡體、介面（中文＋西文、中文＋英文、只有中文）、拼音／注音／兩個都顯示／關閉、語速慢／正常／快。", es: "⚙️ Ajustes: tradicional o simplificado; interfaz (chino + español, chino + inglés o solo chino); pinyin, zhuyin, ambos o ninguno; velocidad lenta, normal o rápida." },
+          { zh: "可以打開「顯示題目文字」，邊聽邊看。也可以重播題目、暫停。", es: "Puedes activar «mostrar el texto de la pregunta», repetir el audio y hacer pausa." },
+          { zh: "每種玩法和設定組合都有自己的前 10 名排行榜，進榜才需要輸入暱稱。", es: "Cada combinación de modo y opciones tiene su propio ranking Top 10; solo escribes tu apodo si entras en él." }
+        ],
+        teacher: [
+          { zh: "按開始畫面的「👩‍🏫 老師管理中心」，可以自訂顏色（最多 12 種）、數字清單（最多 200 個）、格數和愛心數，做成練習連結傳給學生。", es: "Con el botón «👩‍🏫 Centro del profesor» puedes crear tus propios colores (hasta 12), una lista de números (hasta 200), el tamaño del tablero y los corazones, y enviar el enlace a tus alumnos." },
+          { zh: "訂閱後可以建立班級，學生的成績會自動回傳，還有班級排行。", es: "Con la suscripción puedes crear clases: las notas de los alumnos llegan automáticamente y hay ranking de clase." }
+        ],
+        tip: { zh: "如果裝置沒有「中文（台灣）」語音，遊戲會提醒你；改用其他中文語音時，發音可能和台灣讀音不同。", es: "Si tu dispositivo no tiene la voz «chino (Taiwán)», el juego te avisará; con otra voz china la pronunciación puede ser distinta." }
+      }
     },
     {
       id: "compara",
       glyph: "比", color: "brick",
       title: { zh: "比比看", es: "Compara y Adivina" },
       desc: {
-        zh: "看圖中的人物，用「比、比較、一樣、沒有那麼」等比較句選出正確的人。有三個難度，每回合 10 題，老師也可以自訂練習範圍。",
-        es: "Observa a los personajes y elige a la persona correcta usando comparativos en chino (比, 比較, 一樣, 沒有那麼…). Tres niveles, 10 preguntas por ronda; los profesores pueden elegir el alcance de la práctica."
+        zh: "看圖中的人物，讀「比、比較、一樣、沒有那麼」等比較句，選出正確的人或句子。有三個難度，每回合 10 題，老師也可以自訂練習範圍。",
+        es: "Observa a los personajes, lee frases con comparativos en chino (比, 比較, 一樣, 沒有那麼…) y elige a la persona o la frase correcta. Tres niveles, 10 preguntas por ronda; los profesores pueden elegir el alcance de la práctica."
       },
       tags: [{ zh: "比較句", es: "Comparativos" }, { zh: "語法", es: "Gramática" }],
-      url: "https://wangchiapin.github.io/compara-y-adivina/"
+      url: "https://wangchiapin.github.io/compara-y-adivina/",
+      guide: {
+        learn: { zh: "中文的比較句。比的是人物的身高、年齡、胖瘦、頭髮長短、眼睛和鼻子大小等。<br>・第 1 關：比、比較、一樣、差不多、不一樣<br>・第 2 關：再加上 沒有……那麼、一點、很多<br>・第 3 關：再加上 更、還、最，以及「高十公分」這種明確的差距",
+                 es: "Las frases comparativas en chino. Se comparan la altura, la edad, la complexión, el largo del pelo, el tamaño de los ojos y la nariz, etc.<br>・Nivel 1: 比, 比較, 一樣, 差不多, 不一樣<br>・Nivel 2: además 沒有……那麼, 一點, 很多<br>・Nivel 3: además 更, 還, 最 y diferencias exactas («高十公分», 10 cm más alto)" },
+        level: { zh: "A1 到 A2。第 1 關用 2 個人物，第 2 關 2–3 個，第 3 關最多 4 個。", es: "A1 a A2. El nivel 1 usa 2 personajes; el nivel 2, de 2 a 3; el nivel 3, hasta 4." },
+        steps: [
+          { zh: "<b>選主題和關卡</b>：目前開放「人物」主題，水果、動物、動作陸續開放。三個關卡一開始就都能選。",
+            es: "<b>Elige el tema y el nivel</b>: de momento está abierto el tema «personas»; frutas, animales y acciones llegarán pronto. Los tres niveles están disponibles desde el principio." },
+          { zh: "<b>讀題目作答</b>：題型會換來換去，例如讀句子找出是誰、判斷對錯、看圖選正確的句子、選比較詞或形容詞。點人物卡或選項就能作答。",
+            es: "<b>Lee la pregunta y responde</b>: los tipos de pregunta van cambiando: averiguar quién es por la frase, verdadero o falso, elegir la frase que describe la imagen, o elegir la palabra comparativa o el adjetivo. Toca un personaje o una opción." },
+          { zh: "<b>有兩次機會</b>：第一次答對得 10 分，第二次答對得 5 分。答完會顯示完整句子和翻譯，看懂了再按「下一題」。",
+            es: "<b>Tienes dos intentos</b>: 10 puntos si aciertas a la primera y 5 a la segunda. Después verás la frase completa y su traducción; pulsa «siguiente» cuando la entiendas." },
+          { zh: "<b>10 題做完</b>看總分（滿分 100）。第 1 關 80 分、第 2 關 75 分、第 3 關 70 分就算過關，可以直接挑戰下一關。",
+            es: "<b>Al terminar las 10 preguntas</b> verás tu nota sobre 100. Superas el nivel 1 con 80, el 2 con 75 y el 3 con 70, y puedes pasar directamente al siguiente." }
+        ],
+        features: [
+          { zh: "⚙️ 設定：繁體或簡體、介面（中文＋西文、中文＋英文、只有中文）、拼音／注音／兩個都顯示／關閉。", es: "⚙️ Ajustes: tradicional o simplificado; interfaz (chino + español, chino + inglés o solo chino); pinyin, zhuyin, ambos o ninguno." },
+          { zh: "📖 小字典：每題都可以打開，查這題用到的形容詞，不會扣分。", es: "📖 Minidiccionario: en cada pregunta puedes consultar los adjetivos que aparecen, sin perder puntos." },
+          { zh: "🚩 覺得題目怪怪的（答案不對、圖看不清楚），答完可以直接回報給我。", es: "🚩 Si una pregunta te parece rara (respuesta dudosa, imagen poco clara), puedes avisarme al terminarla." },
+          { zh: "這個遊戲沒有語音，專心練閱讀；也沒有排行榜。", es: "Este juego no tiene audio: es para practicar la lectura. Tampoco tiene ranking." }
+        ],
+        teacher: [
+          { zh: "在「👩‍🏫 老師管理中心」可以指定關卡、要比的特徵和題型，題數 3–30 題，做成練習連結傳給學生。", es: "En el «👩‍🏫 Centro del profesor» puedes elegir el nivel, los rasgos que se comparan, los tipos de pregunta y de 3 a 30 preguntas, y enviar el enlace a tus alumnos." },
+          { zh: "訂閱後可以建立班級（成績自動回傳）、看學生常錯的句型，並產生可列印的學習單（附答案頁）。", es: "Con la suscripción puedes crear clases (las notas llegan solas), ver los errores más frecuentes y generar fichas imprimibles con hoja de respuestas." }
+        ],
+        tip: { zh: "有些特徵（像膚色、眼睛大小）從圖片不容易判斷。如果你覺得某題有爭議，請按 🚩 回報，我會再調整。", es: "Algunos rasgos (como el tono de piel o el tamaño de los ojos) no siempre se ven claros en la imagen. Si una pregunta te parece discutible, pulsa 🚩 y la revisaré." }
+      }
     },
     {
       id: "taiwan-life",
       glyph: "台", color: "jade",
       title: { zh: "台灣生存日記", es: "Sobrevive en Taiwán" },
       desc: {
-        zh: "在地圖上走進台灣的日常場景，一步步用中文完成任務：飲料店、訂位、早餐店、超商、夜市、診所、捷運等 10 個情境，還會陸續新增。介面有繁體、簡體、西班牙文、英文。",
-        es: "Recorre el mapa y entra en escenas de la vida diaria en Taiwán para completar misiones en chino: tienda de bebidas, reservar mesa, desayuno, tienda de conveniencia, mercado nocturno, clínica, metro y más (10 escenas, y seguirán llegando). Interfaz en chino tradicional, simplificado, español e inglés."
+        zh: "在地圖上走進台灣的日常場景，一步步用中文完成任務：飲料店、早餐店、打電話訂位、超商、夜市、診所、捷運，還有路上的突發事件，更多地點陸續開放。介面有繁體、簡體、西班牙文、英文。",
+        es: "Recorre el mapa y entra en escenas de la vida diaria en Taiwán para completar misiones en chino: tienda de bebidas, desayuno, reservar mesa por teléfono, tienda de conveniencia, mercado nocturno, clínica, metro e imprevistos por la calle. Se irán abriendo más lugares. Interfaz en chino tradicional, simplificado, español e inglés."
       },
       tags: [{ zh: "對話", es: "Diálogo" }, { zh: "生活", es: "Vida diaria" }],
-      url: "https://wangchiapin.github.io/taiwan-life/"
+      url: "https://wangchiapin.github.io/taiwan-life/",
+      guide: {
+        learn: { zh: "在台灣生活真的會遇到的對話：點飲料、買早餐和麵包、打電話訂位、到超商領包裹、逛夜市殺價、感冒看醫生、搭捷運。走在路上還會遇到突發狀況，例如有人問路、阿嬤要過馬路、撿到錢包。",
+                 es: "Conversaciones reales de la vida en Taiwán: pedir una bebida, comprar el desayuno y pan, reservar mesa por teléfono, recoger un paquete en la tienda de conveniencia, regatear en el mercado nocturno, ir al médico con un resfriado y viajar en metro. Por la calle también surgen imprevistos: alguien te pregunta una dirección, una abuela necesita cruzar, encuentras una cartera…" },
+        level: { zh: "適合已經會基本句子的學生，大約 A2 到 B1。", es: "Para alumnos que ya manejan frases básicas, aproximadamente A2–B1." },
+        steps: [
+          { zh: "<b>輸入名字</b>，系統會給你一組玩家代碼（例如 MAR-4821）。換手機或電腦時，點「🔑 我有代碼」輸入代碼就能接著玩。",
+            es: "<b>Escribe tu nombre</b> y recibirás un código de jugador (por ejemplo, MAR-4821). Si cambias de dispositivo, pulsa el botón 🔑 del código y escríbelo para continuar donde lo dejaste." },
+          { zh: "<b>在地圖上走路</b>：電腦用方向鍵或 WASD，手機直接點想去的地方。點路人頭上的對話泡泡，可以看拼音、翻譯和聽發音。Ami 會提示你下一站去哪裡。",
+            es: "<b>Camina por el mapa</b>: en el ordenador con las flechas o WASD; en el móvil, toca adonde quieres ir. Toca las burbujas de diálogo de la gente para ver el pinyin, la traducción y escuchar la pronunciación. Ami te sugiere adónde ir." },
+          { zh: "<b>走到店門口就進入情境</b>：照劇情一步步按選項回答，不用打字。每句話都可以按 🔊 聽，也可以看翻譯。有些關卡要聽廣播再判斷，例如捷運要聽到站名才下車。",
+            es: "<b>Al llegar a la puerta de un lugar, empieza la escena</b>: responde paso a paso eligiendo opciones, sin escribir. Puedes escuchar cada frase con 🔊 y ver su traducción. En algunas escenas tendrás que escuchar un anuncio, por ejemplo el nombre de la estación en el metro." },
+          { zh: "<b>每關從 100 分開始</b>，答錯一次扣 10 分；錯滿 10 次就從頭再來。玩完會看到分數、錯誤、時間和每一個錯在哪裡。",
+            es: "<b>Cada escena empieza con 100 puntos</b> y cada error resta 10; con 10 errores, vuelves a empezar. Al terminar verás tu puntuación, los errores, el tiempo y en qué te equivocaste." },
+          { zh: "<b>收集星星</b>：0 次錯誤 ★★★，1–5 次 ★★，6 次以上 ★。每個地點只留最好的成績，全部加起來就是你的總分。",
+            es: "<b>Colecciona estrellas</b>: 0 errores ★★★, de 1 a 5 ★★, 6 o más ★. Cada lugar guarda tu mejor resultado y la suma es tu puntuación total." }
+        ],
+        features: [
+          { zh: "中文可選繁體或簡體，說明語言可選西班牙文或英文。", es: "El chino puede verse en tradicional o simplificado, y las explicaciones en español o inglés." },
+          { zh: "拼音可以隨時打開或關閉（預設關閉），用台灣讀音。", es: "El pinyin se puede activar o desactivar en cualquier momento (apagado por defecto) y sigue la pronunciación de Taiwán." },
+          { zh: "旁邊有「任務提示」（看了不扣分）、「本關單字」和「錯誤紀錄」可以查。", es: "En el panel lateral tienes la pista de la misión (no resta puntos), el vocabulario de la escena y tu registro de errores." },
+          { zh: "每個情境都有自己的前 15 名排行榜。", es: "Cada escena tiene su propio ranking Top 15." },
+          { zh: "進度存在網路上，不用註冊帳號，只要記得自己的玩家代碼。", es: "Tu progreso se guarda en línea sin crear una cuenta; solo tienes que recordar tu código." }
+        ],
+        teacher: [
+          { zh: "可以請學生每週去一個新地點，上課再一起討論遇到的情況。", es: "Puedes pedir a tus alumnos que visiten un lugar nuevo cada semana y comentarlo juntos en clase." },
+          { zh: "結果頁會列出每個錯誤，很適合拿來當上課討論的材料。", es: "La pantalla de resultados muestra cada error: es un buen material para comentar en clase." }
+        ],
+        tip: { zh: "語音用的是裝置內建的中文語音，會優先選台灣腔。聽不到聲音的話，請確認裝置有安裝中文語音。", es: "El audio usa la voz en chino de tu dispositivo, con preferencia por el acento de Taiwán. Si no oyes nada, comprueba que tengas una voz en chino instalada." }
+      }
     },
     {
       id: "corre-hanzi",
@@ -97,29 +232,94 @@ const CONFIG = {
         es: "Corre y recoge las palabras en el orden correcto para formar la frase completa. En el nivel del jefe tendrás que escuchar la frase entera. Tres dificultades (fácil, normal y difícil) y ranking."
       },
       tags: [{ zh: "句子", es: "Frases" }, { zh: "漢字", es: "Caracteres" }, { zh: "反應", es: "Reflejos" }],
-      url: "https://wangchiapin.github.io/corre/"
+      url: "https://wangchiapin.github.io/corre/",
+      guide: {
+        learn: { zh: "中文句子的詞序：主詞、時間、地點、動詞要放在哪裡，例如「我喜歡吃蘋果」。邊玩邊認字，每吃到一個詞，遊戲都會唸出來。魔王關卡則是練聽力。",
+                 es: "El orden de las palabras en una frase china: dónde van el sujeto, el tiempo, el lugar y el verbo, por ejemplo «我喜歡吃蘋果» (me gusta comer manzanas). Además reconoces caracteres: cada palabra que recoges se pronuncia en voz alta. El nivel del jefe practica la comprensión auditiva." },
+        level: { zh: "入門到初級，會看簡單的漢字就能玩。", es: "Principiante a básico; basta con reconocer caracteres sencillos." },
+        steps: [
+          { zh: "<b>輸入名字、選難度</b>：簡單、普通、困難，差別是跑步的速度。",
+            es: "<b>Escribe tu nombre y elige la dificultad</b>: fácil, normal o difícil. Lo que cambia es la velocidad." },
+          { zh: "<b>看上方的句子</b>，詞語會從右邊的跑道飄過來。照句子的順序一個一個吃下去。手機用手指在畫面上拖，電腦用方向鍵、WASD 或滑鼠。",
+            es: "<b>Mira la frase de arriba</b>: las palabras llegan por los carriles desde la derecha. Recógelas en el orden de la frase. En el móvil, arrastra el dedo por la pantalla; en el ordenador, usa las flechas, WASD o el ratón." },
+          { zh: "<b>吃對一個詞 +10 分，整句完成再 +25 分</b>，還會顯示翻譯。吃錯詞或順序錯會少一顆心。一開始有 3 顆心，扣光就結束，沒有時間限制。",
+            es: "<b>Cada palabra correcta da 10 puntos y cada frase completa 25 más</b>, y ves su traducción. Si recoges una palabra equivocada o fuera de orden, pierdes un corazón. Empiezas con 3; cuando se acaban, termina la partida. No hay límite de tiempo." },
+          { zh: "<b>每完成 5 句就有魔王關</b>：字會變成「？」，要聽整句語音再照順序吃。可以按 🔊 重聽。打敗魔王，心的上限加一顆，最多 5 顆。",
+            es: "<b>Cada 5 frases aparece el jefe</b>: las palabras se convierten en «？» y tienes que escuchar la frase entera para recogerlas en orden. Puedes repetir el audio con 🔊. Si lo vences, ganas un corazón extra (máximo 5)." },
+          { zh: "<b>跑越久越快</b>，跑道也會從 3 條變成 5 條。結束後看分數和完成幾句。",
+            es: "<b>Cuanto más corres, más rápido va</b>, y los carriles pasan de 3 a 5. Al final verás tu puntuación y cuántas frases completaste." }
+        ],
+        features: [
+          { zh: "⚙️ 設定：繁體或簡體、介面（中文＋西文、中文＋英文、只有中文）、拼音／注音／兩個都顯示／關閉、語速慢／正常／快。", es: "⚙️ Ajustes: tradicional o simplificado; interfaz (chino + español, chino + inglés o solo chino); pinyin, zhuyin, ambos o ninguno; velocidad de voz lenta, normal o rápida." },
+          { zh: "可以關掉背景音樂 🎵，也可以按 ⏸、P 或 Esc 暫停。切到別的視窗會自動暫停。", es: "Puedes apagar la música 🎵 y hacer pausa con ⏸, P o Esc. Si cambias de ventana, el juego se pausa solo." },
+          { zh: "前 10 名排行榜，所有難度一起排，每一列會標出難度。", es: "Ranking Top 10 con todas las dificultades juntas; cada fila indica la dificultad." }
+        ],
+        teacher: [
+          { zh: "在「👩‍🏫 老師管理中心」可以建立自己的句庫（每句最多 20 字），設定速度、字體、要不要魔王關，還可以為每句自訂干擾字。", es: "En el «👩‍🏫 Centro del profesor» puedes crear tu propio banco de frases (hasta 20 caracteres por frase), fijar la velocidad, los caracteres y si hay jefe, y añadir distractores para cada frase." },
+          { zh: "訂閱後可以建立班級，學生的最高分和遊玩次數會自動回傳，也可以開放班級排行。", es: "Con la suscripción puedes crear clases: verás la mejor nota y cuántas veces ha jugado cada alumno, y puedes activar un ranking de clase." }
+        ],
+        tip: { zh: "如果裝置沒有中文語音，魔王關會改成顯示拼音（或注音）提示，一樣可以玩。", es: "Si tu dispositivo no tiene voz en chino, en el nivel del jefe verás el pinyin (o zhuyin) como pista y podrás seguir jugando." }
+      }
     },
     {
       id: "armario",
       glyph: "收", color: "jade",
       title: { zh: "收納小達人", es: "Ordena el armario" },
       desc: {
-        zh: "聽中文指示，把東西拖到正確的位置：上面、下面、裡面、旁邊，邊玩邊學方位詞。初學者可以打開指令文字幫忙。",
-        es: "Escucha las instrucciones en chino y arrastra cada cosa a su lugar: arriba, abajo, dentro, al lado. Aprende las palabras de posición; los principiantes pueden mostrar el texto de la instrucción."
+        zh: "聽中文指示，把東西放進櫃子的正確位置：左上角、正中間、右下角，或某樣東西的上面、下面、左邊、右邊，邊玩邊學方位詞。初學者可以打開指令文字幫忙。",
+        es: "Escucha las instrucciones en chino y coloca cada cosa en su sitio del armario: arriba a la izquierda, en el centro, abajo a la derecha, o encima, debajo, a la izquierda o a la derecha de otra cosa. Los principiantes pueden mostrar el texto de la instrucción."
       },
       tags: [{ zh: "方位", es: "Posición" }, { zh: "聽力", es: "Comprensión" }, { zh: "詞彙", es: "Vocabulario" }],
-      url: "https://wangchiapin.github.io/Ordena-el-Armario/"
+      url: "https://wangchiapin.github.io/Ordena-el-Armario/",
+      guide: {
+        learn: { zh: "方位詞和生活用品。櫃子有 9 格：左上角、正上方、右上角、左邊、正中間、右邊、左下角、正下方、右下角。也會出「把 X 放在 Y 的上面／下面／左邊／右邊」這種句子。物品從 46 樣日常用品裡隨機抽，例如衣架、拖鞋、鑰匙、行動電源。",
+                 es: "Las palabras de posición y objetos cotidianos. El armario tiene 9 huecos: 左上角, 正上方, 右上角, 左邊, 正中間, 右邊, 左下角, 正下方, 右下角. También salen frases como «pon X encima / debajo / a la izquierda / a la derecha de Y». Los objetos salen al azar de 46 cosas de casa: perchas, zapatillas, llaves, batería externa…" },
+        level: { zh: "入門到初級。", es: "Principiante a básico." },
+        steps: [
+          { zh: "<b>選語速</b>（慢、正常、快），想要的話勾選「顯示指令文字」，再按 Empezar。",
+            es: "<b>Elige la velocidad</b> (lenta, normal o rápida), marca «mostrar el texto de la instrucción» si quieres ayuda y pulsa «Empezar»." },
+          { zh: "<b>聽指令</b>，例如「把鑰匙放到櫃子的右上角」。",
+            es: "<b>Escucha la instrucción</b>, por ejemplo «把鑰匙放到櫃子的右上角» (pon las llaves arriba a la derecha del armario)." },
+          { zh: "<b>放東西</b>：點一下物品（會唸出名稱），再點格子；也可以直接拖過去。",
+            es: "<b>Coloca el objeto</b>: tócalo (oirás su nombre) y luego toca el hueco, o arrástralo directamente." },
+          { zh: "<b>放錯沒關係</b>：畫面會告訴你是「東西錯了」還是「位置錯了」，然後再唸一次指令。也可以按 🔁 重聽，不限次數。",
+            es: "<b>Si te equivocas, no pasa nada</b>: verás si fallaste el objeto o la posición y oirás la instrucción otra vez. También puedes repetirla con 🔁 sin límite." },
+          { zh: "<b>9 樣東西都放好</b>就結束，會顯示時間和錯誤次數。",
+            es: "<b>Cuando colocas los 9 objetos</b>, termina la partida y ves el tiempo y los errores." }
+        ],
+        features: [
+          { zh: "⚙️ 設定：繁體或簡體、介面西班牙文或英文、發音標示不顯示／拼音／注音／兩個都顯示。", es: "⚙️ Ajustes: tradicional o simplificado; interfaz en español o inglés; pronunciación sin ayuda, pinyin, zhuyin o ambos." },
+          { zh: "畫面上有方位詞小抄，可以展開來看。", es: "Hay una chuleta con las palabras de posición que puedes desplegar." },
+          { zh: "前 10 名排行榜：錯誤少的排前面，同樣再比時間。有開指令文字的成績會標出來。", es: "Ranking Top 10: primero quien tiene menos errores y, si empatan, el más rápido. Las partidas con texto de ayuda llevan una marca." }
+        ],
+        teacher: [
+          { zh: "上課時可以反過來：讓學生看畫面，用中文說出指令請你放。", es: "En clase puedes darle la vuelta: que el alumno mire la pantalla y te dé él las instrucciones en chino." },
+          { zh: "先開指令文字練習，熟了再關掉只用聽的。", es: "Empieza con el texto de ayuda y, cuando lo dominen, quítalo para practicar solo de oído." }
+        ],
+        tip: { zh: "如果裝置沒有中文語音，遊戲會自動打開指令文字，還是可以玩。", es: "Si tu dispositivo no tiene voz en chino, el juego muestra el texto de la instrucción automáticamente para que puedas seguir jugando." }
+      }
     },
     {
       id: "compras",
       glyph: "買", color: "brick",
       title: { zh: "幫媽媽買東西", es: "Compras para mamá" },
       desc: {
-        zh: "（即將推出）拿著錢去買東西，算一算要找多少錢，練習數字和購物對話。",
-        es: "(Próximamente) Ve de compras con dinero virtual, calcula el cambio y practica números y diálogos."
+        zh: "（即將推出）照著媽媽的購物清單，用中文說出要買什麼、付錢，再判斷老闆找的錢對不對。",
+        es: "(Próximamente) Sigue la lista de la compra de mamá: di en chino qué quieres comprar, paga y comprueba si el cambio es correcto."
       },
-      tags: [{ zh: "數字", es: "Números" }, { zh: "對話", es: "Diálogo" }],
-      url: ""
+      tags: [{ zh: "數字", es: "Números" }, { zh: "量詞", es: "Clasificadores" }, { zh: "購物", es: "Compras" }],
+      url: "",
+      guide: {
+        soon: true,
+        learn: { zh: "數量＋量詞＋物品（例如「兩瓶牛奶」）、新台幣的錢幣，以及算找錢。", es: "Cantidad + clasificador + objeto (por ejemplo «兩瓶牛奶», dos botellas de leche), las monedas y billetes de Taiwán y calcular el cambio." },
+        level: { zh: "入門到初級。", es: "Principiante a básico." },
+        steps: [
+          { zh: "<b>看媽媽的購物清單</b>：每次 3 到 5 樣東西。", es: "<b>Mira la lista de mamá</b>: cada vez hay de 3 a 5 cosas." },
+          { zh: "<b>用說的買東西</b>：按 🎤 說出「數量＋量詞＋東西」，也可以打字。", es: "<b>Compra hablando</b>: pulsa 🎤 y di «cantidad + clasificador + objeto»; también puedes escribirlo." },
+          { zh: "<b>付錢</b>：從錢包把新台幣拖出來付錢。", es: "<b>Paga</b>: arrastra los billetes y monedas de Taiwán desde la cartera." },
+          { zh: "<b>檢查找錢</b>：老闆找的錢是剛剛好、找太多，還是找太少？", es: "<b>Revisa el cambio</b>: ¿el vendedor te ha dado lo justo, de más o de menos?" }
+        ]
+      }
     },
     {
       id: "perrito",
@@ -130,7 +330,33 @@ const CONFIG = {
         es: "Sigue las instrucciones en chino para llevar al perrito hasta el tesoro. Cuatro niveles."
       },
       tags: [{ zh: "方向", es: "Direcciones" }, { zh: "聽力", es: "Comprensión" }],
-      url: "https://wangchiapin.github.io/El-Perrito-Busca-el-Tesoro/"
+      url: "https://wangchiapin.github.io/El-Perrito-Busca-el-Tesoro/",
+      guide: {
+        learn: { zh: "方向指令：前進 N 格、後退 N 格、向左轉、向右轉、向後轉，也順便練數字（例如「兩格」、「一格」唸 yì gé）。",
+                 es: "Instrucciones de dirección: 前進 N 格 (avanza N casillas), 後退 N 格 (retrocede), 向左轉 (gira a la izquierda), 向右轉 (a la derecha) y 向後轉 (date la vuelta). También practicas números como «兩格» o «一格» (yì gé)." },
+        level: { zh: "入門到初級。第 1 關是練習關，第 4 關需要一次聽懂好幾句。", es: "Principiante a básico. El nivel 1 es de práctica; en el nivel 4 hay que entender varias frases seguidas." },
+        steps: [
+          { zh: "<b>輸入名字、選關卡</b>，按「出發找寶藏！」。小狗一開始臉朝下。",
+            es: "<b>Escribe tu nombre, elige el nivel</b> y pulsa «出發找寶藏！». Al principio, el perrito mira hacia abajo." },
+          { zh: "<b>聽指令，按方向鍵</b>：方向鍵指的是<b>畫面上的方向</b>，不是小狗自己的左右。「前進三格」就按小狗面向的方向三下；「後退」按相反方向（小狗不轉身）；「向左轉」就按轉過去之後要面向的那個方向一下。",
+            es: "<b>Escucha y pulsa las flechas</b>: las flechas indican la <b>dirección en la pantalla</b>, no la izquierda o derecha del perrito. Para «avanza tres casillas», pulsa tres veces la flecha hacia donde mira; para «retrocede», la dirección contraria (no se da la vuelta); para «gira a la izquierda», pulsa una vez la flecha hacia donde quedará mirando." },
+          { zh: "<b>按錯</b>，小狗會回到這組指令的起點，再聽一次。可以按 🔊 重聽，不限次數。",
+            es: "<b>Si te equivocas</b>, el perrito vuelve al inicio de esa instrucción y la oyes otra vez. Puedes repetirla con 🔊 sin límite." },
+          { zh: "<b>找到寶藏就過關</b>（第 2 關開始要先找到鑰匙）。分數看正確率和思考速度，最高 1000 分。",
+            es: "<b>Encuentra el tesoro para superar el nivel</b> (desde el nivel 2, primero hay que encontrar la llave). La puntuación depende de los aciertos y de lo rápido que piensas: máximo 1000." }
+        ],
+        features: [
+          { zh: "四個關卡：第 1 關障礙少、有文字、錯 3 次會亮提示；第 2 關要先找鑰匙；第 3 關只有聲音沒有文字；第 4 關一次連續唸 2–3 句。", es: "Cuatro niveles: el 1 tiene pocos obstáculos, texto y una pista tras 3 errores; en el 2 hay que encontrar la llave; el 3 es solo audio, sin texto; en el 4 se dicen 2 o 3 instrucciones seguidas." },
+          { zh: "⚙️ 設定：繁體或簡體、介面（中文＋西文、中文＋英文、只有中文）、拼音／注音／兩個都顯示／關閉、語速慢／正常／快。", es: "⚙️ Ajustes: tradicional o simplificado; interfaz (chino + español, chino + inglés o solo chino); pinyin, zhuyin, ambos o ninguno; velocidad lenta, normal o rápida." },
+          { zh: "第 2、3、4 關各有前 10 名排行榜，第 1 關是練習關不上榜。", es: "Los niveles 2, 3 y 4 tienen su propio ranking Top 10; el nivel 1 es de práctica y no puntúa." },
+          { zh: "電腦用鍵盤方向鍵，手機用畫面上的按鈕。", es: "En el ordenador se juega con las flechas del teclado; en el móvil, con los botones de la pantalla." }
+        ],
+        teacher: [
+          { zh: "可以先在課堂上用身體練「向左轉、向右轉」，再讓學生玩。", es: "Antes de jugar, podéis practicar «向左轉 / 向右轉» moviéndoos en clase." },
+          { zh: "從第 3 關開始只有聲音，很適合當聽力小考。", es: "A partir del nivel 3 solo hay audio: es una buena prueba de comprensión auditiva." }
+        ],
+        tip: { zh: "最容易搞混的是「後退」：小狗不會轉身，要按牠面向的相反方向。", es: "Lo que más confunde es «後退» (retroceder): el perrito no se da la vuelta; pulsa la flecha contraria a donde mira." }
+      }
     }
   ],
 
@@ -589,6 +815,9 @@ summary{cursor:pointer; font-weight:900; font-size:.92rem}
 .guide-steps li::before{content:counter(gs); position:absolute; left:0; top:0; width:24px; height:24px; border:var(--bd); border-radius:50%; background:var(--yellow); font-weight:900; font-size:.85rem; display:grid; place-items:center}
 .guide-steps p{margin:0 0 8px}
 .guide-steps img{display:block; width:100%; max-width:360px; height:auto; border:var(--bd); border-radius:10px}
+.guide-h{margin:18px 0 8px; font-size:1rem; font-weight:900; padding-left:10px; border-left:4px solid var(--ink)}
+.guide-body > p:not(.guide-lead):not(.guide-tip){margin:0 0 8px}
+.guide-list{margin:0; padding-left:1.2em; display:grid; gap:6px}
 .guide-tip{margin:16px 0 4px; padding:10px 12px; background:var(--cream, #fbf3dd); border:1px dashed var(--ink-faint); border-radius:10px; font-size:.88rem; color:var(--ink-soft)}
 .notice-btns{display:flex; flex-wrap:wrap; gap:10px; padding:6px 18px 18px}
 
@@ -837,6 +1066,13 @@ const UI = {
                 es: "Pequeñas ayudas para profesores de chino, gratis y directamente en el navegador, también en el móvil." },
   toolOpen:   { zh: "開啟工具", es: "Abrir herramienta" },
   toolGuide:  { zh: "使用說明", es: "Cómo se usa" },
+  gameGuide:  { zh: "詳細說明", es: "Más detalles" },
+  gdLearn:    { zh: "練什麼", es: "Qué se practica" },
+  gdLevel:    { zh: "適合程度", es: "Nivel" },
+  gdHow:      { zh: "怎麼玩", es: "Cómo se juega" },
+  gdFeat:     { zh: "設定與功能", es: "Opciones y funciones" },
+  gdTeacher:  { zh: "給老師", es: "Para profesores" },
+  gdSoon:     { zh: "這個遊戲還在製作中，以下是預告，內容之後可能會調整。", es: "Este juego todavía está en preparación. Esto es un adelanto y puede cambiar." },
   toolCopy:   { zh: "複製網址", es: "Copiar enlace" },
   toolCopied: { zh: "已複製 ✓", es: "¡Copiado! ✓" },
   tmTitle:    { zh: "開始使用之前 🛠️", es: "Antes de usarla 🛠️" },
@@ -1167,9 +1403,11 @@ function render(){
       </div>
       <p>${esc(t(g.desc))}</p>
       <div class="tags">${subTag("game-" + g.id)}${(g.tags||[]).map(x => `<span>${esc(t(x))}</span>`).join("")}</div>
-      <div class="card-actions">${btn}<a class="fb-link" href="#feedback" data-fb="game" data-fb-target="${esc(g.id)}">${esc(t(UI.fbCardLink))}</a></div>
+      <div class="card-actions">${btn}${g.guide && !off ? `<button type="button" class="btn btn-line" data-gguide="${esc(g.id)}">${esc(t(UI.gameGuide))}</button>` : ""}<a class="fb-link" href="#feedback" data-fb="game" data-fb-target="${esc(g.id)}">${esc(t(UI.fbCardLink))}</a></div>
     </article>`;
   }).join("");
+  // 規則：每個遊戲卡片都要有 guide（詳細說明）。沒填的話按鈕不會出現，並在主控台提醒
+  CONFIG.games.filter(g => !g.guide).forEach(g => console.warn(`[詳細說明] 遊戲「${g.title.zh}」（id: ${g.id}）還沒有 guide，請補上`));
 
   // tools
   document.getElementById("toolGrid").innerHTML = CONFIG.tools.map(g => {
@@ -1417,12 +1655,46 @@ document.querySelectorAll(".lang button").forEach(b => b.addEventListener("click
   });
 })();
 
-/* ===== 小工具使用說明視窗（網址有填才會開放）===== */
+/* ===== 小工具使用說明視窗（網址有填才會開放）＋ 遊戲詳細說明（共用同一個視窗）===== */
 function toolById(id){ return CONFIG.tools.find(x => x.id === id); }
-let guideId = null;
+function gameById(id){ return CONFIG.games.find(x => x.id === id); }
+let guideId = null, guideKind = "tool";
+const guideItem = () => guideKind === "game" ? gameById(guideId) : toolById(guideId);
+const tx = o => o ? (o[lang] ?? o.zh) : "";      // guide 內文字允許 <b> 等簡單標記（內容由自己撰寫）
+function renderGameGuide(){
+  const g = gameById(guideId);
+  if (!g || !g.guide || isOff("game-" + g.id)) { document.getElementById("toolGuide").hidden = true; return; }
+  const gd = g.guide;
+  const sec = (k, html) => html ? `<h4 class="guide-h">${esc(t(UI[k]))}</h4>${html}` : "";
+  const list = arr => arr && arr.length ? `<ul class="guide-list">${arr.map(x => `<li>${tx(x)}</li>`).join("")}</ul>` : "";
+  document.getElementById("tgName").textContent = t(g.title) + " · " + t(UI.gameGuide);
+  document.getElementById("tgBody").innerHTML =
+    `${gd.soon ? `<p class="guide-tip">🚧 ${esc(t(UI.gdSoon))}</p>` : ""}
+     <p class="guide-lead">${esc(t(g.desc))}</p>
+     ${sec("gdLearn", gd.learn ? `<p>${tx(gd.learn)}</p>` : "")}
+     ${sec("gdLevel", gd.level ? `<p>${tx(gd.level)}</p>` : "")}
+     ${sec("gdHow", gd.steps && gd.steps.length ? `<ol class="guide-steps">${gd.steps.map(st => `<li><p>${tx(st)}</p>${st.img ? `<img src="${esc(st.img)}" alt="" loading="lazy">` : ""}</li>`).join("")}</ol>` : "")}
+     ${sec("gdFeat", list(gd.features))}
+     ${sec("gdTeacher", list(gd.teacher))}
+     ${gd.tip ? `<p class="guide-tip">${tx(gd.tip)}</p>` : ""}`;
+  const playable = g.url && !subLocked("game-" + g.id);
+  document.getElementById("tgBtns").innerHTML = !g.url
+    ? `<span class="btn" aria-disabled="true">${esc(t(UI.soon))}</span>`
+    : !playable
+    ? `<a class="btn btn-sub" href="#subscribe">🔒 ${esc(t(UI.subOnly))}</a>`
+    : `<a class="btn btn-brick" href="${esc(g.url)}" target="_blank" rel="noopener" data-track="game_${esc(g.id)}">${esc(t(UI.play))} ▸</a>
+       <button type="button" class="btn btn-line" id="tgCopy">${esc(t(UI.toolCopy))}</button>`;
+}
+function openGameGuide(id){
+  const g = gameById(id); if (!g || !g.guide || isOff("game-" + id)) return;
+  guideKind = "game"; guideId = id; document.getElementById("toolGuide").hidden = false; renderGuide();
+  document.getElementById("tgBody").scrollTop = 0;
+  track("gameview_" + id);
+}
 function renderGuide(){
   const box = document.getElementById("toolGuide");
   if (!box || box.hidden || !guideId) return;
+  if (guideKind === "game") return renderGameGuide();
   const g = toolById(guideId); if (!g || !g.url || isOff("tool-" + g.id)) { box.hidden = true; return; }
   const gd = g.guide || { steps: [] };
   document.getElementById("tgName").textContent = t(g.title) + " · " + t(UI.toolGuide);
@@ -1436,7 +1708,7 @@ function renderGuide(){
 }
 function openGuide(id){
   const g = toolById(id); if (!g || !g.url || isOff("tool-" + id)) return;
-  guideId = id; document.getElementById("toolGuide").hidden = false; renderGuide();
+  guideKind = "tool"; guideId = id; document.getElementById("toolGuide").hidden = false; renderGuide();
   document.getElementById("tgBody").scrollTop = 0;
   track("toolview_" + id);
 }
@@ -1451,13 +1723,16 @@ async function copyText(txt){
 document.addEventListener("click", async e => {
   const cp = e.target.closest("#tgCopy");
   if (cp){
-    const g = toolById(guideId); if (!g) return;
+    const g = guideItem(); if (!g) return;
     const ok = await copyText(g.url);
     cp.textContent = ok ? t(UI.toolCopied) : g.url;
-    if (ok) track("toolcopy_" + g.id);
+    if (ok) track((guideKind === "game" ? "gamecopy_" : "toolcopy_") + g.id);
     setTimeout(() => { if (document.body.contains(cp)) cp.textContent = t(UI.toolCopy); }, 2000);
     return;
   }
+  // 遊戲卡片：只有按「詳細說明」按鈕才打開（整張卡片不可點，避免誤觸）
+  const gb = e.target.closest("[data-gguide]");
+  if (gb) { openGameGuide(gb.dataset.gguide); return; }
   // 點卡片（不是點到連結或按鈕以外的地方）→ 打開說明
   const card = e.target.closest("[data-guide]");
   if (card && !e.target.closest("a")) openGuide(card.dataset.guide);
