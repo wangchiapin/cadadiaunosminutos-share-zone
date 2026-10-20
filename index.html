@@ -410,6 +410,248 @@ const CONFIG = {
         tip: { zh: "第一次玩建議先選 8×8、輕鬆難度，字數少一點，先熟悉怎麼拖和接合。",
                es: "La primera vez, prueba 8×8 en nivel fácil con pocos caracteres para familiarizarte con arrastrar y encajar." }
       }
+    },
+    {
+      id: "dragon",
+      glyph: "龍", color: "jade",
+      title: { zh: "墨龍飛天", es: "El dragón de tinta" },
+      desc: {
+        zh: "水墨風的向上飛行遊戲：操控一條龍往上飛，只吃你選的主題裡的字。有 10 個主題、200 個詞，吃到的字都會念出來，結束後還有複習清單。",
+        es: "Un juego de vuelo hacia arriba con estilo de tinta china: guías a un dragón y solo comes las palabras del tema que elijas. Hay 10 temas y 200 palabras; cada palabra se pronuncia al comerla y al final tienes una lista de repaso."
+      },
+      tags: [{ zh: "詞彙", es: "Vocabulario" }, { zh: "反應", es: "Reflejos" }],
+      url: "https://wangchiapin.github.io/el-dragon-de-tinta/",
+      guide: {
+        learn: { zh: "10 個主題的日常詞彙，每個主題 20 個詞：食物、水果、動物、顏色、交通、身體、衣服、職業、天氣、家裡。每個詞都有拼音（或注音）和西文、英文意思。",
+                 es: "Vocabulario cotidiano en 10 temas de 20 palabras cada uno: comida, fruta, animales, colores, transporte, cuerpo, ropa, profesiones, clima y casa. Cada palabra lleva pinyin (o zhuyin) y su significado en español e inglés." },
+        level: { zh: "入門到初級。要認得字或看得懂拼音，手也要夠快。", es: "Principiante a básico. Hay que reconocer los caracteres o leer el pinyin, y reaccionar rápido." },
+        steps: [
+          { zh: "<b>先選一個主題</b>，這一局只吃這個主題的字。",
+            es: "<b>Elige un tema</b>: en esta partida solo debes comer las palabras de ese tema." },
+          { zh: "<b>讓龍往上飛，去吃掉下來的字</b>。手機用手指在畫面上拖動；電腦用方向鍵、WASD 或滑鼠拖動。",
+            es: "<b>El dragón vuela hacia arriba y tú comes las palabras que caen.</b> En el móvil, arrastra el dedo por la pantalla; en el ordenador, usa las flechas, WASD o arrastra con el ratón." },
+          { zh: "<b>吃對加分</b>，連續吃對分數加倍；<b>吃到別的主題的字</b>就扣一顆愛心，三顆愛心用完就結束。",
+            es: "<b>Si comes una palabra correcta, sumas puntos</b>, y si lo haces seguido el puntaje se multiplica. <b>Si comes una de otro tema</b>, pierdes un corazón; con tres corazones perdidos, termina la partida." },
+          { zh: "<b>每吃對 8 個字就加速一次</b>，畫面會顯示飛行高度。從第 2 級開始，錯的字會混進「相近主題」的字（例如食物裡混進水果、家具），越飛越難分。",
+            es: "<b>Cada 8 aciertos el dragón acelera</b> y la pantalla muestra la altura de vuelo. Desde el nivel 2, se cuelan palabras de «temas parecidos» (por ejemplo, fruta o muebles entre la comida), y cada vez es más difícil distinguirlas." },
+          { zh: "<b>結束後看複習清單</b>：列出這局吃錯和漏掉的字（字、拼音或注音、翻譯），點一下就能聽讀音。",
+            es: "<b>Al terminar, repasa la lista</b>: muestra las palabras que comiste mal o dejaste pasar (carácter, pinyin o zhuyin y traducción); toca una para oír su pronunciación." }
+        ],
+        features: [
+          { zh: "⚙️ 設定：繁體或簡體、介面（中文＋西文、中文＋英文、只有中文）、拼音／注音／兩個都顯示／關閉、語速慢／正常／快。這些設定和跑吧、色數、比比看共用，在一個遊戲設好，這裡也一樣。",
+            es: "⚙️ Ajustes: tradicional o simplificado; interfaz (chino + español, chino + inglés o solo chino); pinyin, zhuyin, ambos o ninguno; velocidad lenta, normal o rápida. Se comparten con 跑吧, 色數 y 比比看: si los cambias en uno, valen aquí también." },
+          { zh: "吃到字的時候（吃對或吃錯）都會念出那個字的讀音，念的時候背景音樂會小聲一點。右上角有 ♪（音樂開關）、暫停鍵，切到別的程式時會自動暫停。",
+            es: "Cada palabra que comes (acierto o error) se pronuncia en voz alta, y la música baja un poco mientras suena. Arriba a la derecha hay ♪ (música), pausa, y el juego se pausa solo si cambias de aplicación." },
+          { zh: "畫面是水墨風：宣紙底、淡墨山壁和雲霧往下捲動，字是墨點，龍是毛筆畫出來的線條。",
+            es: "El estilo es de tinta china: fondo de papel de arroz, montañas y niebla que se desplazan, palabras como gotas de tinta y un dragón dibujado con pincel." },
+          { zh: "每個主題的最高分會記在這台裝置上；排行榜還沒有開放。",
+            es: "La mejor puntuación de cada tema se guarda en este dispositivo; el ranking todavía no está disponible." }
+        ],
+        teacher: [
+          { zh: "可以請學生挑本課的主題來玩，玩完看複習清單，把吃錯的字再念一次。",
+            es: "Puedes pedir que elijan el tema de la lección; al terminar, que repasen la lista y repitan en voz alta las palabras que fallaron." },
+          { zh: "沒有老師管理中心，也不用訂閱，直接開啟就能玩。",
+            es: "No tiene Centro del profesor ni requiere suscripción: se abre y se juega." }
+        ],
+        tip: { zh: "如果手機沒有中文語音，字不會出聲，但還是可以玩，看拼音或注音就好。",
+               es: "Si tu móvil no tiene voz en chino, las palabras no se oirán, pero puedes jugar igual guiándote por el pinyin o el zhuyin." }
+      }
+    },
+    {
+      id: "topo",
+      glyph: "鼠", color: "gold",
+      title: { zh: "打地鼠學中文", es: "Atrapa al topo" },
+      desc: {
+        zh: "先聽到、看到一句中文，再照著句子的順序，一個詞一個詞打出地鼠頭上的字卡。2 分鐘內，看你能完成幾句。",
+        es: "Oyes y lees una frase en chino y golpeas, en el orden de la frase, las palabras que llevan los topos en la cabeza. Tienes 2 minutos para completar todas las frases que puedas."
+      },
+      tags: [{ zh: "句子", es: "Frases" }, { zh: "語序", es: "Orden de palabras" }, { zh: "聽力", es: "Comprensión" }],
+      url: "https://wangchiapin.github.io/atrapa-al-topo/",
+      guide: {
+        learn: { zh: "中文句子的詞序：地鼠頭上是完整的詞（不是單字），要照句子裡的順序一個一個打，所以會一邊聽、一邊讀、一邊記住句子怎麼排。",
+                 es: "El orden de las palabras en una frase china: los topos llevan palabras completas (no caracteres sueltos) y hay que golpearlas en el orden de la frase, así que escuchas, lees y memorizas cómo se construye." },
+        level: { zh: "入門到初級。句子是隨機抽的，目前不分等級；可以打開拼音或注音幫忙。",
+                 es: "Principiante a básico. Las frases salen al azar y por ahora no hay niveles; puedes activar pinyin o zhuyin como ayuda." },
+        steps: [
+          { zh: "<b>先在設定選好</b>介面語言（西文或英文）、繁體或簡體、讀音（預設不顯示）和難度，再按「開始」。",
+            es: "<b>Primero elige los ajustes</b>: idioma de la interfaz (español o inglés), caracteres tradicionales o simplificados, pronunciación (por defecto, ninguna) y dificultad; luego pulsa «Jugar»." },
+          { zh: "<b>聽並看題目橫幅上的那句中文</b>：字很大，每個詞上面會依設定標拼音或注音。按 🔊 可以再聽一次整句。",
+            es: "<b>Escucha y lee la frase</b> del cartel superior: los caracteres son grandes y cada palabra lleva pinyin o zhuyin encima, según tus ajustes. Con 🔊 puedes oírla otra vez." },
+          { zh: "<b>依句子的順序打地鼠</b>：地鼠從洞裡冒出來，頭上有字卡，打對的那一個詞。整句打完會放煙火，馬上換下一句。",
+            es: "<b>Golpea a los topos en el orden de la frase</b>: salen de los agujeros con una palabra en la cabeza; golpea la que toca. Al terminar la frase hay fuegos artificiales y pasas a la siguiente." },
+          { zh: "<b>打錯順序</b>，地鼠會頭暈、字卡抖一下。連續打錯 3 次，該打的字會發光並放大，橫幅上也會提示「找發光的字」。",
+            es: "<b>Si te equivocas de orden</b>, el topo se marea y la tarjeta tiembla. Tras 3 errores seguidos, la palabra correcta brilla y se agranda, y el cartel te dice que busques la palabra que brilla." },
+          { zh: "<b>2 分鐘到了</b>，結果畫面會列出這局完成的句子（中文、拼音或注音、西文翻譯），每一句都能再聽一次。",
+            es: "<b>A los 2 minutos</b> verás las frases que completaste (chino, pinyin o zhuyin y traducción al español); puedes volver a oír cada una." }
+        ],
+        features: [
+          { zh: "難度分簡單、普通、困難：同時出現的地鼠數量不同（1、2、3 隻），停留時間也越來越短。",
+            es: "Dificultad fácil, normal o difícil: cambia el número de topos a la vez (1, 2 o 3) y cada vez se quedan menos tiempo." },
+          { zh: "有時會出現沒有字卡的「驚喜地鼠」（約 10%），打了不算分也不算錯。",
+            es: "A veces sale un «topo sorpresa» sin tarjeta (alrededor del 10 %): si lo golpeas, no suma ni resta." },
+          { zh: "句子來自共用的句子庫，每次隨機抽；連不上時會改用 3 句內建句子。",
+            es: "Las frases vienen de un banco de frases compartido y se eligen al azar; si no hay conexión, se usan 3 frases incluidas en el juego." },
+          { zh: "語音一律念台灣讀音（zh-TW），選簡體也一樣；沒有語速選項。",
+            es: "La voz siempre es en chino de Taiwán (zh-TW), aunque elijas simplificado; no hay opción de velocidad." },
+          { zh: "手機（直式、橫式）、平板和電腦都能玩，手機的設定收在 ⚙ 裡。",
+            es: "Funciona en móvil (vertical y horizontal), tableta y ordenador; en el móvil los ajustes están en ⚙." }
+        ],
+        teacher: [
+          { zh: "結果畫面很適合當課堂複習：請學生把完成的句子再聽一次、再念一次。",
+            es: "La pantalla de resultados sirve de repaso en clase: pide que vuelvan a oír y a leer en voz alta las frases completadas." },
+          { zh: "沒有老師管理中心，也沒有排行榜，不用訂閱，直接開啟就能玩。",
+            es: "No tiene Centro del profesor ni ranking, y no requiere suscripción: se abre y se juega." }
+        ],
+        tip: { zh: "看到發光的字，就是現在該打的那一個。",
+               es: "Si una palabra brilla, es justo la que te toca golpear." }
+      }
+    },
+    {
+      id: "ba",
+      glyph: "把", color: "jade",
+      title: { zh: "把它放好", es: "Ponlo en su lugar" },
+      desc: {
+        zh: "練習「把字句」：每題看「之前」和「之後」兩張圖，排出或認出正確的句子。30 句、3 關，有排字卡、聽音選圖、選出正確句子三種題型。",
+        es: "Practica la estructura 把: en cada pregunta ves las imágenes «antes» y «después» y formas o reconoces la oración correcta. 30 oraciones en 3 niveles, con tres tipos de pregunta."
+      },
+      tags: [{ zh: "把字句", es: "Oración con 把" }, { zh: "語法", es: "Gramática" }],
+      url: "https://wangchiapin.github.io/practica-de-ba-oracion/",
+      guide: {
+        learn: { zh: "把字句：誰 ＋ 把 ＋ 東西 ＋ 動作 ＋ 結果，例如「我把書放在桌子上」。三關分別是放置類（把書放在桌子上）、結果類（他把杯子打破了）、處置類（我把禮物送給朋友）。",
+                 es: "La oración con 把: quién + 把 + objeto + acción + resultado, por ejemplo «我把書放在桌子上». Los tres niveles son colocar cosas, resultados (他把杯子打破了) y dar o transformar (我把禮物送給朋友)." },
+        level: { zh: "初級。適合剛接觸把字句的學生，需要先認得基本的動詞和日常物品。",
+                 es: "Nivel básico. Para quienes empiezan con la estructura 把; conviene conocer los verbos y objetos cotidianos más comunes." },
+        steps: [
+          { zh: "<b>在開始畫面輸入名字</b>，選好語言、字形和讀音，再選關卡。第 1 關一開始就開放，其他關要先過上一關。",
+            es: "<b>En la pantalla de inicio escribe tu nombre</b>, elige idioma, caracteres y pronunciación, y luego el nivel. El nivel 1 está abierto; los demás se desbloquean al superar el anterior." },
+          { zh: "<b>看「之前」和「之後」兩張圖</b>，每關 10 題，每題是三種題型之一。",
+            es: "<b>Mira las dos imágenes, «antes» y «después»</b>. Cada nivel tiene 10 preguntas, de uno de los tres tipos." },
+          { zh: "<b>排字卡</b>：把詞排成正確的句子。<b>聽音選圖</b>：聽句子（逐詞念），選出「之後」的圖。<b>選出正確的句子</b>：三句裡挑那句對的（錯的選項都是真的不能說的句子，例如「把」放錯位置、少了結果）。",
+            es: "<b>Ordenar tarjetas</b>: forma la oración con las palabras. <b>Escuchar y elegir</b>: oye la oración (palabra por palabra) y elige la imagen del «después». <b>Elegir la oración correcta</b>: una correcta y dos incorrectas (las incorrectas son frases que de verdad no se pueden decir, por ejemplo con 把 mal colocado o sin el complemento)." },
+          { zh: "<b>卡住時</b>可以按「提示」看整句翻譯（扣 20 分），或按「詞彙」查每個詞的拼音、注音、意思和發音（不扣分）。",
+            es: "<b>Si te atascas</b>, «Pista» muestra la traducción de la oración (−20 puntos) y «Vocabulario» muestra pinyin, zhuyin, significado y audio de cada palabra (sin penalización)." },
+          { zh: "<b>10 題結束</b>後會依第一次就答對的題數給 1～3 顆星，並列出錯題複習。至少 1 顆星才能解鎖下一關。",
+            es: "<b>Al terminar las 10 preguntas</b> recibes de 1 a 3 estrellas según los aciertos a la primera, y un repaso de errores. Necesitas al menos 1 estrella para desbloquear el siguiente nivel." }
+        ],
+        features: [
+          { zh: "計分：第一次就答對 100 分（連續答對有 ×1.2、×1.5 加成），10 秒內答對最多再加 50 分；第二次才答對 50 分。不扣命。星星：第一次就對 5 題以上 1 顆、7 題以上 2 顆、9 題以上 3 顆。",
+            es: "Puntos: 100 si aciertas a la primera (con racha ×1.2 y ×1.5) y hasta +50 por rapidez en los primeros 10 s; 50 si aciertas al segundo intento. No hay vidas. Estrellas: 5 o más aciertos a la primera = ★, 7 o más = ★★, 9 o más = ★★★." },
+          { zh: "介面語言：西班牙文或英文（沒有只有中文的選項）；西文可選拉丁美洲或西班牙的用字（例如 carro／coche、celular／móvil）。",
+            es: "Idioma de la interfaz: español o inglés (no hay modo solo chino); el español puede ser de Latinoamérica o de España (por ejemplo, carro/coche, celular/móvil)." },
+          { zh: "字形：繁體或簡體。讀音：拼音、注音或不顯示（預設不顯示），以台灣讀音為主。語音是台灣中文，可選慢速（預設）或正常。",
+            es: "Caracteres: tradicionales o simplificados. Pronunciación: pinyin, zhuyin o ninguna (por defecto, ninguna), con lecturas de Taiwán. La voz es de Taiwán, lenta (por defecto) o normal." },
+          { zh: "30 句的圖片都是用程式畫的簡單圖案。排行榜（每人只留最高分、前 15 名）目前只存在這台裝置，還沒有和其他同學共用。",
+            es: "Las imágenes de las 30 oraciones están dibujadas con código, en un estilo sencillo. El ranking (mejor puntaje por jugador, Top 15) por ahora se guarda solo en este dispositivo y no se comparte con otros alumnos." }
+        ],
+        teacher: [
+          { zh: "上課要一次看完所有關卡，可以在網址後面加 ?unlock=1，全部關卡就會開放。",
+            es: "Para ver todos los niveles en clase, añade ?unlock=1 al final de la dirección y se abrirán todos." },
+          { zh: "可以先在課堂上講解「把」的句型，再讓學生玩；錯題複習適合當課後檢討。",
+            es: "Puedes explicar la estructura 把 en clase y luego dejar que jueguen; el repaso de errores sirve para comentar después." },
+          { zh: "沒有老師管理中心，也不用訂閱，直接開啟就能玩。",
+            es: "No tiene Centro del profesor ni requiere suscripción: se abre y se juega." }
+        ],
+        tip: { zh: "記住結構：誰 ＋ 把 ＋ 東西 ＋ 動作 ＋ 結果。動作後面一定要有結果，例如「放在桌子上」、「打破了」。",
+               es: "Recuerda la estructura: quién + 把 + objeto + acción + resultado. Después del verbo siempre va un resultado, como «放在桌子上» o «打破了»." }
+      }
+    },
+    {
+      id: "agarrar",
+      glyph: "拿", color: "brick",
+      title: { zh: "我要拿什麼？", es: "¿Qué voy a agarrar?" },
+      desc: {
+        zh: "聽一句中文，在家裡的地圖上走到指定的房間或家具旁邊，再選出要拿的東西。每次的家都不一樣，共 3 關，第 3 關加上方位詞。",
+        es: "Escucha una frase en chino, camina por el mapa de la casa hasta la habitación o el mueble indicado y elige el objeto. La casa cambia cada vez; hay 3 niveles y el tercero añade palabras de lugar."
+      },
+      tags: [{ zh: "家裡", es: "La casa" }, { zh: "方位詞", es: "Palabras de lugar" }, { zh: "聽力", es: "Comprensión" }],
+      url: "https://wangchiapin.github.io/que-voy-a-agarrar/",
+      guide: {
+        learn: { zh: "家裡的 6 個房間（客廳、廚房、臥室、浴室、書房、陽台）、24 種家具和日常物品的說法；第 3 關再練方位詞：旁邊、前面、後面、左邊、右邊、上面、下面、裡面。",
+                 es: "Las 6 habitaciones de la casa (sala, cocina, dormitorio, baño, estudio y balcón), 24 muebles y objetos cotidianos; en el nivel 3, palabras de lugar: al lado, delante, detrás, izquierda, derecha, encima, debajo y dentro." },
+        level: { zh: "入門到初級。第 1 關只要認得房間，第 3 關要聽懂方位詞。",
+                 es: "Principiante a básico. En el nivel 1 solo hay que reconocer las habitaciones; en el 3 hay que entender las palabras de lugar." },
+        steps: [
+          { zh: "<b>選關卡</b>。第 1 關一開始就開放，上一關拿到 2 顆星才能解鎖下一關。選單上也能打開「聽力模式」。",
+            es: "<b>Elige un nivel.</b> El 1 está abierto; para desbloquear el siguiente necesitas 2 estrellas en el anterior. En el menú también puedes activar el «Modo escucha»." },
+          { zh: "<b>聽（或看）那句中文</b>，每一關的句子不一樣：第 1 關是房間和物品；第 2 關多了家具；第 3 關再加上方位詞。",
+            es: "<b>Escucha (o lee) la frase.</b> Cambia según el nivel: en el 1 hay habitación y objeto; en el 2 se añade el mueble; en el 3, además, una palabra de lugar." },
+          { zh: "<b>點地圖，小人會走過去</b>：第 1 關走到對的房間；第 2 關走到對的家具旁邊再停下來；第 3 關要走到家具的旁邊、前面、後面、左邊或右邊，遇到上面、下面、裡面就直接選位置。",
+            es: "<b>Toca el mapa y el personaje camina.</b> Nivel 1: a la habitación correcta; nivel 2: junto al mueble correcto, y párate; nivel 3: al lado, delante, detrás, a la izquierda o a la derecha del mueble, y para encima, debajo y dentro eliges la posición." },
+          { zh: "<b>選出要拿的東西。</b>選錯會扣一顆愛心，三顆愛心用完就結束。卡住時有 3 次 💡 提示。",
+            es: "<b>Elige el objeto que debes tomar.</b> Si fallas, pierdes un corazón; sin corazones, termina la partida. Tienes 3 pistas 💡 por partida." },
+          { zh: "<b>每關 10 題。</b>結束後依第一次就答對的比例給星星（90% 以上 3 顆、70% 以上 2 顆，其他 1 顆），並列出需要複習的詞。",
+            es: "<b>Cada nivel tiene 10 preguntas.</b> Al final recibes estrellas según tus aciertos a la primera (90 % o más = 3, 70 % o más = 2, el resto = 1) y una lista de palabras para repasar." }
+        ],
+        features: [
+          { zh: "每次的家都不一樣：房間和家具的位置會重新排。",
+            es: "La casa es distinta cada vez: las habitaciones y los muebles se colocan de otra forma." },
+          { zh: "計分：每題答對得分，連續答對 3 題 ×1.5、5 題 ×2，沒有答錯、沒用提示又夠快還有加分。🎧 聽力模式不顯示句子，分數 ×1.5（中途按「看文字」就沒有這個加成）。",
+            es: "Puntos: cada acierto suma; con 3 aciertos seguidos ×1.5 y con 5 ×2, y hay bonus si no fallas, no usas pista y vas rápido. En el 🎧 modo escucha no se muestra la frase y los puntos ×1.5 (si pulsas «Ver texto», se pierde ese bonus)." },
+          { zh: "⚙️ 設定：介面語言（繁體中文、簡體中文、西文、英文）、句子文字（繁體或簡體）、讀音（拼音、注音、不顯示）、翻譯（不顯示、西文、英文）、語速（慢或正常）、音效開關、地圖文字（只標房間或全部標示）。",
+            es: "⚙️ Ajustes: idioma de la interfaz (chino tradicional, chino simplificado, español o inglés), caracteres de la frase (tradicionales o simplificados), pronunciación (pinyin, zhuyin o ninguna), traducción (ninguna, español o inglés), velocidad (lenta o normal), sonido y textos del mapa (solo habitaciones o todo)." },
+          { zh: "這個遊戲有自己的一組設定，和其他遊戲不共用，所以換遊戲玩時要重新選。排行榜目前只存在這台裝置。",
+            es: "Este juego tiene sus propios ajustes, que no se comparten con los demás juegos, así que hay que elegirlos de nuevo. El ranking por ahora se guarda solo en este dispositivo." }
+        ],
+        teacher: [
+          { zh: "第 3 關很適合教方位詞：可以先在教室裡用真的東西練「旁邊、前面、後面」，再讓學生玩。",
+            es: "El nivel 3 va muy bien para enseñar las palabras de lugar: practica en clase con objetos reales («al lado, delante, detrás») y luego deja que jueguen." },
+          { zh: "「聽力模式」可以當聽力小考。",
+            es: "El «modo escucha» sirve como pequeña prueba de comprensión auditiva." },
+          { zh: "沒有老師管理中心，也不用訂閱，直接開啟就能玩。",
+            es: "No tiene Centro del profesor ni requiere suscripción: se abre y se juega." }
+        ],
+        tip: { zh: "左右是看地圖畫面的左右，不是小人自己的左右。",
+               es: "Izquierda y derecha se cuentan según la pantalla del mapa, no según el personaje." }
+      }
+    },
+    {
+      id: "perdido",
+      glyph: "路", color: "gold",
+      title: { zh: "問路小達人", es: "¡Me he perdido!" },
+      desc: {
+        zh: "練習問路、指路：聽一段指路的話，用「直走、左轉、右轉」三個按鈕讓小人走到目的地。4 個關卡，3 張地圖。",
+        es: "Practica pedir y entender direcciones: escucha una indicación y mueve al personaje con tres botones (直走, 左轉, 右轉) hasta el destino. 4 niveles y 3 mapas."
+      },
+      tags: [{ zh: "問路", es: "Direcciones" }, { zh: "方位詞", es: "Palabras de lugar" }, { zh: "聽力", es: "Comprensión" }],
+      url: "https://wangchiapin.github.io/Me-he-perdido/",
+      guide: {
+        learn: { zh: "指路的中文：直走、左轉、右轉、左手邊／右手邊、第幾個路口、過馬路、對面、旁邊，以及用建築物當參考（例如「右手邊是銀行，過了銀行就左轉」）。",
+                 es: "El chino para dar direcciones: 直走, 左轉, 右轉, 左手邊/右手邊, «el primer/segundo cruce», 過馬路, 對面, 旁邊, y usar edificios como referencia (por ejemplo, «右手邊是銀行，過了銀行就左轉»)." },
+        level: { zh: "入門到初級。第 4 關是綜合挑戰，指路的句子比較長。",
+                 es: "Principiante a básico. El nivel 4 es un reto combinado con indicaciones más largas." },
+        steps: [
+          { zh: "<b>輸入名字、選關卡。</b>",
+            es: "<b>Escribe tu nombre y elige un nivel.</b>" },
+          { zh: "<b>聽（或看）指路的話</b>，按 🔊 可以聽很多次。",
+            es: "<b>Escucha (o lee) la indicación</b>; con 🔊 puedes oírla las veces que quieras." },
+          { zh: "<b>用三個按鈕讓小人走</b>：直走（走到下一個路口）、左轉、右轉。左和右要看小人面向哪裡（黑色箭頭），不是看畫面。",
+            es: "<b>Mueve al personaje con tres botones</b>: 直走 (avanza hasta la siguiente esquina), 左轉 y 右轉. Izquierda y derecha dependen de hacia dónde mira el personaje (la flecha negra), no de la pantalla." },
+          { zh: "<b>覺得到了就按「我到了」。</b>",
+            es: "<b>Cuando creas que llegaste, pulsa «¡Llegué!».</b>" },
+          { zh: "<b>走錯了</b>，遊戲會顯示你走的路線和正確的路線，還可以看小人怎麼走。每一輪 8 題，每答對一題 10 分。",
+            es: "<b>Si te equivocas</b>, el juego muestra tu ruta y la ruta correcta, y puedes ver cómo se camina. Cada ronda tiene 8 preguntas y cada acierto vale 10 puntos." }
+        ],
+        features: [
+          { zh: "四個關卡：1 方向詞（直走、左轉、右轉、左手邊、右手邊）→ 2 路口與過馬路 → 3 位置詞（對面、旁邊，用建築物當參考）→ 4 綜合挑戰。",
+            es: "Cuatro niveles: 1 direcciones (直走, 左轉, 右轉, izquierda, derecha) → 2 esquinas y cruzar la calle → 3 posiciones (enfrente, al lado, con edificios como referencia) → 4 reto combinado." },
+          { zh: "三張簡單的地圖：便利商店街、車站前、夜市，一共 27 個地點。",
+            es: "Tres mapas sencillos: calle comercial, frente a la estación y mercado nocturno, con 27 lugares en total." },
+          { zh: "設定：繁體或簡體；介面和翻譯語言為西文或英文（沒有只有中文的選項）；拼音（台灣讀音，預設關閉）；翻譯（預設開啟）；語音速度慢、正常、快；📖 地圖詞彙。",
+            es: "Ajustes: caracteres tradicionales o simplificados; interfaz y traducción en español o inglés (no hay modo solo chino); pinyin (lecturas de Taiwán, apagado por defecto); traducción (encendida por defecto); velocidad de voz lenta, normal o rápida; 📖 vocabulario del mapa." },
+          { zh: "每一關有自己的排行榜，目前只存在這台裝置。",
+            es: "Cada nivel tiene su propio ranking, que por ahora se guarda solo en este dispositivo." }
+        ],
+        teacher: [
+          { zh: "網址後面可以加參數直接跳過開始畫面，例如 ?name=Ana&script=tw&lang=es（script 填 tw 或 cn，lang 填 es 或 en），適合傳給學生的連結。",
+            es: "Puedes saltarte la pantalla de inicio con parámetros en la dirección, por ejemplo ?name=Ana&script=tw&lang=es (script: tw o cn; lang: es o en); es práctico para mandar un enlace a los alumnos." },
+          { zh: "可以先在教室裡讓學生用身體練「向左轉、向右轉」，再玩這個遊戲。",
+            es: "Antes de jugar, los alumnos pueden practicar «向左轉 / 向右轉» con el cuerpo en clase." },
+          { zh: "沒有老師管理中心，也不用訂閱，直接開啟就能玩。",
+            es: "No tiene Centro del profesor ni requiere suscripción: se abre y se juega." }
+        ],
+        tip: { zh: "「直走」是走到下一個路口；「過馬路」是直接走到馬路對面，不轉彎。",
+               es: "«直走» es avanzar hasta la siguiente esquina; «過馬路» es cruzar la calle en línea recta, sin girar." }
+      }
     }
   ],
 

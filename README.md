@@ -40,3 +40,8 @@
 | compras | 幫媽媽買東西（未上線） | irdecompras |
 | perrito | 小狗找寶藏 | El-Perrito-Busca-el-Tesoro |
 | jigsaw | 文字拼圖 | chinesejigsaw |
+| dragon | 墨龍飛天 | el-dragon-de-tinta |
+| topo | 打地鼠學中文 | atrapa-al-topo |
+| ba | 把它放好 | practica-de-ba-oracion |
+| agarrar | 我要拿什麼？ | que-voy-a-agarrar |
+| perdido | 問路小達人 | Me-he-perdido |
