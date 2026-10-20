@@ -78,25 +78,27 @@ const CONFIG = {
     {
       id: "numeros",
       glyph: "數", color: "jade",
-      title: { zh: "數字聽力練習", es: "Práctica de números" },
+      title: { zh: "數字聽力練習", es: "Práctica de escucha de números" },
       desc: {
-        zh: "聽中文念出數字，輸入你聽到的數字，每回合 1 分鐘，範圍 0 到 9999。可以調整語速，練到一聽就懂。",
-        es: "Escucha un número en chino y escribe el que oigas. Cada ronda dura 1 minuto y los números van de 0 a 9999. Con velocidad ajustable."
+        zh: "聽中文念出數字，輸入你聽到的數字，每回合 1 分鐘。可以選 0–9999、10000–99999 或兩者混合，也能調整語速，練到一聽就懂。",
+        es: "Escucha un número en chino y escribe el que oigas. Cada ronda dura 1 minuto. Elige entre 0–9999, 10000–99999 o una mezcla de ambos, y ajusta la velocidad."
       },
       tags: [{ zh: "數字", es: "Números" }, { zh: "聽力", es: "Comprensión" }],
       url: "https://wangchiapin.github.io/numeros/",
       guide: {
-        learn: { zh: "聽懂 0 到 9999 的中文數字，特別是「兩百、兩千」、「十五」這些容易聽錯的說法。大部分題目是三位數和四位數。",
-                 es: "Entender números en chino del 0 al 9999, sobre todo formas que confunden, como «兩百 / 兩千» (200 / 2000) o «十五» (15). La mayoría son de tres y cuatro cifras." },
+        learn: { zh: "聽懂 0 到 99999 的中文數字，特別是「兩百、兩千、兩萬」、「十五」、「一萬零一」這些容易聽錯的說法。預設是 0–9999，大部分題目是三位數和四位數。",
+                 es: "Entender números en chino del 0 al 99999, sobre todo formas que confunden, como «兩百 / 兩千 / 兩萬» (200 / 2000 / 20000), «十五» (15) o «一萬零一» (10001). Por defecto va del 0 al 9999 y la mayoría son de tres y cuatro cifras." },
         level: { zh: "學過數字之後的練習，適合入門到初級。", es: "Para practicar después de aprender los números; nivel principiante a básico." },
         steps: [
-          { zh: "<b>按「Modo Escucha」</b>開始，一回合 1 分鐘。", es: "<b>Pulsa «Modo Escucha»</b> para empezar. Cada ronda dura 1 minuto." },
-          { zh: "<b>聽數字</b>，用阿拉伯數字輸入你聽到的數字，按 Enter 或「Confirmar」。", es: "<b>Escucha el número</b> y escríbelo con cifras; pulsa Enter o «Confirmar»." },
-          { zh: "<b>馬上看結果</b>：答對打勾，答錯會顯示正確答案，然後自動出下一題。沒聽清楚可以按「🔊 Escuchar de nuevo」重聽，不限次數。", es: "<b>Ves el resultado al instante</b>: ✓ si aciertas, o la respuesta correcta si fallas, y pasa solo al siguiente. Si no lo oíste bien, pulsa «🔊 Escuchar de nuevo» las veces que quieras." },
-          { zh: "<b>時間到</b>會顯示答對、答錯和總題數，還有每種語速各答對幾題。", es: "<b>Al acabar el tiempo</b> verás aciertos, errores, total de preguntas y cuántas acertaste con cada velocidad." }
+          { zh: "<b>選難度</b>：0–9999（預設）、10000–99999，或 0–99999 混合。選擇會記在你的瀏覽器。", es: "<b>Elige la dificultad</b>: 0–9999 (por defecto), 10000–99999 o 0–99999 mezclado. Se guarda en tu navegador." },
+          { zh: "<b>按「聽力模式」</b>開始，一回合 1 分鐘。", es: "<b>Pulsa «Modo Escucha»</b> (聽力模式) para empezar. Cada ronda dura 1 minuto." },
+          { zh: "<b>聽數字</b>，用阿拉伯數字輸入你聽到的數字，按 Enter 或「確認」。", es: "<b>Escucha el número</b> y escríbelo con cifras; pulsa Enter o «Confirmar» (確認)." },
+          { zh: "<b>馬上看結果</b>：答對打勾，然後自動出下一題；答錯會顯示正確答案的中文和拼音，按「下一題」才繼續。沒聽清楚可以按「🔊 再聽一次」重聽，不限次數。", es: "<b>Ves el resultado al instante</b>: ✓ si aciertas y pasa solo al siguiente; si fallas, verás la respuesta correcta en chino y pinyin, y sigues con «Siguiente» (下一題). Si no lo oíste bien, pulsa «🔊 Escuchar de nuevo» (再聽一次) las veces que quieras." },
+          { zh: "<b>時間到</b>會顯示答對、答錯和總題數、每種語速各答對幾題，還會列出你答錯的數字和念法，方便複習。", es: "<b>Al acabar el tiempo</b> verás aciertos, errores, total de preguntas, cuántas acertaste con cada velocidad y la lista de números que fallaste con su lectura, para repasar." }
         ],
         features: [
-          { zh: "語速四段：Súper Fácil（非常慢）、Lento、Normal、Rápido，作答時隨時可以換。", es: "Cuatro velocidades: Súper Fácil, Lento, Normal y Rápido; puedes cambiarla mientras juegas." },
+          { zh: "語速三段：慢（Lento）、正常（Normal）、快（Rápido），作答時隨時可以換。", es: "Tres velocidades: Lento, Normal y Rápido; puedes cambiarla mientras juegas." },
+          { zh: "右上角的 ⚙️ 可以選繁體或簡體、介面語言（西文、英文或只有中文），以及顯示拼音、注音或兩者。", es: "Con el ⚙️ de arriba a la derecha eliges caracteres tradicionales o simplificados, el idioma de la interfaz (español, inglés o solo chino) y si ver pinyin, zhuyin o ambos." },
           { zh: "答錯不扣分，可以放心多試。", es: "Los errores no restan puntos: prueba sin miedo." },
           { zh: "手機上會自動跳出數字鍵盤。", es: "En el móvil aparece directamente el teclado numérico." },
           { zh: "沒有排行榜，也不用登入或輸入名字。", es: "No tiene ranking ni hace falta registrarse o escribir tu nombre." }
