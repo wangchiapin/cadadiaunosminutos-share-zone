@@ -359,6 +359,57 @@ const CONFIG = {
         ],
         tip: { zh: "最容易搞混的是「後退」：小狗不會轉身，要按牠面向的相反方向。", es: "Lo que más confunde es «後退» (retroceder): el perrito no se da la vuelta; pulsa la flecha contraria a donde mira." }
       }
+    },
+    {
+      id: "jigsaw",
+      glyph: "拼", color: "brick",
+      title: { zh: "文字拼圖", es: "Rompecabezas de chino" },
+      desc: {
+        zh: "輸入 1～20 個中文字，變成一幅帶卡榫的拼圖，用滑鼠或手指拼回來。可選 8×8 到 15×15，有輕鬆和會旋轉的進階難度，可顯示拼音或注音，成績可上排行榜。",
+        es: "Escribe de 1 a 20 caracteres chinos y conviértelos en un rompecabezas de piezas encajables. Elige de 8×8 a 15×15, nivel fácil o avanzado (con piezas giradas), muestra pinyin o zhuyin y compite en el ranking."
+      },
+      tags: [{ zh: "漢字", es: "Caracteres" }, { zh: "拼圖", es: "Rompecabezas" }],
+      url: "https://wangchiapin.github.io/chinesejigsaw/",
+      guide: {
+        learn: { zh: "認識漢字的樣子和結構：把你輸入的中文字（1～20 個字，可以是生詞、句子或學生的名字）拼回來，邊拼邊看每個字的筆畫。打開拼音或注音，還能順便複習讀音。",
+                 es: "Reconocer la forma y la estructura de los caracteres: reconstruyes el texto chino que tú escribas (de 1 a 20 caracteres: vocabulario, una frase o el nombre de un alumno) y te fijas en los trazos. Con pinyin o zhuyin activado, repasas también la pronunciación." },
+        level: { zh: "各程度都能玩，難度由文字和設定決定：初學者拼幾個簡單的字、選輕鬆；進階的學生可以拼一整句話、選會旋轉的進階難度。",
+                 es: "Para todos los niveles; la dificultad depende del texto y de los ajustes: los principiantes pueden armar unos pocos caracteres sencillos en nivel fácil; los más avanzados, una frase entera en nivel avanzado." },
+        steps: [
+          { zh: "<b>輸入想拼的文字</b>（1～20 個字，繁體簡體都可以），選拼圖大小（8×8、10×10、12×12、15×15，片數越多越難）和難度，按「開始新遊戲」。手機上這些都收在下方的「新遊戲」裡。",
+            es: "<b>Escribe el texto que quieras armar</b> (de 1 a 20 caracteres, tradicionales o simplificados), elige el tamaño (8×8, 10×10, 12×12 o 15×15; cuantas más piezas, más difícil) y el nivel, y pulsa «Nueva partida». En el móvil todo esto está en «Nueva» (abajo)." },
+          { zh: "<b>把拼圖片拖到桌面</b>：所有片一開始都在「未使用的拼圖池」（電腦在左邊，手機在下方）。兩片對的拼圖靠近時，會「喀」一聲自動吸在一起，接好的整塊可以一起拖。桌面上可以同時拼好幾個不同的地方，最後再接起來。",
+            es: "<b>Arrastra las piezas a la mesa</b>: al principio todas están en el banco de piezas sin usar (a la izquierda en el ordenador, abajo en el móvil). Cuando dos piezas que van juntas se acercan, encajan con un «clic»; el bloque unido se mueve entero. Puedes armar varias zonas a la vez y unirlas al final." },
+          { zh: "<b>進階難度</b>：每片一開始的方向是亂的，要先轉到正確的方向才能接合。電腦按 R 鍵（Shift＋R 往反方向）或用滑鼠滾輪；手機點一下拼圖片就轉 90 度。",
+            es: "<b>Nivel avanzado</b>: cada pieza empieza girada al azar y hay que ponerla en su posición para que encaje. En el ordenador, pulsa R (Shift+R para el otro sentido) o usa la rueda del ratón; en el móvil, toca la pieza para girarla 90°." },
+          { zh: "<b>全部拼好就完成</b>，會顯示時間和移動次數。可以輸入名字存到排行榜，也可以再玩一次或看看成品。",
+            es: "<b>Al terminar</b> verás el tiempo y los movimientos. Puedes escribir tu nombre para guardarlo en el ranking, jugar otra vez o ver la imagen terminada." }
+        ],
+        features: [
+          { zh: "輔助按鈕：整理拼圖池、邊角優先（先拼外框）、完成圖（看答案）、提示框（在桌面顯示拼圖範圍）。右上的 ❓ 說明有完整的操作和分級介紹。",
+            es: "Botones de ayuda: ordenar el banco, bordes primero (para armar el marco), modelo (ver la imagen final) y marco guía (muestra el contorno en la mesa). El ❓ de arriba explica todos los controles y los niveles." },
+          { zh: "⚙️ 設定：繁體或簡體、介面（中文＋西文、中文＋英文、只有中文）、拼音／注音／兩個都顯示／關閉（顯示在每個字上方，從下一局開始；拼音用台灣讀音）、接合吸力（弱＝要放得很準，強＝靠近就吸住）。",
+            es: "⚙️ Ajustes: tradicional o simplificado; interfaz (chino + español, chino + inglés o solo chino); pinyin, zhuyin, ambos o ninguno (sobre cada carácter, desde la próxima partida; pinyin con lecturas de Taiwán); fuerza de encaje (baja = colocar con precisión; alta = encaja al acercar)." },
+          { zh: "上方有計時和移動次數。背景音樂（水滴聲和風聲）和接合音效可以分別開關；瀏覽器規定要先點一下畫面，音樂才會開始。",
+            es: "Arriba ves el cronómetro y los movimientos. La música de fondo (gotas de agua y viento) y el sonido de encaje se activan por separado; el navegador exige un toque en la pantalla antes de que empiece la música." },
+          { zh: "手機版：單指拖空白處移動畫面，兩指放大縮小，右上「回到全貌」回到整張桌面；手機橫放時拼圖池在左邊。",
+            es: "En el móvil: un dedo en la mesa vacía mueve la vista y dos dedos hacen zoom; «Ver todo» (arriba a la derecha) vuelve a mostrar toda la mesa. Con el móvil en horizontal, el banco queda a la izquierda." },
+          { zh: "🏆 排行榜：依拼圖大小和難度分開排，先比時間，時間一樣再比移動次數。每台裝置每個榜只留最好的成績，不同字數的拼圖放在同一個榜。不用登入，存成績時才輸入名字。",
+            es: "🏆 Ranking: hay uno para cada tamaño y nivel; se ordena por tiempo y, si empatan, por movimientos. Cada dispositivo conserva solo su mejor resultado por ranking, y los textos de distinta longitud comparten el mismo. No hace falta registrarse: solo escribes tu nombre al guardar." }
+        ],
+        teacher: [
+          { zh: "上課時可以輸入本課的生詞或句子（最多 20 字）給學生拼，拼完就把字記住；需要提示時，打開「完成圖」或「提示框」。",
+            es: "En clase puedes escribir el vocabulario o la frase de la lección (hasta 20 caracteres) para que los alumnos la armen; si necesitan ayuda, activan «Modelo» o «Marco guía»." },
+          { zh: "打開拼音或注音，學生拼完還能順便複習讀音。",
+            es: "Con pinyin o zhuyin activado, los alumnos repasan también la pronunciación al terminar." },
+          { zh: "排行榜是不同文字放在同一個榜；想比賽的話，請大家拼同一段文字，比較公平。",
+            es: "Como los textos distintos comparten ranking, si queréis competir, haced que todos armen el mismo texto." },
+          { zh: "沒有老師管理中心，也不用訂閱，直接開啟就能玩。",
+            es: "No tiene Centro del profesor ni requiere suscripción: se abre y se juega." }
+        ],
+        tip: { zh: "第一次玩建議先選 8×8、輕鬆難度，字數少一點，先熟悉怎麼拖和接合。",
+               es: "La primera vez, prueba 8×8 en nivel fácil con pocos caracteres para familiarizarte con arrastrar y encajar." }
+      }
     }
   ],
 
