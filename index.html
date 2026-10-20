@@ -62,9 +62,9 @@ const CONFIG = {
             es: "<b>La partida termina</b> cuando encuentras las 18 parejas. El registro lateral muestra las palabras, su pinyin y su significado para repasar." }
         ],
         features: [
-          { zh: "字體：簡體（預設）或繁體。", es: "Caracteres: simplificados (por defecto) o tradicionales." },
-          { zh: "發音標示：不顯示、拼音或注音，玩到一半也可以換。", es: "Pronunciación: sin ayuda, pinyin o zhuyin; se puede cambiar en cualquier momento." },
-          { zh: "介面語言：西班牙文或英文。", es: "Idioma de la interfaz: español o inglés." },
+          { zh: "字體：繁體（預設）或簡體。", es: "Caracteres: tradicionales (por defecto) o simplificados." },
+          { zh: "發音標示：不顯示、拼音、注音或兩個都顯示，玩到一半也可以換。", es: "Pronunciación: sin ayuda, pinyin, zhuyin o ambos; se puede cambiar en cualquier momento." },
+          { zh: "介面語言：西班牙文、英文或只有中文。這些設定和其他遊戲共用。", es: "Idioma de la interfaz: español, inglés o solo chino. Estos ajustes se comparten con los demás juegos." },
           { zh: "牌背可以顯示編號，方便兩人玩的時候說「我要翻 12 號」。", es: "Las cartas pueden mostrar números en el reverso, útil para jugar en pareja («¡la 12!»)." },
           { zh: "分數看嘗試次數和時間，越少次、越快越高分。單人模式的成績會上前 10 名排行榜。", es: "La puntuación depende de los intentos y del tiempo: menos intentos y más rapidez, más puntos. En modo individual entras en el ranking Top 10." }
         ],
@@ -215,7 +215,7 @@ const CONFIG = {
           { zh: "中文可選繁體或簡體，說明語言可選西班牙文或英文。", es: "El chino puede verse en tradicional o simplificado, y las explicaciones en español o inglés." },
           { zh: "拼音可以隨時打開或關閉（預設關閉），用台灣讀音。", es: "El pinyin se puede activar o desactivar en cualquier momento (apagado por defecto) y sigue la pronunciación de Taiwán." },
           { zh: "旁邊有「任務提示」（看了不扣分）、「本關單字」和「錯誤紀錄」可以查。", es: "En el panel lateral tienes la pista de la misión (no resta puntos), el vocabulario de la escena y tu registro de errores." },
-          { zh: "每個情境都有自己的前 15 名排行榜。", es: "Cada escena tiene su propio ranking Top 15." },
+          { zh: "每個情境都有自己的前 10 名排行榜。", es: "Cada escena tiene su propio ranking Top 10." },
           { zh: "進度存在網路上，不用註冊帳號，只要記得自己的玩家代碼。", es: "Tu progreso se guarda en línea sin crear una cuenta; solo tienes que recordar tu código." }
         ],
         teacher: [
@@ -290,7 +290,7 @@ const CONFIG = {
             es: "<b>Cuando colocas los 9 objetos</b>, termina la partida y ves el tiempo y los errores." }
         ],
         features: [
-          { zh: "⚙️ 設定：繁體或簡體、介面西班牙文或英文、發音標示不顯示／拼音／注音／兩個都顯示。", es: "⚙️ Ajustes: tradicional o simplificado; interfaz en español o inglés; pronunciación sin ayuda, pinyin, zhuyin o ambos." },
+          { zh: "⚙️ 設定：繁體或簡體、介面（西班牙文、英文或只有中文）、發音標示不顯示／拼音／注音／兩個都顯示。這些設定和其他遊戲共用。", es: "⚙️ Ajustes: tradicional o simplificado; interfaz (español, inglés o solo chino); pronunciación sin ayuda, pinyin, zhuyin o ambos. Se comparten con los demás juegos." },
           { zh: "畫面上有方位詞小抄，可以展開來看。", es: "Hay una chuleta con las palabras de posición que puedes desplegar." },
           { zh: "前 10 名排行榜：錯誤少的排前面，同樣再比時間。有開指令文字的成績會標出來。", es: "Ranking Top 10: primero quien tiene menos errores y, si empatan, el más rápido. Las partidas con texto de ayuda llevan una marca." }
         ],
@@ -306,21 +306,32 @@ const CONFIG = {
       glyph: "買", color: "brick",
       title: { zh: "幫媽媽買東西", es: "Compras para mamá" },
       desc: {
-        zh: "（即將推出）照著媽媽的購物清單，用中文說出要買什麼、付錢，再判斷老闆找的錢對不對。",
-        es: "(Próximamente) Sigue la lista de la compra de mamá: di en chino qué quieres comprar, paga y comprueba si el cambio es correcto."
+        zh: "照著媽媽的購物清單，用中文說出要買什麼、付錢，再判斷老闆找的錢對不對。",
+        es: "Sigue la lista de la compra de mamá: di en chino qué quieres comprar, paga y comprueba si el cambio es correcto."
       },
       tags: [{ zh: "數字", es: "Números" }, { zh: "量詞", es: "Clasificadores" }, { zh: "購物", es: "Compras" }],
-      url: "",
+      url: "https://wangchiapin.github.io/irdecompras/",
       guide: {
-        soon: true,
         learn: { zh: "數量＋量詞＋物品（例如「兩瓶牛奶」）、新台幣的錢幣，以及算找錢。", es: "Cantidad + clasificador + objeto (por ejemplo «兩瓶牛奶», dos botellas de leche), las monedas y billetes de Taiwán y calcular el cambio." },
         level: { zh: "入門到初級。", es: "Principiante a básico." },
         steps: [
           { zh: "<b>看媽媽的購物清單</b>：每次 3 到 5 樣東西。", es: "<b>Mira la lista de mamá</b>: cada vez hay de 3 a 5 cosas." },
           { zh: "<b>用說的買東西</b>：按 🎤 說出「數量＋量詞＋東西」，也可以打字。", es: "<b>Compra hablando</b>: pulsa 🎤 y di «cantidad + clasificador + objeto»; también puedes escribirlo." },
-          { zh: "<b>付錢</b>：從錢包把新台幣拖出來付錢。", es: "<b>Paga</b>: arrastra los billetes y monedas de Taiwán desde la cartera." },
-          { zh: "<b>檢查找錢</b>：老闆找的錢是剛剛好、找太多，還是找太少？", es: "<b>Revisa el cambio</b>: ¿el vendedor te ha dado lo justo, de más o de menos?" }
-        ]
+          { zh: "<b>付錢</b>：點皮包裡的新台幣來付錢，付的金額會顯示在櫃台上。", es: "<b>Paga</b>: toca los billetes y monedas de tu cartera; el importe aparece en el mostrador." },
+          { zh: "<b>檢查找錢</b>：老闆找的錢是剛剛好、找太多，還是找太少？", es: "<b>Revisa el cambio</b>: ¿el vendedor te ha dado lo justo, de más o de menos?" },
+          { zh: "<b>看結果</b>：會顯示買了幾樣、幾樣一次答對、用了多久和總花費，滿分 100。", es: "<b>Mira el resultado</b>: cuántas cosas compraste, cuántas acertaste a la primera, el tiempo y el gasto total; el máximo es 100." }
+        ],
+        features: [
+          { zh: "⚙️ 設定：繁體或簡體、介面（中文＋西文、中文＋英文、只有中文）、拼音／注音／兩個都顯示／關閉、語速慢／正常／快。這些設定和其他遊戲共用。", es: "⚙️ Ajustes: tradicional o simplificado; interfaz (chino + español, chino + inglés o solo chino); pinyin, zhuyin, ambos o ninguno; velocidad lenta, normal o rápida. Se comparten con los demás juegos." },
+          { zh: "🎤 用說的買東西：手機或瀏覽器不支援語音辨識時，改用打字也可以。", es: "🎤 Compra hablando: si tu móvil o navegador no admite reconocimiento de voz, también puedes escribir." },
+          { zh: "「這張清單用到的量詞」小卡可以展開來看。", es: "Puedes desplegar la tarjeta «Clasificadores de esta lista»." },
+          { zh: "🏆 購物達人排行榜：前 10 名，每台裝置只留最高分。", es: "🏆 Ranking de compradores: Top 10; cada dispositivo conserva solo su mejor puntuación." }
+        ],
+        teacher: [
+          { zh: "上課時可以先看量詞小卡複習，再請學生用說的買東西。", es: "En clase, repasa primero la tarjeta de clasificadores y luego pide que compren hablando." },
+          { zh: "沒有老師管理中心，也不用訂閱，直接開啟就能玩。", es: "No tiene Centro del profesor ni requiere suscripción: se abre y se juega." }
+        ],
+        tip: { zh: "說話時找安靜的地方；辨識不到時，直接打字就可以。", es: "Habla en un lugar tranquilo; si no te reconoce, escribe la respuesta." }
       }
     },
     {
@@ -444,8 +455,8 @@ const CONFIG = {
             es: "Cada palabra que comes (acierto o error) se pronuncia en voz alta, y la música baja un poco mientras suena. Arriba a la derecha hay ♪ (música), pausa, y el juego se pausa solo si cambias de aplicación." },
           { zh: "畫面是水墨風：宣紙底、淡墨山壁和雲霧往下捲動，字是墨點，龍是毛筆畫出來的線條。",
             es: "El estilo es de tinta china: fondo de papel de arroz, montañas y niebla que se desplazan, palabras como gotas de tinta y un dragón dibujado con pincel." },
-          { zh: "每個主題的最高分會記在這台裝置上；排行榜還沒有開放。",
-            es: "La mejor puntuación de cada tema se guarda en este dispositivo; el ranking todavía no está disponible." }
+          { zh: "每個主題都有自己的前 10 名排行榜，結束後會顯示；每台裝置每個主題只留最高分。",
+            es: "Cada tema tiene su propio ranking Top 10, que se muestra al terminar; cada dispositivo conserva solo su mejor puntuación por tema." }
         ],
         teacher: [
           { zh: "可以請學生挑本課的主題來玩，玩完看複習清單，把吃錯的字再念一次。",
@@ -473,8 +484,8 @@ const CONFIG = {
         level: { zh: "入門到初級。句子是隨機抽的，目前不分等級；可以打開拼音或注音幫忙。",
                  es: "Principiante a básico. Las frases salen al azar y por ahora no hay niveles; puedes activar pinyin o zhuyin como ayuda." },
         steps: [
-          { zh: "<b>先在設定選好</b>介面語言（西文或英文）、繁體或簡體、讀音（預設不顯示）和難度，再按「開始」。",
-            es: "<b>Primero elige los ajustes</b>: idioma de la interfaz (español o inglés), caracteres tradicionales o simplificados, pronunciación (por defecto, ninguna) y dificultad; luego pulsa «Jugar»." },
+          { zh: "<b>先在設定選好</b>介面語言（西文、英文或只有中文）、繁體或簡體、讀音（預設拼音）、語速和難度，再按「開始」。字形、語言、讀音、語速和其他遊戲共用。",
+            es: "<b>Primero elige los ajustes</b>: idioma de la interfaz (español, inglés o solo chino), caracteres tradicionales o simplificados, pronunciación (por defecto, pinyin), velocidad y dificultad; luego pulsa «Jugar». Caracteres, idioma, pronunciación y velocidad se comparten con los demás juegos." },
           { zh: "<b>聽並看題目橫幅上的那句中文</b>：字很大，每個詞上面會依設定標拼音或注音。按 🔊 可以再聽一次整句。",
             es: "<b>Escucha y lee la frase</b> del cartel superior: los caracteres son grandes y cada palabra lleva pinyin o zhuyin encima, según tus ajustes. Con 🔊 puedes oírla otra vez." },
           { zh: "<b>依句子的順序打地鼠</b>：地鼠從洞裡冒出來，頭上有字卡，打對的那一個詞。整句打完會放煙火，馬上換下一句。",
@@ -491,16 +502,16 @@ const CONFIG = {
             es: "A veces sale un «topo sorpresa» sin tarjeta (alrededor del 10 %): si lo golpeas, no suma ni resta." },
           { zh: "句子來自共用的句子庫，每次隨機抽；連不上時會改用 3 句內建句子。",
             es: "Las frases vienen de un banco de frases compartido y se eligen al azar; si no hay conexión, se usan 3 frases incluidas en el juego." },
-          { zh: "語音一律念台灣讀音（zh-TW），選簡體也一樣；沒有語速選項。",
-            es: "La voz siempre es en chino de Taiwán (zh-TW), aunque elijas simplificado; no hay opción de velocidad." },
+          { zh: "語音一律念台灣讀音（zh-TW），選簡體也一樣；語速可選慢、正常（預設）、快。",
+            es: "La voz siempre es en chino de Taiwán (zh-TW), aunque elijas simplificado; la velocidad puede ser lenta, normal (por defecto) o rápida." },
           { zh: "手機（直式、橫式）、平板和電腦都能玩，手機的設定收在 ⚙ 裡。",
             es: "Funciona en móvil (vertical y horizontal), tableta y ordenador; en el móvil los ajustes están en ⚙." }
         ],
         teacher: [
           { zh: "結果畫面很適合當課堂複習：請學生把完成的句子再聽一次、再念一次。",
             es: "La pantalla de resultados sirve de repaso en clase: pide que vuelvan a oír y a leer en voz alta las frases completadas." },
-          { zh: "沒有老師管理中心，也沒有排行榜，不用訂閱，直接開啟就能玩。",
-            es: "No tiene Centro del profesor ni ranking, y no requiere suscripción: se abre y se juega." }
+          { zh: "每個難度都有前 10 名排行榜（同一個暱稱只留最高分）。沒有老師管理中心，不用訂閱，直接開啟就能玩。",
+            es: "Cada dificultad tiene su ranking Top 10 (un mismo apodo conserva solo su mejor puntuación). No tiene Centro del profesor ni requiere suscripción: se abre y se juega." }
         ],
         tip: { zh: "看到發光的字，就是現在該打的那一個。",
                es: "Si una palabra brilla, es justo la que te toca golpear." }
@@ -536,12 +547,12 @@ const CONFIG = {
         features: [
           { zh: "計分：第一次就答對 100 分（連續答對有 ×1.2、×1.5 加成），10 秒內答對最多再加 50 分；第二次才答對 50 分。不扣命。星星：第一次就對 5 題以上 1 顆、7 題以上 2 顆、9 題以上 3 顆。",
             es: "Puntos: 100 si aciertas a la primera (con racha ×1.2 y ×1.5) y hasta +50 por rapidez en los primeros 10 s; 50 si aciertas al segundo intento. No hay vidas. Estrellas: 5 o más aciertos a la primera = ★, 7 o más = ★★, 9 o más = ★★★." },
-          { zh: "介面語言：西班牙文或英文（沒有只有中文的選項）；西文可選拉丁美洲或西班牙的用字（例如 carro／coche、celular／móvil）。",
-            es: "Idioma de la interfaz: español o inglés (no hay modo solo chino); el español puede ser de Latinoamérica o de España (por ejemplo, carro/coche, celular/móvil)." },
-          { zh: "字形：繁體或簡體。讀音：拼音、注音或不顯示（預設不顯示），以台灣讀音為主。語音是台灣中文，可選慢速（預設）或正常。",
-            es: "Caracteres: tradicionales o simplificados. Pronunciación: pinyin, zhuyin o ninguna (por defecto, ninguna), con lecturas de Taiwán. La voz es de Taiwán, lenta (por defecto) o normal." },
-          { zh: "30 句的圖片都是用程式畫的簡單圖案。排行榜（每人只留最高分、前 15 名）目前只存在這台裝置，還沒有和其他同學共用。",
-            es: "Las imágenes de las 30 oraciones están dibujadas con código, en un estilo sencillo. El ranking (mejor puntaje por jugador, Top 15) por ahora se guarda solo en este dispositivo y no se comparte con otros alumnos." }
+          { zh: "介面語言：西班牙文、英文或只有中文；西文可選拉丁美洲或西班牙的用字（例如 carro／coche、celular／móvil）。",
+            es: "Idioma de la interfaz: español, inglés o solo chino; el español puede ser de Latinoamérica o de España (por ejemplo, carro/coche, celular/móvil)." },
+          { zh: "字形：繁體或簡體。讀音：拼音、注音、兩個都顯示或不顯示（預設拼音），以台灣讀音為主。語音是台灣中文，語速可選慢、正常（預設）、快。字形、語言、讀音、語速和其他遊戲共用。",
+            es: "Caracteres: tradicionales o simplificados. Pronunciación: pinyin, zhuyin, ambos o ninguna (por defecto, pinyin), con lecturas de Taiwán. La voz es de Taiwán; velocidad lenta, normal (por defecto) o rápida. Caracteres, idioma, pronunciación y velocidad se comparten con los demás juegos." },
+          { zh: "30 句的圖片都是用程式畫的簡單圖案。排行榜（前 10 名）和其他同學共用，三關的分數加起來排名；每台裝置每關只留最高分。",
+            es: "Las imágenes de las 30 oraciones están dibujadas con código, en un estilo sencillo. El ranking (Top 10) se comparte con otros alumnos y se ordena por la suma de los puntos de los tres niveles; cada dispositivo conserva solo su mejor puntuación por nivel." }
         ],
         teacher: [
           { zh: "上課要一次看完所有關卡，可以在網址後面加 ?unlock=1，全部關卡就會開放。",
@@ -587,10 +598,10 @@ const CONFIG = {
             es: "La casa es distinta cada vez: las habitaciones y los muebles se colocan de otra forma." },
           { zh: "計分：每題答對得分，連續答對 3 題 ×1.5、5 題 ×2，沒有答錯、沒用提示又夠快還有加分。🎧 聽力模式不顯示句子，分數 ×1.5（中途按「看文字」就沒有這個加成）。",
             es: "Puntos: cada acierto suma; con 3 aciertos seguidos ×1.5 y con 5 ×2, y hay bonus si no fallas, no usas pista y vas rápido. En el 🎧 modo escucha no se muestra la frase y los puntos ×1.5 (si pulsas «Ver texto», se pierde ese bonus)." },
-          { zh: "⚙️ 設定：介面語言（繁體中文、簡體中文、西文、英文）、句子文字（繁體或簡體）、讀音（拼音、注音、不顯示）、翻譯（不顯示、西文、英文）、語速（慢或正常）、音效開關、地圖文字（只標房間或全部標示）。",
-            es: "⚙️ Ajustes: idioma de la interfaz (chino tradicional, chino simplificado, español o inglés), caracteres de la frase (tradicionales o simplificados), pronunciación (pinyin, zhuyin o ninguna), traducción (ninguna, español o inglés), velocidad (lenta o normal), sonido y textos del mapa (solo habitaciones o todo)." },
-          { zh: "這個遊戲有自己的一組設定，和其他遊戲不共用，所以換遊戲玩時要重新選。排行榜目前只存在這台裝置。",
-            es: "Este juego tiene sus propios ajustes, que no se comparten con los demás juegos, así que hay que elegirlos de nuevo. El ranking por ahora se guarda solo en este dispositivo." }
+          { zh: "⚙️ 設定：字形（繁體或簡體）、介面（中文＋西文、中文＋英文、只有中文；有西文或英文時句子會附翻譯）、讀音（拼音、注音、兩個都顯示、不顯示）、語速（慢、正常、快）；另外還有 🎧 聽力模式、音效開關、地圖文字（只標房間或全部標示）。",
+            es: "⚙️ Ajustes: caracteres (tradicionales o simplificados); interfaz (chino + español, chino + inglés o solo chino; con español o inglés la frase lleva traducción); pronunciación (pinyin, zhuyin, ambos o ninguna); velocidad (lenta, normal o rápida); además el modo 🎧 de escucha, el sonido y los textos del mapa (solo habitaciones o todo)." },
+          { zh: "字形、語言、讀音、語速和其他遊戲共用；聽力模式、音效和地圖文字是這個遊戲自己的設定。每一關有前 10 名排行榜，每台裝置每關只留最高分。",
+            es: "Caracteres, idioma, pronunciación y velocidad se comparten con los demás juegos; el modo de escucha, el sonido y los textos del mapa son propios de este juego. Cada nivel tiene su ranking Top 10; cada dispositivo conserva solo su mejor puntuación por nivel." }
         ],
         teacher: [
           { zh: "第 3 關很適合教方位詞：可以先在教室裡用真的東西練「旁邊、前面、後面」，再讓學生玩。",
@@ -636,10 +647,10 @@ const CONFIG = {
             es: "Cuatro niveles: 1 direcciones (直走, 左轉, 右轉, izquierda, derecha) → 2 esquinas y cruzar la calle → 3 posiciones (enfrente, al lado, con edificios como referencia) → 4 reto combinado." },
           { zh: "三張簡單的地圖：便利商店街、車站前、夜市，一共 27 個地點。",
             es: "Tres mapas sencillos: calle comercial, frente a la estación y mercado nocturno, con 27 lugares en total." },
-          { zh: "設定：繁體或簡體；介面和翻譯語言為西文或英文（沒有只有中文的選項）；拼音（台灣讀音，預設關閉）；翻譯（預設開啟）；語音速度慢、正常、快；📖 地圖詞彙。",
-            es: "Ajustes: caracteres tradicionales o simplificados; interfaz y traducción en español o inglés (no hay modo solo chino); pinyin (lecturas de Taiwán, apagado por defecto); traducción (encendida por defecto); velocidad de voz lenta, normal o rápida; 📖 vocabulario del mapa." },
-          { zh: "每一關有自己的排行榜，目前只存在這台裝置。",
-            es: "Cada nivel tiene su propio ranking, que por ahora se guarda solo en este dispositivo." }
+          { zh: "設定：繁體或簡體；介面語言：西文、英文或只有中文（只有中文時不顯示翻譯）；拼音／注音／兩個都顯示／關閉（台灣讀音）；語音速度慢、正常、快；📖 地圖詞彙。這些設定和其他遊戲共用。",
+            es: "Ajustes: caracteres tradicionales o simplificados; interfaz en español, inglés o solo chino (en solo chino no hay traducción); pinyin, zhuyin, ambos o ninguna (lecturas de Taiwán); velocidad de voz lenta, normal o rápida; 📖 vocabulario del mapa. Estos ajustes se comparten con los demás juegos." },
+          { zh: "每一關有自己的前 10 名排行榜，分數高、時間短的排前面；每台裝置每關只留最好的成績。",
+            es: "Cada nivel tiene su propio ranking Top 10: más puntos y menos tiempo, mejor posición; cada dispositivo conserva solo su mejor resultado por nivel." }
         ],
         teacher: [
           { zh: "網址後面可以加參數直接跳過開始畫面，例如 ?name=Ana&script=tw&lang=es（script 填 tw 或 cn，lang 填 es 或 en），適合傳給學生的連結。",

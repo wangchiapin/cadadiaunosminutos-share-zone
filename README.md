@@ -37,7 +37,7 @@
 | taiwan-life | 台灣生存日記 | taiwan-life |
 | corre-hanzi | 跑吧！漢字 | corre |
 | armario | 收納小達人 | Ordena-el-Armario |
-| compras | 幫媽媽買東西（未上線） | irdecompras |
+| compras | 幫媽媽買東西 | irdecompras |
 | perrito | 小狗找寶藏 | El-Perrito-Busca-el-Tesoro |
 | jigsaw | 文字拼圖 | chinesejigsaw |
 | dragon | 墨龍飛天 | el-dragon-de-tinta |
