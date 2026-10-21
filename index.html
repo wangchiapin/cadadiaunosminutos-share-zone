@@ -434,14 +434,14 @@ const CONFIG = {
       glyph: "龍", color: "jade",
       title: { zh: "墨龍飛天", es: "El dragón de tinta" },
       desc: {
-        zh: "水墨風的向上飛行遊戲：操控一條龍往上飛，只吃你選的主題裡的字。有 10 個主題、630 個詞，吃到的字都會念出來，結束後還有複習清單。",
-        es: "Un juego de vuelo hacia arriba con estilo de tinta china: guías a un dragón y solo comes las palabras del tema que elijas. Hay 10 temas y 630 palabras; cada palabra se pronuncia al comerla y al final tienes una lista de repaso."
+        zh: "水墨風的向上飛行遊戲：操控一條龍往上飛，只吃你選的主題裡的字。公開頁有食物、動物、顏色 3 個主題；訂閱老師可以讓學生玩全部 10 個主題（共 630 個詞），還能自訂主題。吃到的字都會念出來，結束後還有複習清單。",
+        es: "Un juego de vuelo hacia arriba con estilo de tinta china: guías a un dragón y solo comes las palabras del tema que elijas. La página pública ofrece 3 temas (comida, animales y colores); con la suscripción del profesor se abren los 10 temas (630 palabras) y se pueden crear temas propios. Cada palabra se pronuncia al comerla y al final tienes una lista de repaso."
       },
       tags: [{ zh: "詞彙", es: "Vocabulario" }, { zh: "反應", es: "Reflejos" }],
       url: "https://wangchiapin.github.io/el-dragon-de-tinta/",
       guide: {
-        learn: { zh: "10 個主題、共 630 個日常詞彙，每個主題 44～80 個詞：食物、水果、動物、顏色、交通、身體、衣服、職業、天氣、家裡。每個詞都有拼音（或注音）和西文、英文意思。",
-                 es: "Vocabulario cotidiano en 10 temas, 630 palabras en total y entre 44 y 80 por tema: comida, fruta, animales, colores, transporte, cuerpo, ropa, profesiones, clima y casa. Cada palabra lleva pinyin (o zhuyin) y su significado en español e inglés." },
+        learn: { zh: "日常詞彙，公開頁開放食物、動物、顏色 3 個主題；老師用連結可以開放更多（免費老師最多 5 個：再加交通、家裡；訂閱老師 10 個全開）。10 個主題共 630 個詞，每個主題 44～80 個詞：食物、水果、動物、顏色、交通、身體、衣服、職業、天氣、家裡。每個詞都有拼音（或注音）和西文、英文意思。",
+                 es: "Vocabulario cotidiano. La página pública ofrece 3 temas (comida, animales y colores); con un enlace del profesor se pueden abrir más (hasta 5 con profesor gratuito: añade transporte y casa; los 10 con suscripción). En total hay 10 temas y 630 palabras, entre 44 y 80 por tema: comida, fruta, animales, colores, transporte, cuerpo, ropa, profesiones, clima y casa. Cada palabra lleva pinyin (o zhuyin) y su significado en español e inglés." },
         level: { zh: "入門到初級。要認得字或看得懂拼音，手也要夠快。", es: "Principiante a básico. Hay que reconocer los caracteres o leer el pinyin, y reaccionar rápido." },
         steps: [
           { zh: "<b>先選一個主題</b>，這一局只吃這個主題的字。",
@@ -464,14 +464,16 @@ const CONFIG = {
             es: "Cada palabra que comes (acierto o error) se pronuncia en voz alta, y la música baja un poco mientras suena. Arriba a la derecha hay ♪ (música), pausa, y el juego se pausa solo si cambias de aplicación." },
           { zh: "畫面是水墨風：宣紙底、淡墨山壁和雲霧往下捲動，字是墨點，龍是毛筆畫出來的線條。",
             es: "El estilo es de tinta china: fondo de papel de arroz, montañas y niebla que se desplazan, palabras como gotas de tinta y un dragón dibujado con pincel." },
-          { zh: "每個主題都有自己的前 10 名排行榜，結束後會顯示；每台裝置每個主題只留最高分。",
-            es: "Cada tema tiene su propio ranking Top 10, que se muestra al terminar; cada dispositivo conserva solo su mejor puntuación por tema." }
+          { zh: "公開頁的 3 個主題各有自己的前 10 名排行榜，結束後會顯示；每台裝置每個主題只留最高分。老師的練習連結和班級連結不進公開排行榜。",
+            es: "Cada uno de los 3 temas de la página pública tiene su propio ranking Top 10, que se muestra al terminar; cada dispositivo conserva solo su mejor puntuación por tema. Los enlaces de práctica y de clase del profesor no entran en el ranking público." }
         ],
         teacher: [
           { zh: "可以請學生挑本課的主題來玩，玩完看複習清單，把吃錯的字再念一次。",
             es: "Puedes pedir que elijan el tema de la lección; al terminar, que repasen la lista y repitan en voz alta las palabras que fallaron." },
-          { zh: "沒有老師管理中心，也不用訂閱，直接開啟就能玩。",
-            es: "No tiene Centro del profesor ni requiere suscripción: se abre y se juega." }
+          { zh: "到「👩‍🏫 老師管理中心」可以產生<b>練習連結</b>（免費：食物、動物、顏色、交通、家裡，最多 5 個主題，傳給學生直接玩，不記成績）。",
+            es: "En el «👩‍🏫 Centro del profesor» puedes crear un <b>enlace de práctica</b> (gratis: comida, animales, colores, transporte y casa, hasta 5 temas; se envía al alumno y no guarda notas)." },
+          { zh: "訂閱後可以：全部 10 個主題、<b>自訂主題</b>（最多 3 個，每個 6～40 個詞，簡體、拼音和翻譯會自動產生，可以自己改）、<b>練習範圍</b>（最多 15 組）、<b>班級連結</b>（學生輸入暱稱，成績、吃對幾個、飛行高度和常吃錯的字自動進成績冊）和<b>學習單</b>（單字表、配對練習、答案頁）。",
+            es: "Con la suscripción: los 10 temas, <b>temas propios</b> (hasta 3, de 6 a 40 palabras; el chino simplificado, el pinyin y las traducciones se generan solos y puedes corregirlos), <b>rangos de práctica</b> (hasta 15), <b>enlaces de clase</b> (el alumno escribe un apodo y las notas, aciertos, altura y palabras falladas llegan solas al libro de notas) y <b>fichas</b> (lista de palabras, ejercicio de emparejar y hoja de respuestas)." }
         ],
         tip: { zh: "如果手機沒有中文語音，字不會出聲，但還是可以玩，看拼音或注音就好。",
                es: "Si tu móvil no tiene voz en chino, las palabras no se oirán, pero puedes jugar igual guiándote por el pinyin o el zhuyin." }
@@ -2287,15 +2289,15 @@ async function notifySite(req, id){
 }
 const CENTER_URL = "https://wangchiapin.github.io/profesor/";
 const CMP_ROWS = [
-  [{ zh: "三款遊戲自己玩", es: "Jugar a los tres juegos" }, "✅", "✅"],
+  [{ zh: "四款遊戲自己玩", es: "Jugar a los cuatro juegos" }, "✅", "✅"],
   [{ zh: "跑吧！漢字 句庫", es: "¡Corre, Hanzi!: bancos de frases" }, { zh: "1 個，每庫 50 句", es: "1 banco, 50 frases" }, { zh: "5 個，每庫 80 句，可自訂干擾字", es: "5 bancos, 80 frases cada uno, distractores propios" }],
   [{ zh: "色數消消樂 設定組", es: "Pop Colores y Números: configuraciones" }, { zh: "3 組", es: "3" }, { zh: "15 組，可自訂顏色與數字", es: "15, con colores y números propios" }],
   [{ zh: "比比看 練習範圍", es: "Compara y Adivina: rangos de práctica" }, { zh: "3 組", es: "3" }, { zh: "15 組", es: "15" }],
-  [{ zh: "墨龍飛天：自訂主題、練習範圍、班級連結", es: "Dragón de tinta: temas propios, rangos, enlaces de clase" }, { zh: "🔧 維修中", es: "🔧 En mantenimiento" }, { zh: "🔧 維修中", es: "🔧 En mantenimiento" }],
+  [{ zh: "墨龍飛天 主題", es: "Dragón de tinta: temas" }, { zh: "練習連結可用 5 個主題", es: "Enlace de práctica con 5 temas" }, { zh: "10 個主題、自訂主題 3 個、練習範圍 15 組", es: "10 temas, 3 propios, 15 rangos de práctica" }],
   [{ zh: "練習連結（不用班級，直接傳給學生玩）", es: "Enlaces de práctica (sin clase, se envían directo al alumno)" }, "✅", "✅"],
   [{ zh: "建立班級、成績自動回傳、成績冊", es: "Clases, notas automáticas y libro de notas" }, "❌", { zh: "✅ 最多 3 班", es: "✅ hasta 3 clases" }],
   [{ zh: "比比看常錯統計、匯出 CSV", es: "Errores frecuentes en Compara y Adivina, exportar CSV" }, "❌", "✅"],
-  [{ zh: "三款遊戲的學習單（列印／PDF）", es: "Fichas de los tres juegos (imprimir / PDF)" }, "❌", "✅"],
+  [{ zh: "四款遊戲的學習單（列印／PDF）", es: "Fichas de los cuatro juegos (imprimir / PDF)" }, "❌", "✅"],
 ];
 function compareHtml(){
   return `<h3 class="sub-sec">${esc(t(UI.cmpTitle2))}</h3>
