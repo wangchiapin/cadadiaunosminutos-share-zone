@@ -23,6 +23,7 @@
    - 還沒上線的遊戲加 `soon: true`
 3. 卡片上的簡短說明（`desc`）也要跟遊戲實際內容一致。
 4. 到 `stats.html` 的卡片開關清單加上 `game-<id>`。
+5. **如果這個遊戲也加進老師管理中心**：到 `stats.html#sub`「老師管理中心遊戲開關」的清單（`CS`）加一列，id 要跟 profesor 的 `GAME_IDS` 一致（寫入 `portalStatus/center-<id>`）。新遊戲還沒做好時，先勾維修中。
 
 沒有 `guide` 的遊戲不會出現「詳細說明」按鈕，瀏覽器主控台會出現提醒。
 
