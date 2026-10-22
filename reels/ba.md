@@ -52,14 +52,14 @@ Para profesores de chino 👩‍🏫👨‍🏫
 
 Si enseñas la estructura 把 a hispanohablantes, este juego te da práctica extra con imágenes y sin presión: no se pierden vidas y los alumnos pueden consultar el vocabulario cuando quieran. Úsalo después de explicar la gramática, como práctica en clase o tarea. Al final, la lista de errores sirve para repasar.
 
-💡 Tres niveles (colocar / resultado / disposición), y el banco de oraciones sigue creciendo. Con ?unlock=1 en el enlace se abren todos los niveles.
+💡 Tres niveles (colocar / resultado / disposición), y el banco de oraciones sigue creciendo. Los tres niveles están abiertos desde el principio.
 🔗 Link en la bio
 
 給華語老師 👩‍🏫👨‍🏫
 
 教把字句給西語學生時，講完語法可以讓學生玩這個遊戲當課堂練習或回家作業。圖片輔助，不扣命，學生可以隨時查生字，不會因為卡住而放棄。結束後的錯題清單可以直接拿來檢討。
 
-💡 三個關卡（放置類／結果類／處置類），題庫持續增加。網址後面加 ?unlock=1，全部關卡就會開放，上課很方便。
+💡 三個關卡（放置類／結果類／處置類），題庫持續增加。三個關卡一開始就全部開放，上課可以直接選。
 🔗 連結在簡介
 
 #aprenderchino #chinomandarin #gramaticachina #把字句 #學華語 #Taiwan
