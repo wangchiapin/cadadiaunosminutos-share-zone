@@ -45,3 +45,7 @@
 | ba | 把它放好 | practica-de-ba-oracion |
 | agarrar | 我要拿什麼？ | que-voy-a-agarrar |
 | perdido | 問路小達人 | Me-he-perdido |
+
+## Instagram Reel 腳本
+
+`reels/` 資料夾放每款遊戲的 Instagram Reel 腳本與貼文（見 `reels/README.md`）。遊戲改版後，對應的腳本也要重新核對。
