@@ -434,8 +434,8 @@ const CONFIG = {
       glyph: "龍", color: "jade",
       title: { zh: "墨龍飛天", es: "El dragón de tinta" },
       desc: {
-        zh: "水墨風的向上飛行遊戲：操控一條龍往上飛，只吃你選的主題裡的字。公開頁有食物、動物、顏色 3 個主題；訂閱老師可以讓學生玩全部 10 個主題（共 630 個詞），還能自訂主題。吃到的字都會念出來，結束後還有複習清單。",
-        es: "Un juego de vuelo hacia arriba con estilo de tinta china: guías a un dragón y solo comes las palabras del tema que elijas. La página pública ofrece 3 temas (comida, animales y colores); con la suscripción del profesor se abren los 10 temas (630 palabras) y se pueden crear temas propios. Cada palabra se pronuncia al comerla y al final tienes una lista de repaso."
+        zh: "水墨風的向上飛行遊戲：操控一條龍往上飛，只吃你選的主題裡的字。公開頁有食物、動物、顏色 3 個主題；訂閱老師可以讓學生玩全部 10 個主題（共 630 個詞），還能自訂主題。結束後還有複習清單，列出吃錯和漏掉的字。",
+        es: "Un juego de vuelo hacia arriba con estilo de tinta china: guías a un dragón y solo comes las palabras del tema que elijas. La página pública ofrece 3 temas (comida, animales y colores); con la suscripción del profesor se abren los 10 temas (630 palabras) y se pueden crear temas propios. Al final tienes una lista de repaso con las palabras que fallaste o dejaste pasar."
       },
       tags: [{ zh: "詞彙", es: "Vocabulario" }, { zh: "反應", es: "Reflejos" }],
       url: "https://wangchiapin.github.io/el-dragon-de-tinta/",
@@ -452,16 +452,16 @@ const CONFIG = {
             es: "<b>Si comes una palabra correcta, sumas puntos</b>, y por cada 5 aciertos seguidos el multiplicador sube en 1 (×2, ×3…). <b>Si comes una de otro tema</b>, pierdes un corazón; con tres corazones perdidos, termina la partida." },
           { zh: "<b>每吃對 8 個字就加速一次</b>，畫面會顯示飛行高度。吃對約 16 個字之後，錯的字會開始混進「相近主題」的字（例如食物裡混進家裡或身體的詞），越飛越難分。",
             es: "<b>Cada 8 aciertos el dragón acelera</b> y la pantalla muestra la altura de vuelo. A partir de unos 16 aciertos, se cuelan palabras de «temas parecidos» (por ejemplo, palabras de la casa o del cuerpo entre la comida), y cada vez es más difícil distinguirlas." },
-          { zh: "<b>結束後看複習清單</b>：列出這局吃錯和漏掉的字（字、拼音或注音、翻譯），點一下就能聽讀音。",
-            es: "<b>Al terminar, repasa la lista</b>: muestra las palabras que comiste mal o dejaste pasar (carácter, pinyin o zhuyin y traducción); toca una para oír su pronunciación." }
+          { zh: "<b>結束後看複習清單</b>：列出這局吃錯和漏掉的字（字、拼音或注音、翻譯）。",
+            es: "<b>Al terminar, repasa la lista</b>: muestra las palabras que comiste mal o dejaste pasar (carácter, pinyin o zhuyin y traducción)." }
         ],
         features: [
-          { zh: "畫面角落有一顆 🔊／🔇 小按鈕，一按就關掉音樂和音效（念字的語音不受影響）；每個遊戲各自記住。",
-            es: "En una esquina de la pantalla hay un botón 🔊／🔇 que silencia la música y los efectos con un solo toque (la voz que lee las palabras no se ve afectada); cada juego lo recuerda por separado." },
-          { zh: "⚙️ 設定：繁體或簡體、介面（中文＋西文、中文＋英文、只有中文）、拼音／注音／兩個都顯示／關閉、語速慢／正常／快。這些設定和跑吧、色數、比比看共用，在一個遊戲設好，這裡也一樣。",
-            es: "⚙️ Ajustes: tradicional o simplificado; interfaz (chino + español, chino + inglés o solo chino); pinyin, zhuyin, ambos o ninguno; velocidad lenta, normal o rápida. Se comparten con 跑吧, 色數 y 比比看: si los cambias en uno, valen aquí también." },
-          { zh: "吃到字的時候（吃對或吃錯）都會念出那個字的讀音，念的時候背景音樂會小聲一點。右上角有 ♪（音樂開關）、暫停鍵，切到別的程式時會自動暫停。",
-            es: "Cada palabra que comes (acierto o error) se pronuncia en voz alta, y la música baja un poco mientras suena. Arriba a la derecha hay ♪ (música), pausa, y el juego se pausa solo si cambias de aplicación." },
+          { zh: "畫面角落有一顆 🔊／🔇 小按鈕，一按就關掉音樂和音效；每個遊戲各自記住。",
+            es: "En una esquina de la pantalla hay un botón 🔊／🔇 que silencia la música y los efectos con un solo toque; cada juego lo recuerda por separado." },
+          { zh: "⚙️ 設定：繁體或簡體、介面（中文＋西文、中文＋英文、只有中文）、拼音／注音／兩個都顯示／關閉。這些設定和跑吧、色數、比比看共用，在一個遊戲設好，這裡也一樣。",
+            es: "⚙️ Ajustes: tradicional o simplificado; interfaz (chino + español, chino + inglés o solo chino); pinyin, zhuyin, ambos o ninguno. Se comparten con 跑吧, 色數 y 比比看: si los cambias en uno, valen aquí también." },
+          { zh: "右上角有 ♪（音樂開關）、暫停鍵，切到別的程式時會自動暫停。這款遊戲不念字，只有背景音樂和音效。",
+            es: "Arriba a la derecha hay ♪ (música) y pausa, y el juego se pausa solo si cambias de aplicación. Este juego no lee las palabras en voz alta: solo tiene música y efectos." },
           { zh: "畫面是水墨風：宣紙底、淡墨山壁和雲霧往下捲動，字是墨點，龍是毛筆畫出來的線條。",
             es: "El estilo es de tinta china: fondo de papel de arroz, montañas y niebla que se desplazan, palabras como gotas de tinta y un dragón dibujado con pincel." },
           { zh: "公開頁的 3 個主題各有自己的前 10 名排行榜，結束後會顯示；每台裝置每個主題只留最高分。老師的練習連結和班級連結不進公開排行榜。",
