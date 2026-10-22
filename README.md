@@ -49,3 +49,8 @@
 ## Instagram Reel 腳本
 
 `reels/` 資料夾放每款遊戲的 Instagram Reel 腳本與貼文（見 `reels/README.md`）。遊戲改版後，對應的腳本也要重新核對。
+
+## 老師管理中心遊戲開關（stats.html#sub）
+- 「🔧 老師管理中心遊戲開關」分頁：勾選＝該遊戲在老師管理中心維修中，一般老師看不到卡片。
+- 寫入 Firestore `portalStatus/center-<corre|colores|bbk|dragon>`，`{off:true}`；沒有文件＝開放。只有 a2224907@gmail.com 能寫（沿用現有規則）。
+- 管理者自己的管理中心不受影響，照常使用。

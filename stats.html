@@ -197,12 +197,18 @@ select{font:inherit;color:var(--ink);padding:6px 10px;border:2px solid var(--lin
     <button data-subtab="site">🌐 入口網站訂閱</button>
     <button data-subtab="wa">💬 WhatsApp 群組訂閱</button>
     <button data-subtab="center">👩‍🏫 老師管理中心回饋<span id="cfbCount"></span></button>
+    <button data-subtab="cswitch">🔧 老師管理中心遊戲開關</button>
     <button data-subtab="bbk">🚩 比比看題目回報<span id="bbrCount"></span></button>
   </div>
   <div data-subpane="bbk" hidden>
     <h2>比比看題目回報</h2>
     <p class="note">學生在比比看每題答完後按「🚩 這題怪怪的」送出的回報（一般模式、班級連結都可以送）。只有你登入後看得到；可以標記已處理、刪除、匯出。 <a class="lnk-btn" href="https://wangchiapin.github.io/compara-y-adivina/" target="_blank" rel="noopener">開比比看 ↗</a></p>
     <div class="box" id="bbrBox"><p class="msg">請先到「回饋專區」分頁用 Google 登入。</p></div>
+  </div>
+  <div data-subpane="cswitch" hidden>
+    <h2>老師管理中心：遊戲開關</h2>
+    <p class="note">控制「老師管理中心」裡每款遊戲的所有卡片。關閉（維修中）的遊戲，一般老師會看到「🔧 維修中」，卡片都收起來；你用管理員帳號登入老師管理中心時，卡片照常可以用，上面會多一行「維修中，只有你看得到」，方便邊建邊測。新遊戲還沒做好前先關著，做好再打開。 <a class="lnk-btn" href="https://wangchiapin.github.io/profesor/" target="_blank" rel="noopener">開啟老師管理中心 ↗</a></p>
+    <div class="box" id="csBox"><p class="msg">請先到「回饋專區」分頁用 Google 登入。</p></div>
   </div>
   <div data-subpane="center" hidden>
     <h2>老師管理中心回饋</h2>
@@ -247,7 +253,7 @@ select{font:inherit;color:var(--ink);padding:6px 10px;border:2px solid var(--lin
     put("statsTab", t); if (push) history.replaceState(null, "", "#" + t);
   }
   function showSub(k){
-    if (!["site", "wa", "center", "bbk"].includes(k)) k = "site";
+    if (!["site", "wa", "center", "cswitch", "bbk"].includes(k)) k = "site";
     document.querySelectorAll("#subtabs [data-subtab]").forEach(b => b.classList.toggle("on", b.dataset.subtab === k));
     document.querySelectorAll("[data-subpane]").forEach(p => p.hidden = p.dataset.subpane !== k);
     put("statsSub", k);
@@ -896,13 +902,45 @@ try {
           } catch (err) { alert("失敗：" + (err.code || err.message)); }
         });
 
+        /* ---- 老師管理中心的遊戲開關（也存在 portalStatus：文件 center-遊戲代號，off:true＝維修中、off:false＝開放；
+                 沒有文件時＝開放。任何人可讀，只有你能寫；老師管理中心開啟時讀這幾筆） ---- */
+        const csBox = document.getElementById("csBox");
+        const CS = [["corre", "📚 跑吧！漢字", false], ["colores", "🎨 色數消消樂", false], ["bbk", "📐 比比看", false], ["dragon", "🐉 墨龍飛天", false]];
+        let CSV = {}, csLoaded = false, csMsg = "";
+        const csOff = ([g, , def]) => ("center-" + g) in CSV ? CSV["center-" + g] : def;
+        function drawCs(){
+          csBox.innerHTML = (me ? "" : `<p class="msg">請先到「回饋專區」分頁用 Google 登入才能修改開關。</p>`) +
+            `<div class="sw-group">${CS.map(it => {
+              const off = csOff(it);
+              return `<label class="sw-item${off ? " off" : ""}"><input type="checkbox" data-cs="${it[0]}" ${off ? "" : "checked"} ${me && csLoaded ? "" : "disabled"}><span>${esc(it[1])}</span>${off ? "<em>🔧 維修中</em>" : ""}</label>`;
+            }).join("")}</div>` + (csMsg ? `<p class="msg">${esc(csMsg)}</p>` : "");
+        }
+        async function loadCs(){
+          try {
+            const snap = await getDocs(query(collection(db, "portalStatus")));
+            CSV = {}; snap.docs.filter(d => d.id.startsWith("center-")).forEach(d => { CSV[d.id] = d.data().off === true; });
+            csLoaded = true; csMsg = "";
+          } catch (err) { csMsg = err.code === "timeout" ? explain(err) : `讀不到開關資料（${err.code || err.message}）。`; }
+          drawCs();
+        }
+        csBox.addEventListener("change", async e => {
+          const cb = e.target.closest("input[data-cs]"); if (!cb) return;
+          const g = cb.dataset.cs, off = !cb.checked; cb.disabled = true;
+          try {
+            await setDocSw(doc(db, "portalStatus", "center-" + g), { off });
+            CSV["center-" + g] = off;
+            csMsg = `已${off ? "關閉（老師管理中心顯示維修中）" : "開啟"}：${g}`;
+          } catch (err) { csMsg = `儲存失敗（${err.code || err.message}）：請確認登入的是你的管理員帳號。`; }
+          drawCs();
+        });
+
         onAuthStateChanged(auth, user => {
           me = user || null;
-          drawSw();
+          drawSw(); drawCs();
           if (user) { loadNotes(user); loadFeedback(); loadSub(); loadCfb(); loadBbr(); }
           else { loginUI(); fbBox.innerHTML = `<p class="msg">請先到「回饋專區」分頁用 Google 登入。</p>`; SUB = null; subBox.innerHTML = `<p class="msg">請先到「回饋專區」分頁用 Google 登入。</p>`; CFB = []; cfbCount.textContent = ""; cfbBox.innerHTML = `<p class="msg">請先到「回饋專區」分頁用 Google 登入。</p>`; BBR = []; bbrCount.textContent = ""; bbrBox.innerHTML = `<p class="msg">請先到「回饋專區」分頁用 Google 登入。</p>`; }
           loadVotes();
-          loadSw();
+          loadSw(); loadCs();
         });
       } catch (err) {
         notesBox.innerHTML = `<p class="msg">登入功能載入失敗：${esc(err.code || err.message)}</p>`;
