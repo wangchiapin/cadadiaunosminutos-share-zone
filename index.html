@@ -533,10 +533,10 @@ const CONFIG = {
     {
       id: "ba",
       glyph: "把", color: "jade",
-      title: { zh: "把它放好", es: "Ponlo en su lugar" },
+      title: { zh: "把", es: "Oración con 把" },
       desc: {
-        zh: "練習「把字句」：每題看「之前」和「之後」兩張圖，排出或認出正確的句子。30 句、3 關，有排字卡、聽音選圖、選出正確句子三種題型。",
-        es: "Practica la estructura 把: en cada pregunta ves las imágenes «antes» y «después» y formas o reconoces la oración correcta. 30 oraciones en 3 niveles, con tres tipos de pregunta."
+        zh: "練習「把字句」：每題看「之前」和「之後」兩張圖，排出或認出正確的句子。371 句、3 關，有排字卡、聽音選圖、選出正確句子三種題型。",
+        es: "Practica la estructura 把: en cada pregunta ves las imágenes «antes» y «después» y formas o reconoces la oración correcta. 371 oraciones en 3 niveles, con tres tipos de pregunta."
       },
       tags: [{ zh: "把字句", es: "Oración con 把" }, { zh: "語法", es: "Gramática" }],
       url: "https://wangchiapin.github.io/practica-de-ba-oracion/",
@@ -546,16 +546,16 @@ const CONFIG = {
         level: { zh: "初級。適合剛接觸把字句的學生，需要先認得基本的動詞和日常物品。",
                  es: "Nivel básico. Para quienes empiezan con la estructura 把; conviene conocer los verbos y objetos cotidianos más comunes." },
         steps: [
-          { zh: "<b>在開始畫面輸入名字</b>，選好語言、字形和讀音，再選關卡。第 1 關一開始就開放，其他關要先過上一關。",
-            es: "<b>En la pantalla de inicio escribe tu nombre</b>, elige idioma, caracteres y pronunciación, y luego el nivel. El nivel 1 está abierto; los demás se desbloquean al superar el anterior." },
+          { zh: "<b>在首頁輸入暱稱（必填）</b>，右上角 ⚙ 可選語言、字形和讀音，再點要玩的關卡。第 1 關一開始就開放，其他關要先過上一關。",
+            es: "<b>En la página de inicio escribe tu apodo (obligatorio)</b>, elige idioma, caracteres y pronunciación en el botón ⚙, y luego toca el nivel. El nivel 1 está abierto; los demás se desbloquean al superar el anterior." },
           { zh: "<b>看「之前」和「之後」兩張圖</b>，每關 10 題，每題是三種題型之一。",
             es: "<b>Mira las dos imágenes, «antes» y «después»</b>. Cada nivel tiene 10 preguntas, de uno de los tres tipos." },
-          { zh: "<b>排字卡</b>：把詞排成正確的句子。<b>聽音選圖</b>：聽句子（逐詞念），選出「之後」的圖。<b>選出正確的句子</b>：三句裡挑那句對的（錯的選項都是真的不能說的句子，例如「把」放錯位置、少了結果）。",
-            es: "<b>Ordenar tarjetas</b>: forma la oración con las palabras. <b>Escuchar y elegir</b>: oye la oración (palabra por palabra) y elige la imagen del «después». <b>Elegir la oración correcta</b>: una correcta y dos incorrectas (las incorrectas son frases que de verdad no se pueden decir, por ejemplo con 把 mal colocado o sin el complemento)." },
+          { zh: "<b>排字卡</b>：把詞排成正確的句子。<b>聽音選圖</b>：聽句子（逐詞念），選出「之後」的圖。<b>選出正確的句子</b>：三句裡挑那句對的，答對後選項收起來只留句子（錯的選項都是真的不能說的句子，例如「把」放錯位置、少了結果）。",
+            es: "<b>Ordenar tarjetas</b>: forma la oración con las palabras. <b>Escuchar y elegir</b>: oye la oración (palabra por palabra) y elige la imagen del «después». <b>Elegir la oración correcta</b>: una correcta y dos incorrectas; al acertar, las opciones desaparecen y queda solo la oración (las incorrectas son frases que de verdad no se pueden decir, por ejemplo con 把 mal colocado o sin el complemento)." },
           { zh: "<b>卡住時</b>可以按「提示」看整句翻譯（扣 20 分），或按「詞彙」查每個詞的拼音、注音、意思和發音（不扣分）。",
             es: "<b>Si te atascas</b>, «Pista» muestra la traducción de la oración (−20 puntos) y «Vocabulario» muestra pinyin, zhuyin, significado y audio de cada palabra (sin penalización)." },
-          { zh: "<b>10 題結束</b>後會依第一次就答對的題數給 1～3 顆星，並列出錯題複習。至少 1 顆星才能解鎖下一關。",
-            es: "<b>Al terminar las 10 preguntas</b> recibes de 1 a 3 estrellas según los aciertos a la primera, y un repaso de errores. Necesitas al menos 1 estrella para desbloquear el siguiente nivel." }
+          { zh: "<b>10 題結束</b>後會依第一次就答對的題數給 1～3 顆星，結算頁的「需要複習」是一個按鈕，點開才看到錯題。至少 1 顆星才能解鎖下一關。",
+            es: "<b>Al terminar las 10 preguntas</b> recibes de 1 a 3 estrellas según los aciertos a la primera, y un botón «Para repasar» con los errores (se abre al tocarlo). Necesitas al menos 1 estrella para desbloquear el siguiente nivel." }
         ],
         features: [
           { zh: "計分：第一次就答對 100 分（連續答對有 ×1.2、×1.5 加成），10 秒內答對最多再加 50 分；第二次才答對 50 分。不扣命。星星：第一次就對 5 題以上 1 顆、7 題以上 2 顆、9 題以上 3 顆。",
@@ -564,8 +564,8 @@ const CONFIG = {
             es: "Idioma de la interfaz: español, inglés o solo chino; el español puede ser de Latinoamérica o de España (por ejemplo, carro/coche, celular/móvil)." },
           { zh: "字形：繁體或簡體。讀音：拼音、注音、兩個都顯示或不顯示（預設拼音），以台灣讀音為主。語音是台灣中文，語速可選慢、正常（預設）、快。字形、語言、讀音、語速和其他遊戲共用。",
             es: "Caracteres: tradicionales o simplificados. Pronunciación: pinyin, zhuyin, ambos o ninguna (por defecto, pinyin), con lecturas de Taiwán. La voz es de Taiwán; velocidad lenta, normal (por defecto) o rápida. Caracteres, idioma, pronunciación y velocidad se comparten con los demás juegos." },
-          { zh: "30 句的圖片都是用程式畫的簡單圖案。排行榜（前 10 名）和其他同學共用，三關的分數加起來排名；每台裝置每關只留最高分。",
-            es: "Las imágenes de las 30 oraciones están dibujadas con código, en un estilo sencillo. El ranking (Top 10) se comparte con otros alumnos y se ordena por la suma de los puntos de los tres niveles; cada dispositivo conserva solo su mejor puntuación por nivel." }
+          { zh: "371 句的圖片都是用程式畫的簡單圖案。介面文字分兩行：中文大字、西文／英文小字。排行榜（前 10 名）和其他同學共用，三關的分數加起來排名；每台裝置每關只留最高分。",
+            es: "Las imágenes de las 371 oraciones están dibujadas con código, en un estilo sencillo. Los textos de la interfaz van en dos líneas: chino grande y español/inglés pequeño. El ranking (Top 10) se comparte con otros alumnos y se ordena por la suma de los puntos de los tres niveles; cada dispositivo conserva solo su mejor puntuación por nivel." }
         ],
         teacher: [
           { zh: "上課要一次看完所有關卡，可以在網址後面加 ?unlock=1，全部關卡就會開放。",
