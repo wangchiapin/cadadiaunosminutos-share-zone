@@ -32,6 +32,7 @@
 | 第二批 | [compara.md](compara.md) | 比比看 | 腳本 |
 | 第二批 | [compras.md](compras.md) | 幫媽媽買東西 | 腳本 |
 | 第二批 | [numeros.md](numeros.md) | 數字聽力練習 | 腳本 |
+| 第二批 | [hora.md](hora.md) | 練習時間 | 腳本 |
 
 第二批的順序是依「畫面好不好看、容易拍成 15～30 秒」排的，可以再調。
 
