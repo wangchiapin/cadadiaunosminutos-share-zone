@@ -46,6 +46,7 @@
 | ba | 把 | practica-de-ba-oracion |
 | agarrar | 我要拿什麼？ | que-voy-a-agarrar |
 | perdido | 問路小達人 | Me-he-perdido |
+| hora | 練習時間 | timegame |
 
 ## Instagram Reel 腳本
 

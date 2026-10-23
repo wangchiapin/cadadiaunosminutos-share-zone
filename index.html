@@ -678,6 +678,59 @@ const CONFIG = {
         tip: { zh: "「直走」是走到下一個路口；「過馬路」是直接走到馬路對面，不轉彎。",
                es: "«直走» es avanzar hasta la siguiente esquina; «過馬路» es cruzar la calle en línea recta, sin girar." }
       }
+    },
+    {
+      id: "hora",
+      glyph: "時", color: "jade",
+      title: { zh: "練習時間", es: "¿Qué hora es?" },
+      desc: {
+        zh: "練習用中文說時間：看時鐘、說日期和星期、安排一天的行程、看月曆和年曆。4 個單元加一個綜合挑戰，每個單元 25 題，滿分 100。",
+        es: "Practica cómo decir la hora en chino: leer el reloj, decir la fecha y el día de la semana, organizar el horario de un día y usar el calendario mensual y anual. 4 unidades más un desafío mixto; cada unidad tiene 25 preguntas y la nota máxima es 100."
+      },
+      tags: [{ zh: "時間", es: "La hora" }, { zh: "日期星期", es: "Fecha y semana" }, { zh: "聽力", es: "Comprensión" }],
+      url: "https://wangchiapin.github.io/timegame/",
+      guide: {
+        learn: { zh: "幾點幾分（整點、半、五分鐘、任意分鐘和秒）、幾月幾號星期幾、昨天今天明天（到大前天、大後天）、上星期這星期下星期（到上上、下下）、早上中午下午晚上、一天的行程，以及看月曆和年曆（上個月、下個月、去年、明年、前年、後年）。",
+                 es: "Las horas y los minutos (en punto, y media, de cinco en cinco, cualquier minuto y segundos), la fecha y el día de la semana, ayer, hoy y mañana (hasta 大前天 y 大後天), la semana pasada, esta y la próxima (hasta 上上 y 下下), la mañana, el mediodía, la tarde y la noche, el horario de un día y el calendario mensual y anual (mes pasado, mes próximo, año pasado, año que viene, hace dos años y dentro de dos años)." },
+        level: { zh: "入門到初級。簡單級只有整點、半點和昨天、明天；困難級才有任意分鐘、秒，以及大前天、上上星期、前年這些詞。",
+                 es: "Principiante a básico. El nivel fácil solo tiene horas en punto, medias, ayer y mañana; el difícil añade minutos sueltos, segundos y palabras como 大前天, 上上星期 y 前年." },
+        steps: [
+          { zh: "<b>先在開始畫面選難度</b>（簡單、普通、困難），再點一個單元，馬上開始，不用輸入名字。",
+            es: "<b>Elige la dificultad en la pantalla de inicio</b> (fácil, normal o difícil) y toca una unidad: empieza al instante, sin escribir el nombre." },
+          { zh: "<b>四個單元</b>：① 幾點幾分　② 日期和星期（也有昨天明天、上星期下星期）　③ 一日行程　④ 月曆年曆。第五個按鈕是「綜合挑戰」，把四個單元混在一起。",
+            es: "<b>Cuatro unidades:</b> ① La hora　② Fecha y día de la semana (también ayer/mañana y semana pasada/próxima)　③ Horario del día　④ Calendario mensual y anual. El quinto botón es el «Desafío mixto», que mezcla las cuatro." },
+          { zh: "<b>每一題看提示做</b>：有的看時鐘或月曆選答案，有的按 🔊 聽一句話再選，有的把指針撥到正確的時間，有的在月曆上點出那一天再按「確定」，有的把句子配到正確的時間。",
+            es: "<b>Sigue la indicación de cada pregunta:</b> a veces eliges mirando el reloj o el calendario; otras veces pulsas 🔊, escuchas una frase y eliges; mueves las manecillas a la hora correcta; tocas el día en el calendario y pulsas «Confirmar»; o emparejas frases con su hora." },
+          { zh: "<b>答完馬上看解答</b>：對或錯、錯在哪裡、正確答案，聽力題還會顯示剛才念的那句中文。按「下一題」繼續。",
+            es: "<b>Al responder ves la solución al instante:</b> si acertaste o no, en qué te equivocaste y la respuesta correcta; en las preguntas de escucha también aparece la frase en chino que se acaba de oír. Pulsa «Siguiente» para continuar." },
+          { zh: "<b>每個單元 25 題、綜合挑戰 50 題</b>，最後的分數是 0 到 100 分（答對題數 ÷ 總題數 × 100）。想中途離開，按左上角的「回主選單」，會先問你要不要離開。",
+            es: "<b>Cada unidad tiene 25 preguntas y el desafío mixto 50.</b> La nota final va de 0 a 100 (aciertos ÷ total × 100). Si quieres salir antes, pulsa «回主選單» arriba a la izquierda; antes te pregunta si de verdad quieres salir." }
+        ],
+        features: [
+          { zh: "三種難度：簡單、普通、困難。時鐘從整點半點，到五分鐘，再到任意分鐘加秒；日期從不帶年份，到帶年份，再到帶星期；昨天明天、上星期下星期、上個月去年也是一層一層加詞。",
+            es: "Tres dificultades: fácil, normal y difícil. El reloj va de las horas en punto y medias, a los cinco minutos, y luego a cualquier minuto con segundos; las fechas, de sin año a con año y con día de la semana; y ayer/mañana, semana pasada/próxima y mes/año pasado se amplían poco a poco." },
+          { zh: "畫面上方有一條像鐘面的色帶，從日出到日落，會跟著題目的時間（或現在的時間）改變顏色，早上、下午、晚上的畫面配色不同。",
+            es: "Arriba hay una banda que parece una esfera de reloj, del amanecer al atardecer; cambia de color según la hora de la pregunta (o la hora actual), y la pantalla tiene colores distintos para la mañana, la tarde y la noche." },
+          { zh: "月曆題的行程共有 30 種日常活動，例如看醫生、開會、聚餐、考試、看電影、上中文課。",
+            es: "Los planes del calendario son 30 actividades cotidianas, por ejemplo ir al médico, una reunión, una cena, un examen, ir al cine o la clase de chino." },
+          { zh: "⚙️ 設定：字形（繁體或簡體）、介面語言（Chino + Español、Chino + English、Solo chino）、拼音／注音（拼音、注音、兩者、關閉）、語速（慢、一般、快）。選語速時會念一句讓你聽聽看。這些設定和其他遊戲共用。",
+            es: "⚙️ Ajustes: caracteres (tradicionales o simplificados); idioma (Chino + Español, Chino + English o Solo chino); pinyin / zhuyin (pinyin, zhuyin, ambos o ninguno); velocidad de la voz (lenta, normal o rápida). Al elegir la velocidad se oye una frase de prueba. Estos ajustes se comparten con los demás juegos." },
+          { zh: "畫面左下角有 🔊／🔇 小按鈕，可以關掉音效（念字的語音不受影響）。",
+            es: "En la esquina inferior izquierda hay un botón 🔊／🔇 que silencia los efectos de sonido (la voz que lee en chino no se ve afectada)." },
+          { zh: "沒有排行榜，也不記錄最高分，只看這一回的分數。",
+            es: "No hay ranking ni se guarda la mejor puntuación: solo cuenta la nota de esta ronda." }
+        ],
+        teacher: [
+          { zh: "四個單元剛好可以分四堂課：第一堂時鐘、第二堂日期星期、第三堂一天的行程、第四堂月曆；學完用「綜合挑戰」當小考。",
+            es: "Las cuatro unidades se prestan a cuatro clases: reloj, fecha y semana, horario del día y calendario; al final, el «Desafío mixto» sirve como pequeña prueba." },
+          { zh: "聽時間的題目，文字預設是藏起來的，學生按「看文字」才看得到；可以要求學生先不要按，當成純聽力練習。上課時也可以讓學生輪流念出答案。",
+            es: "En las preguntas de escuchar la hora, el texto está oculto y solo aparece al pulsar «Ver el texto»; puedes pedir que no lo pulsen para practicar solo la comprensión. En clase, los alumnos también pueden leer la respuesta en voz alta por turnos." },
+          { zh: "沒有老師管理中心，也不用訂閱，直接開啟就能玩。",
+            es: "No tiene Centro del profesor ni requiere suscripción: se abre y se juega." }
+        ],
+        tip: { zh: "2 點要說「兩點」，不是「二點」。一到九分可以說「八點零五分」或「八點五分」，兩種都對。",
+               es: "Las 2 se dicen «兩點», no «二點». Los minutos del uno al nueve se pueden decir «八點零五分» u «八點五分»; las dos formas son correctas." }
+      }
     }
   ],
 
