@@ -1169,6 +1169,17 @@ function render() {
   const tile = (a, b) => `<div class="tile"><small>${a}</small><b>${b}</b></div>`;
   let h = `<div class="tiles" style="margin-bottom:12px">${tile("訪客（每台每天算一次）", vf.length)}${tile("開始玩", pf.length)}${tile("玩完", nDone)}${tile("沒玩完", pf.length - nDone)}</div>`;
   h += `<p class="msg" style="margin:0 0 8px">讀到 ${plays.length} 筆遊玩紀錄、${visits.length} 筆訪客。${capped ? "<b style='color:var(--brick)'>已達上限 3000 筆，較舊的沒讀到，請縮小日期範圍。</b>" : ""}</p>`;
+  // 各遊戲總表（整個日期範圍合起來；訪客＝不重複裝置數）
+  const gm = new Map(), gget = g => { if (!gm.has(g)) gm.set(g, { game: g, dev: new Set(), s: 0, d: 0 }); return gm.get(g); };
+  vf.forEach(v => gget(v.game).dev.add(v.uid || "?"));
+  pf.forEach(p => { const r = gget(p.game); r.s++; if (p.done) r.d++; });
+  const gsum = [...gm.values()].sort((a, b) => b.s - a.s || b.dev.size - a.dev.size);
+  const allDev = new Set(); vf.forEach(v => allDev.add(v.uid || "?"));
+  const rate = (d, s) => s ? Math.round(d / s * 100) + "%" : "—";
+  h += `<h3 style="margin:14px 0 6px;font-size:1rem">各遊戲總表（訪客＝不重複的裝置數）</h3><div class="box"><table><tr><th>遊戲</th><th>訪客</th><th>開始</th><th>玩完</th><th>沒玩完</th><th>玩完率</th></tr>` +
+    (gsum.length ? gsum.map(r => `<tr><td style="text-align:left">${esc(gname(r.game))}</td><td>${r.dev.size}</td><td>${r.s}</td><td>${r.d}</td><td>${r.s - r.d}</td><td>${rate(r.d, r.s)}</td></tr>`).join("") +
+      `<tr style="font-weight:700"><td style="text-align:left">合計</td><td>${allDev.size}</td><td>${pf.length}</td><td>${nDone}</td><td>${pf.length - nDone}</td><td>${rate(nDone, pf.length)}</td></tr>` : `<tr><td colspan="6" class="msg">這個範圍沒有紀錄。</td></tr>`) + `</table></div>` +
+    `<p class="msg" style="margin:6px 0 0">合計的訪客是全部遊戲合起來的不重複裝置，同一台裝置玩了好幾個遊戲只算一位，所以會小於上面各列相加。</p>`;
   // 每天 × 每個遊戲
   const m = new Map(), get = (d, g) => { const k = d + "|" + g; if (!m.has(k)) m.set(k, { day: d, game: g, v: 0, s: 0, d: 0 }); return m.get(k); };
   vf.forEach(v => get(v.day, v.game).v++);
