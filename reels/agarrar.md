@@ -1,8 +1,8 @@
-# 我要拿什麼？ · ¿Qué voy a agarrar?
+# 我要放哪裡？ · ¿Dónde lo pongo?
 
 - 網址：https://wangchiapin.github.io/que-voy-a-agarrar/
 - 程度：入門～初級（房間、家具、日常物品；第 3 關方位詞）
-- 一句話賣點：聽一句中文，在家裡的地圖上走到對的地方，再選出要拿的東西。
+- 一句話賣點：聽「我要把XX放到XX」，先選對東西，再帶著它在家裡的地圖上走到對的地方。
 - 狀態：腳本（尚未錄影）。第二批。
 
 ## Reel 怎麼拍（30 秒內）
@@ -10,7 +10,7 @@
 | 秒數 | 畫面 | 螢幕上的字 |
 |---|---|---|
 | 0–3 | 家裡的地圖（6 個房間），聽到一句指示 | 聽一句話，走到對的地方🏠／Escucha y ve al lugar correcto |
-| 3–12 | 點地圖，小人走過去；走到家具旁邊停下，跳出 3 樣東西選一個 | 走到對的地方，再選東西／Ve al lugar y elige el objeto |
+| 3–12 | 先從 3 樣東西選出句子說的那一樣，再點地圖，小人帶著它走過去 | 先選東西，再放到對的地方／Elige el objeto y llévalo al lugar |
 | 12–20 | 選錯：扣一顆愛心（共 3 顆）；或用 💡 提示 | 只有 3 顆愛心／Solo 3 corazones |
 | 20–25 | 第 3 關：方位詞（旁邊、前面、後面、左邊、右邊…）；或打開 🎧 聽力模式 | 第 3 關：加上方位詞／Nivel 3: ¡con palabras de ubicación! |
 | 25–30 | 結尾畫面（可帶一下結果的星星） | 免費玩 Juega gratis｜連結在簡介 Link en la bio |
@@ -26,16 +26,16 @@
 
 ## 貼文（學生版）
 
-🏠 ¿Dónde está lo que voy a agarrar? ¡Escucha y encuéntralo en casa!
+🏠 ¿Dónde lo pongo? ¡Escucha y deja cada cosa en su lugar!
 
-Escucha una frase en chino, ve al cuarto o al mueble correcto en el mapa de la casa y elige el objeto. Cada vez la casa es diferente. Tres niveles; en el tercero practicas palabras de ubicación como 旁邊, 前面 y 後面. ¡Y con el modo escucha, sin ver el texto, ganas más puntos!
+Escucha «我要把XX放到XX», elige el objeto correcto entre tres y llévalo por el mapa de la casa al cuarto o al mueble indicado. Cada vez la casa es diferente. Tres niveles; en el tercero practicas palabras de ubicación como 旁邊, 前面 y 後面. ¡Y con el modo escucha, sin ver el texto, ganas más puntos!
 
 ✅ Gratis ✅ Con pinyin o zhuyin ✅ Tabla de posiciones
 🔗 Link en la bio
 
-🏠 我要拿什麼？聽一句中文，在家裡找到它！
+🏠 我要放哪裡？聽一句中文，把東西放到對的地方！
 
-聽一句中文，在地圖上走到指定的房間或家具旁邊，再選出要拿的東西。每次的家都不一樣，共 3 關，第 3 關加上方位詞（旁邊、前面、後面……）。打開聽力模式不看句子，分數還更高！
+聽「我要把XX放到XX」，先選出對的東西，再在地圖上帶著它走到指定的房間或家具旁邊。每次的家都不一樣，共 3 關，第 3 關加上方位詞（旁邊、前面、後面……）。打開聽力模式不看句子，分數還更高！
 
 ✅ 免費　✅ 可顯示拼音或注音　✅ 有排行榜
 🔗 連結在簡介

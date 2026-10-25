@@ -25,7 +25,7 @@
 | 第二批 | [taiwan-life.md](taiwan-life.md) | 台灣生存日記 | 腳本 |
 | 第二批 | [armario.md](armario.md) | 收納小達人 | 腳本 |
 | 第二批 | [jigsaw.md](jigsaw.md) | 文字拼圖 | 腳本 |
-| 第二批 | [agarrar.md](agarrar.md) | 我要拿什麼？ | 腳本 |
+| 第二批 | [agarrar.md](agarrar.md) | 我要放哪裡？ | 腳本 |
 | 第二批 | [perdido.md](perdido.md) | 問路小達人 | 腳本 |
 | 第二批 | [corre-hanzi.md](corre-hanzi.md) | 跑吧！漢字 | 腳本 |
 | 第二批 | [memorama.md](memorama.md) | 翻牌記憶 | 腳本 |

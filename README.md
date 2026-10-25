@@ -44,7 +44,7 @@
 | dragon | 墨龍飛天 | el-dragon-de-tinta |
 | topo | 打地鼠學中文 | atrapa-al-topo |
 | ba | 把 | practica-de-ba-oracion |
-| agarrar | 我要拿什麼？ | que-voy-a-agarrar |
+| agarrar | 我要放哪裡？ | que-voy-a-agarrar |
 | perdido | 問路小達人 | Me-he-perdido |
 | hora | 練習時間 | timegame |
 
