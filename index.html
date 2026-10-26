@@ -782,6 +782,59 @@ const CONFIG = {
         tip: { zh: "一聲也要按聲調鍵（ˉ）才會送出；輕聲字（的、嗎）按 ˙。",
                es: "El 1.º tono también se envía con su tecla (ˉ); en los caracteres de tono neutro (的、嗎) pulsa ˙." }
       }
+    },
+    {
+      id: "come",
+      glyph: "吃", color: "gold",
+      title: { zh: "吃字小籠包", es: "Come Caracteres" },
+      desc: {
+        zh: "操控一顆小籠包在迷宮裡吃字：看西文或英文提示，或聽聲音，吃掉正確的中文詞，還要躲開機車、蚊子、野狗和颱風。吃到「力」就能反過來吃怪物。約 630 個日常詞，有排行榜。",
+        es: "Mueve un panecillo al vapor por el laberinto y come la palabra china correcta, según la pista en español o inglés o según lo que escuchas, mientras esquivas la moto, el mosquito, el perro callejero y el tifón. Si comes 力, ¡puedes comer a los monstruos! Unas 630 palabras de uso diario y ranking."
+      },
+      tags: [{ zh: "識字", es: "Reconocer caracteres" }, { zh: "聽力", es: "Comprensión" }, { zh: "詞彙", es: "Vocabulario" }],
+      url: "https://wangchiapin.github.io/-come-caracteres/",
+      guide: {
+        learn: { zh: "認識常用的中文詞：看到西文或英文，找出對的中文詞；或聽到一個詞，找出它寫成什麼樣子。詞都是日常生活的，像食物、水果、動物、顏色、交通、身體、衣服、工作、天氣、家；長度從一個字到四個字，讀音用台灣讀音。",
+                 es: "Reconocer palabras chinas de uso diario: ves la palabra en español o inglés y buscas la china correcta, o escuchas una palabra y buscas cómo se escribe. Las palabras son de la vida cotidiana (comida, frutas, animales, colores, transporte, cuerpo, ropa, trabajo, tiempo, casa) y tienen de uno a cuatro caracteres, con la lectura de Taiwán." },
+        level: { zh: "入門到初級。沒有難度可以選：玩得越久，關卡越高，怪物越多、跑得越快。",
+                 es: "Principiante a básico. No hay niveles de dificultad que elegir: cuanto más juegas, más sube el nivel, con más monstruos y más rápidos." },
+        steps: [
+          { zh: "<b>在開始畫面選模式</b>：西文→中文、英文→中文，或「聽 🔊」，再按「開始」。介面語言選純中文時，只能用「聽」玩。",
+            es: "<b>Elige el modo en la pantalla de inicio</b>: español → 中文, inglés → 中文 o «Escuchar 🔊», y pulsa «Jugar». Si eliges la interfaz «Solo chino», solo se puede jugar escuchando." },
+          { zh: "<b>移動小籠包</b>：手機在畫面上滑動；電腦用方向鍵（或 W、A、S、D）。迷宮裡同時有 4 個詞，只有 1 個是對的。",
+            es: "<b>Mueve el panecillo</b>: en el móvil, desliza el dedo por la pantalla; en el ordenador, usa las flechas (o W, A, S, D). En el laberinto hay 4 palabras a la vez y solo 1 es la correcta." },
+          { zh: "<b>吃掉正確的詞</b>：上方會顯示西文或英文提示（聽的模式按 🔊 再聽一次）。吃對得 100 分，連續吃對還有連擊加分，最多每題 190 分；畫面會顯示這個詞的讀音和意思。<b>吃錯扣 50 分</b>，連擊歸零，但不會少命。",
+            es: "<b>Come la palabra correcta</b>: arriba aparece la pista en español o inglés (en el modo de escuchar, pulsa 🔊 para oírla otra vez). Acertar da 100 puntos, y con aciertos seguidos hay bonus de combo, hasta 190 puntos por pregunta; la pantalla muestra la lectura y el significado de la palabra. <b>Equivocarte resta 50 puntos</b> y reinicia el combo, pero no pierdes vidas." },
+          { zh: "<b>躲開怪物</b>：機車、蚊子、野狗、颱風會在迷宮裡亂跑，被碰到就少一條命，一共有 3 條 ♥；被碰到後會暫時無敵一下。",
+            es: "<b>Esquiva a los monstruos</b>: la moto, el mosquito, el perro callejero y el tifón vagan por el laberinto; si te tocan, pierdes una vida (tienes 3 ♥) y quedas invulnerable un momento." },
+          { zh: "<b>吃到「力」</b>：每答對 3 題，迷宮裡會出現一個「力」（不吃會消失）。吃掉後 8 秒內怪物會變慢，你可以反過來吃牠們，每隻 200 分，被吃掉的怪物會回到小屋重新出來。",
+            es: "<b>Come 力</b>: cada 3 aciertos aparece un 力 en el laberinto (si no lo comes, desaparece). Al comerlo, durante 8 segundos los monstruos van más lentos y puedes comértelos: 200 puntos por cada uno; el monstruo comido vuelve a la casita y sale de nuevo." },
+          { zh: "<b>每答對 8 題升一關</b>：迷宮會重新產生，怪物變快；第 3 關有 3 隻怪物，第 5 關有 4 隻。3 條命用完就結束，會顯示分數、要複習的字，並可以上傳排行榜。",
+            es: "<b>Cada 8 aciertos subes de nivel</b>: el laberinto se genera de nuevo y los monstruos van más rápido; en el nivel 3 hay 3 monstruos y en el 5, 4. Cuando se acaban las 3 vidas termina la partida y verás la puntuación, las palabras para repasar y podrás subir tu puntuación al ranking." }
+        ],
+        features: [
+          { zh: "迷宮每一局、每升一關都會重新隨機產生，左右對稱，沒有死路；中間一排兩側有隧道，從一邊進去會從另一邊出來（怪物也會走）。",
+            es: "El laberinto se genera al azar en cada partida y en cada nivel; es simétrico, sin callejones sin salida, y en la fila central hay túneles laterales: entras por un lado y sales por el otro (los monstruos también los usan)." },
+          { zh: "字庫約 630 個詞，一局裡不會重複出現，整個字庫抽完才會重洗。另外 3 個錯誤選項盡量跟正確答案一樣長，也不會有相同的字或相同的意思。",
+            es: "El vocabulario tiene unas 630 palabras y en una partida no se repiten hasta agotarlas todas. Las 3 opciones incorrectas tienen una longitud parecida a la correcta y nunca comparten caracteres ni significado con ella." },
+          { zh: "⚙ 設定：字形（繁體或簡體）、介面語言（西文、英文、純中文）、讀音提示（拼音、注音、兩者、關閉）、語速（慢、中、快）。關掉讀音提示，就要完全靠認字。",
+            es: "⚙ Ajustes: caracteres (tradicionales o simplificados), idioma (español, inglés o solo chino), lectura (pinyin, zhuyin, ambos u oculta) y velocidad de la voz (lenta, normal, rápida). Si ocultas la lectura, tienes que reconocer los caracteres por ti mismo." },
+          { zh: "排行榜只有一個，顯示前 10 名，每個人只留最高分；輸入暱稱（最多 14 字）再按上傳，存過暱稱後下次結束會自動上傳。沒有登入，也不會顯示真名。",
+            es: "Hay un solo ranking con el Top 10; cada persona conserva su mejor puntuación. Escribe un apodo (máx. 14 caracteres) y pulsa subir; si ya lo guardaste, la próxima vez se sube solo al terminar. No hace falta iniciar sesión." },
+          { zh: "電腦按 P 可以暫停；切到別的視窗或分頁，遊戲會自動暫停。畫面左下角有一顆 🔊／🔇 小按鈕，可以關掉音效（念字的語音不受影響）。",
+            es: "En el ordenador, la tecla P pausa el juego; si cambias de ventana o de pestaña, se pausa solo. Abajo a la izquierda hay un botón 🔊／🔇 que silencia los efectos (la voz que lee las palabras no se ve afectada)." }
+        ],
+        teacher: [
+          { zh: "「聽」的模式很適合課堂上的聽辨練習：先讓學生說出聽到的詞和意思，再去吃。純中文模式適合已經有基礎的學生。",
+            es: "El modo «Escuchar» es muy útil en clase para practicar la comprensión: pide a los alumnos que primero digan la palabra que oyen y su significado, y luego que la coman. El modo «Solo chino» va bien para quienes ya tienen una base." },
+          { zh: "字庫和「墨龍飛天」是同一批詞，學生在墨龍練過的主題，可以接著在這裡再玩一次。",
+            es: "El vocabulario es el mismo que el de «墨龍飛天» (Dragón de tinta): los temas que los alumnos practicaron allí pueden repasarse aquí." },
+          { zh: "沒有老師管理中心，也不用訂閱，直接開啟就能玩。",
+            es: "No tiene Centro del profesor ni requiere suscripción: se abre y se juega." }
+        ],
+        tip: { zh: "吃錯只扣分、不扣命，但連擊會歸零；與其亂吃，不如先躲開怪物，想清楚再吃。",
+               es: "Equivocarte solo resta puntos, no vidas, pero reinicia el combo; en lugar de comer al azar, esquiva primero a los monstruos y piensa antes de comer." }
+      }
     }
   ],
 
