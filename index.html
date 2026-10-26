@@ -739,8 +739,8 @@ const CONFIG = {
       glyph: "雷", color: "brick",
       title: { zh: "別被雷劈到", es: "¡Cuidado con el rayo!" },
       desc: {
-        zh: "看到一個中文字，限時用拼音或注音鍵盤打出讀音（要打聲調）。打對往上爬一階，打錯或時間到就被雷劈一次；爬完 10 階，看你被劈幾次。三種難度，各有排行榜。",
-        es: "Mira un carácter chino y escribe su pronunciación (con el tono) con el teclado de pinyin o zhuyin antes de que se acabe el tiempo. Si aciertas, subes un escalón; si fallas o se acaba el tiempo, te cae un rayo. Tres niveles, cada uno con su ranking."
+        zh: "看到一個中文字，限時用拼音或注音鍵盤打出讀音（要打聲調）。打對往上爬一階，打錯或時間到就被雷劈一次；爬完 10 階，看你被劈幾次。三種難度，各有排行榜；也可以開房間，最多 15 人同題比賽，一條命，被雷劈就出局。",
+        es: "Mira un carácter chino y escribe su pronunciación (con el tono) con el teclado de pinyin o zhuyin antes de que se acabe el tiempo. Si aciertas, subes un escalón; si fallas o se acaba el tiempo, te cae un rayo. Tres niveles, cada uno con su ranking; también puedes crear una sala para jugar hasta 15 personas con las mismas preguntas y una sola vida: quien recibe un rayo queda fuera."
       },
       tags: [{ zh: "讀音", es: "Pronunciación" }, { zh: "聲調", es: "Tonos" }, { zh: "打字", es: "Escribir" }],
       url: "https://wangchiapin.github.io/Cuidado-con-el-rayo/",
@@ -766,6 +766,8 @@ const CONFIG = {
             es: "Teclado físico en el ordenador: pinyin = letras más números 1–5 (tono; la barra espaciadora = 1.º, el 5 = neutro); zhuyin = distribución estándar, con los tonos en espacio, 6, 3, 4 y 7 (el 7 = neutro)." },
           { zh: "排行榜：簡單、普通、進階各一個榜，拼音和注音玩家在同一個榜。被雷劈越少排越前面，一樣就比誰爬得快；只顯示前 10 名，每個人每個難度只留最好的一次。要輸入暱稱才會上榜。",
             es: "Ranking: uno para cada nivel (fácil, normal y difícil); los jugadores de pinyin y de zhuyin comparten el mismo. Quien recibe menos rayos queda más arriba y, en caso de empate, gana quien sube más rápido. Solo se ve el Top 10 y cada persona conserva su mejor intento por nivel. Hace falta un apodo para entrar en el ranking." },
+          { zh: "<b>連線模式</b>（首頁 👥）：誰都可以開房，房主選難度，其他人輸入 4 位數房號（或點邀請連結）加入，最多 15 人。大家<b>同一題、同時作答、同時揭曉</b>，每個人用自己選的鍵盤；<b>一條命</b>：打錯或時間到就被雷劈、出局，有幾個人出局就落幾道雷，各打在那個人身上。出局的人可以留下來觀賽（加入時也可以勾「我只觀賽」）。街上同時有多個小人一起爬，頭上有名字；爬完 10 階還活著的人並列登頂，結束時看名次表（連線成績不進排行榜）。至少 2 人才能開始，房主離開房間就關閉。",
+            es: "<b>Modo en línea</b> (👥 en la página de inicio): cualquiera puede crear una sala; quien la crea elige el nivel y los demás entran con el código de 4 cifras (o con el enlace de invitación), hasta 15 personas. Todos reciben <b>la misma pregunta, responden a la vez y el resultado se revela a la vez</b>, cada uno con su propio teclado; <b>una sola vida</b>: si fallas o se acaba el tiempo, te cae un rayo y quedas fuera, y cada eliminado recibe su propio rayo. Los eliminados pueden quedarse a mirar (al entrar también se puede marcar «solo mirar»). En la calle suben varios personajes con su nombre encima; quienes lleguen vivos al escalón 10 empatan en la cima, y al final se ve la tabla de posiciones (el resultado en línea no entra en el ranking). Se necesitan al menos 2 jugadores y, si el anfitrión sale, la sala se cierra." },
           { zh: "設定都在首頁：字形繁體或簡體、介面（只有中文、中文＋西文、中文＋英文）、拼音或注音鍵盤、難度。",
             es: "Los ajustes están en la página de inicio: caracteres tradicionales o simplificados; interfaz (solo chino, chino + español o chino + inglés); teclado de pinyin o zhuyin; nivel." },
           { zh: "可以按 ❚❚ 暫停；切到別的視窗會自動暫停。畫面角落有一顆 🔊／🔇 小按鈕，一按就關掉音效。",
@@ -774,6 +776,8 @@ const CONFIG = {
         teacher: [
           { zh: "很適合課堂上練四聲和輕聲：請學生先開口唸，再打出來；進階難度的輕聲字可以順便講解。",
             es: "Muy útil para practicar los cuatro tonos y el tono neutro en clase: pide a los alumnos que lo lean en voz alta y luego lo escriban; en el nivel difícil puedes aprovechar los caracteres de tono neutro." },
+          { zh: "連線模式很適合全班一起玩：老師開房，把房號或邀請連結傳給學生，每個人用自己的手機或電腦加入；老師開房時自己也算一位玩家；想把畫面投影給大家看，可以另外用一台電腦輸入房號、勾「我只觀賽」加入，再投影出來，一起看誰被雷劈。",
+            es: "El modo en línea es ideal para jugar con toda la clase: el profesor crea la sala y envía el código o el enlace; cada alumno entra con su móvil u ordenador. Quien crea la sala también cuenta como jugador; si quieres proyectar la pantalla, entra desde otro ordenador con el código y marca «solo mirar», y mirad juntos quién recibe el rayo." },
           { zh: "排行榜用暱稱，可以讓學生自己取名字或用代號；字庫來自華語八千詞，簡單到進階的範圍可以對照學生的程度選。",
             es: "El ranking usa un apodo: los alumnos pueden poner su nombre o un seudónimo. Los caracteres vienen de las 8000 palabras del chino; elige el nivel según el de tus alumnos." },
           { zh: "沒有老師管理中心，也不用訂閱，直接開啟就能玩。",
