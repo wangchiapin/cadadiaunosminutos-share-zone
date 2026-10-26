@@ -733,6 +733,55 @@ const CONFIG = {
         tip: { zh: "2 點要說「兩點」，不是「二點」。一到九分可以說「八點零五分」或「八點五分」，兩種都對。",
                es: "Las 2 se dicen «兩點», no «二點». Los minutos del uno al nueve se pueden decir «八點零五分» u «八點五分»; las dos formas son correctas." }
       }
+    },
+    {
+      id: "rayo",
+      glyph: "雷", color: "brick",
+      title: { zh: "別被雷劈到", es: "¡Cuidado con el rayo!" },
+      desc: {
+        zh: "看到一個中文字，限時用拼音或注音鍵盤打出讀音（要打聲調）。打對往上爬一階，打錯或時間到就被雷劈一次；爬完 10 階，看你被劈幾次。三種難度，各有排行榜。",
+        es: "Mira un carácter chino y escribe su pronunciación (con el tono) con el teclado de pinyin o zhuyin antes de que se acabe el tiempo. Si aciertas, subes un escalón; si fallas o se acaba el tiempo, te cae un rayo. Tres niveles, cada uno con su ranking."
+      },
+      tags: [{ zh: "讀音", es: "Pronunciación" }, { zh: "聲調", es: "Tonos" }, { zh: "打字", es: "Escribir" }],
+      url: "https://wangchiapin.github.io/Cuidado-con-el-rayo/",
+      guide: {
+        learn: { zh: "看到漢字，馬上想起它的讀音和聲調（一到四聲，還有輕聲）。題目都是單個字，讀音用台灣讀音；打的時候要連聲調一起打對，才算答對。",
+                 es: "Ver un carácter y recordar enseguida su pronunciación y su tono (del 1.º al 4.º, y el tono neutro). Todas las preguntas son caracteres sueltos, con la lectura de Taiwán; hay que escribir también el tono para que cuente como acierto." },
+        level: { zh: "簡單：用最基本的字（準備級到入門級），大約 A1。普通：到進階級的字，大約 A1–B1。進階：基礎到流利級的字，還有輕聲字，大約 A2 以上。",
+                 es: "Fácil: los caracteres más básicos, aproximadamente A1. Normal: caracteres hasta el nivel intermedio, aproximadamente A1–B1. Difícil: caracteres de nivel básico a avanzado y también los de tono neutro, aproximadamente A2 en adelante." },
+        steps: [
+          { zh: "<b>在首頁設定好</b>：選人物（男生或女生，按 🎲 換一個）、鍵盤（拼音或注音）、難度，再輸入<b>暱稱</b>（要上排行榜才需要），按「開始」。",
+            es: "<b>Prepara el juego en la página de inicio</b>: elige personaje (chico o chica; el botón 🎲 lo cambia), teclado (pinyin o zhuyin), nivel y escribe tu <b>apodo</b> (solo hace falta para el ranking). Pulsa «開始»." },
+          { zh: "<b>看到字，在時間內打出它的讀音</b>：用畫面上的鍵盤（電腦也可以直接用實體鍵盤）打字母或注音，<b>最後按聲調鍵送出</b>：一聲 ˉ、二聲 ˊ、三聲 ˇ、四聲 ˋ、輕聲 ˙。按 🔊 可以聽這個字的發音。",
+            es: "<b>Mira el carácter y escribe su pronunciación a tiempo</b>: usa el teclado de la pantalla (en el ordenador también el teclado físico) y escribe las letras o los símbolos; <b>al final pulsa la tecla del tono para enviar</b>: 1.º ˉ, 2.º ˊ, 3.º ˇ, 4.º ˋ, neutro ˙. El botón 🔊 reproduce la pronunciación del carácter." },
+          { zh: "<b>打對</b>，人物往上走一階；<b>打錯或時間到</b>，被雷劈一次（畫面會告訴你正確答案），但還是往上走一階。",
+            es: "<b>Si aciertas</b>, tu personaje sube un escalón; <b>si fallas o se acaba el tiempo</b>, te cae un rayo (la pantalla te muestra la respuesta correcta), pero igualmente subes un escalón." },
+          { zh: "<b>爬完 10 階</b>就結算：被劈 0 次 ★★★，1–2 次 ★★，3–5 次 ★，6 次以上沒有星星。答錯的字會列出來，讓你再複習；也會顯示排行榜。",
+            es: "<b>Al llegar al escalón 10</b> se hace el resumen: 0 rayos ★★★, 1–2 ★★, 3–5 ★, 6 o más sin estrellas. Los caracteres que fallaste se muestran para repasarlos, junto con el ranking." }
+        ],
+        features: [
+          { zh: "三種難度：簡單每題 15 秒（約 355 個字）；普通每題 10 秒（約 598 個字）；進階每題 10 秒（約 1,021 個字，含輕聲字，像「的、嗎、吧」）。",
+            es: "Tres niveles: fácil, 15 segundos por pregunta (unos 355 caracteres); normal, 10 segundos (unos 598); difícil, 10 segundos (unos 1.021, incluidos los de tono neutro, como «的、嗎、吧»)." },
+          { zh: "電腦實體鍵盤：拼音＝字母加數字 1–5（聲調；空白鍵＝一聲，5＝輕聲）；注音＝標準注音鍵位，聲調按空白、6、3、4、7（7＝輕聲）。",
+            es: "Teclado físico en el ordenador: pinyin = letras más números 1–5 (tono; la barra espaciadora = 1.º, el 5 = neutro); zhuyin = distribución estándar, con los tonos en espacio, 6, 3, 4 y 7 (el 7 = neutro)." },
+          { zh: "排行榜：簡單、普通、進階各一個榜，拼音和注音玩家在同一個榜。被雷劈越少排越前面，一樣就比誰爬得快；只顯示前 10 名，每個人每個難度只留最好的一次。要輸入暱稱才會上榜。",
+            es: "Ranking: uno para cada nivel (fácil, normal y difícil); los jugadores de pinyin y de zhuyin comparten el mismo. Quien recibe menos rayos queda más arriba y, en caso de empate, gana quien sube más rápido. Solo se ve el Top 10 y cada persona conserva su mejor intento por nivel. Hace falta un apodo para entrar en el ranking." },
+          { zh: "設定都在首頁：字形繁體或簡體、介面（只有中文、中文＋西文、中文＋英文）、拼音或注音鍵盤、難度。",
+            es: "Los ajustes están en la página de inicio: caracteres tradicionales o simplificados; interfaz (solo chino, chino + español o chino + inglés); teclado de pinyin o zhuyin; nivel." },
+          { zh: "可以按 ❚❚ 暫停；切到別的視窗會自動暫停。畫面角落有一顆 🔊／🔇 小按鈕，一按就關掉音效。",
+            es: "Puedes pausar con ❚❚; si cambias de ventana, el juego se pausa solo. En una esquina hay un botón 🔊／🔇 que silencia los efectos con un solo toque." }
+        ],
+        teacher: [
+          { zh: "很適合課堂上練四聲和輕聲：請學生先開口唸，再打出來；進階難度的輕聲字可以順便講解。",
+            es: "Muy útil para practicar los cuatro tonos y el tono neutro en clase: pide a los alumnos que lo lean en voz alta y luego lo escriban; en el nivel difícil puedes aprovechar los caracteres de tono neutro." },
+          { zh: "排行榜用暱稱，可以讓學生自己取名字或用代號；字庫來自華語八千詞，簡單到進階的範圍可以對照學生的程度選。",
+            es: "El ranking usa un apodo: los alumnos pueden poner su nombre o un seudónimo. Los caracteres vienen de las 8000 palabras del chino; elige el nivel según el de tus alumnos." },
+          { zh: "沒有老師管理中心，也不用訂閱，直接開啟就能玩。",
+            es: "No tiene Centro del profesor ni requiere suscripción: se abre y se juega." }
+        ],
+        tip: { zh: "一聲也要按聲調鍵（ˉ）才會送出；輕聲字（的、嗎）按 ˙。",
+               es: "El 1.º tono también se envía con su tecla (ˉ); en los caracteres de tono neutro (的、嗎) pulsa ˙." }
+      }
     }
   ],
 
