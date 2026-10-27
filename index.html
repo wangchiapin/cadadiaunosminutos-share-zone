@@ -19,6 +19,7 @@
      內容含 learn 練什麼／level 適合程度／steps 怎麼玩／features 設定與功能／teacher 給老師／tip 小提醒，
      中西文都要。steps 每一步可以加 img: "img/xxx.jpg" 放截圖。還沒上線的遊戲加 soon: true。
      沒有 guide 的遊戲不會出現「詳細說明」按鈕，瀏覽器主控台會出現提醒。
+   - ★ 規則：每個遊戲也都要有 cat（分類），值是下面 gameCats 裡的 id；沒填的會被放進最後面的「其他」。
    ===================================================================== */
 const CONFIG = {
 
@@ -34,10 +35,19 @@ const CONFIG = {
 
   // 統計：Firebase 設定放在同資料夾的 firebase-config.js（只要貼一次）
 
+  /* ---------------- 小遊戲分類（網頁上依這個順序分組；每款遊戲用 cat 指定屬於哪一類）---------------- */
+  gameCats: [
+    { id: "vocab",   icon: "📖", title: { zh: "單字與漢字", es: "Vocabulario y caracteres" } },
+    { id: "listen",  icon: "👂", title: { zh: "聽力",       es: "Comprensión auditiva" } },
+    { id: "grammar", icon: "🧩", title: { zh: "文法與句子", es: "Gramática y frases" } },
+    { id: "life",    icon: "💬", title: { zh: "生活情境",   es: "Situaciones de la vida diaria" } }
+  ],
+
   /* ---------------- 小遊戲 ---------------- */
   games: [
     {
       id: "memorama",
+      cat: "vocab",                         // 分類：vocab 單字與漢字 / listen 聽力 / grammar 文法與句子 / life 生活情境
       glyph: "記",                      // 卡片上的印章字
       color: "brick",                   // brick 磚紅 / jade 玉綠 / gold 金
       title: { zh: "翻牌記憶", es: "Memorama" },
@@ -77,6 +87,7 @@ const CONFIG = {
     },
     {
       id: "numeros",
+      cat: "listen",                         // 分類：vocab 單字與漢字 / listen 聽力 / grammar 文法與句子 / life 生活情境
       glyph: "數", color: "jade",
       title: { zh: "數字聽力練習", es: "Práctica de escucha de números" },
       desc: {
@@ -112,6 +123,7 @@ const CONFIG = {
     },
     {
       id: "colores",
+      cat: "listen",                         // 分類：vocab 單字與漢字 / listen 聽力 / grammar 文法與句子 / life 生活情境
       glyph: "色", color: "gold",
       title: { zh: "色數消消樂", es: "Pop Colores y Números" },
       desc: {
@@ -150,6 +162,7 @@ const CONFIG = {
     },
     {
       id: "compara",
+      cat: "grammar",                         // 分類：vocab 單字與漢字 / listen 聽力 / grammar 文法與句子 / life 生活情境
       glyph: "比", color: "brick",
       title: { zh: "比比看", es: "Compara y Adivina" },
       desc: {
@@ -187,6 +200,7 @@ const CONFIG = {
     },
     {
       id: "taiwan-life",
+      cat: "life",                         // 分類：vocab 單字與漢字 / listen 聽力 / grammar 文法與句子 / life 生活情境
       glyph: "台", color: "jade",
       title: { zh: "台灣生存日記", es: "Sobrevive en Taiwán" },
       desc: {
@@ -228,6 +242,7 @@ const CONFIG = {
     },
     {
       id: "corre-hanzi",
+      cat: "grammar",                         // 分類：vocab 單字與漢字 / listen 聽力 / grammar 文法與句子 / life 生活情境
       glyph: "跑", color: "gold",
       title: { zh: "跑吧！漢字", es: "¡Corre, Hanzi!" },
       desc: {
@@ -268,6 +283,7 @@ const CONFIG = {
     },
     {
       id: "armario",
+      cat: "listen",                         // 分類：vocab 單字與漢字 / listen 聽力 / grammar 文法與句子 / life 生活情境
       glyph: "收", color: "jade",
       title: { zh: "收納小達人", es: "Ordena el armario" },
       desc: {
@@ -306,6 +322,7 @@ const CONFIG = {
     },
     {
       id: "compras",
+      cat: "life",                         // 分類：vocab 單字與漢字 / listen 聽力 / grammar 文法與句子 / life 生活情境
       glyph: "買", color: "brick",
       title: { zh: "幫媽媽買東西", es: "Compras para mamá" },
       desc: {
@@ -339,6 +356,7 @@ const CONFIG = {
     },
     {
       id: "perrito",
+      cat: "listen",                         // 分類：vocab 單字與漢字 / listen 聽力 / grammar 文法與句子 / life 生活情境
       glyph: "寶", color: "gold",
       title: { zh: "小狗找寶藏", es: "El perrito busca el tesoro" },
       desc: {
@@ -378,6 +396,7 @@ const CONFIG = {
     },
     {
       id: "jigsaw",
+      cat: "vocab",                         // 分類：vocab 單字與漢字 / listen 聽力 / grammar 文法與句子 / life 生活情境
       glyph: "拼", color: "brick",
       title: { zh: "文字拼圖", es: "Rompecabezas de chino" },
       desc: {
@@ -431,6 +450,7 @@ const CONFIG = {
     },
     {
       id: "dragon",
+      cat: "vocab",                         // 分類：vocab 單字與漢字 / listen 聽力 / grammar 文法與句子 / life 生活情境
       glyph: "龍", color: "jade",
       title: { zh: "墨龍飛天", es: "El dragón de tinta" },
       desc: {
@@ -481,6 +501,7 @@ const CONFIG = {
     },
     {
       id: "topo",
+      cat: "grammar",                         // 分類：vocab 單字與漢字 / listen 聽力 / grammar 文法與句子 / life 生活情境
       glyph: "鼠", color: "gold",
       title: { zh: "打地鼠學中文", es: "Atrapa al topo" },
       desc: {
@@ -532,6 +553,7 @@ const CONFIG = {
     },
     {
       id: "ba",
+      cat: "grammar",                         // 分類：vocab 單字與漢字 / listen 聽力 / grammar 文法與句子 / life 生活情境
       glyph: "把", color: "jade",
       title: { zh: "把", es: "Oración con 把" },
       desc: {
@@ -581,6 +603,7 @@ const CONFIG = {
     },
     {
       id: "agarrar",
+      cat: "listen",                         // 分類：vocab 單字與漢字 / listen 聽力 / grammar 文法與句子 / life 生活情境
       glyph: "放", color: "brick",
       title: { zh: "我要放哪裡？", es: "¿Dónde lo pongo?" },
       desc: {
@@ -634,6 +657,7 @@ const CONFIG = {
     },
     {
       id: "perdido",
+      cat: "life",                         // 分類：vocab 單字與漢字 / listen 聽力 / grammar 文法與句子 / life 生活情境
       glyph: "路", color: "gold",
       title: { zh: "問路小達人", es: "¡Me he perdido!" },
       desc: {
@@ -683,6 +707,7 @@ const CONFIG = {
     },
     {
       id: "hora",
+      cat: "listen",                         // 分類：vocab 單字與漢字 / listen 聽力 / grammar 文法與句子 / life 生活情境
       glyph: "時", color: "jade",
       title: { zh: "練習時間", es: "¿Qué hora es?" },
       desc: {
@@ -736,6 +761,7 @@ const CONFIG = {
     },
     {
       id: "rayo",
+      cat: "vocab",                         // 分類：vocab 單字與漢字 / listen 聽力 / grammar 文法與句子 / life 生活情境
       glyph: "雷", color: "brick",
       title: { zh: "天打雷劈", es: "¡Cuidado con el rayo!" },
       desc: {
@@ -791,6 +817,7 @@ const CONFIG = {
     },
     {
       id: "come",
+      cat: "vocab",                         // 分類：vocab 單字與漢字 / listen 聽力 / grammar 文法與句子 / life 生活情境
       glyph: "吃", color: "gold",
       title: { zh: "吃字小籠包", es: "Come Caracteres" },
       desc: {
@@ -1287,6 +1314,14 @@ summary{cursor:pointer; font-weight:900; font-size:.92rem}
 .modal-box.wide{width:min(560px,100%)}
 .card-click{cursor:pointer}
 .card{position:relative}
+.cat-nav{display:flex; flex-wrap:wrap; gap:10px; margin:0 0 6px}
+.cat-chip{display:inline-flex; align-items:center; gap:6px; text-decoration:none; font-weight:900; font-size:.92rem; padding:7px 15px; border-radius:999px; border:var(--bd); background:var(--paper); color:var(--ink); box-shadow:var(--shadow-sm); transition:transform .12s, box-shadow .12s}
+.cat-chip:hover{transform:translate(-1px,-1px); box-shadow:4px 4px 0 var(--ink)}
+.cat-head{display:flex; align-items:center; gap:10px; margin:36px 0 16px; flex-wrap:wrap}
+.cat-head .mark{width:16px; height:16px; background:var(--yellow); border:var(--bd); border-radius:50%}
+.cat-head h3{margin:0; font-family:var(--display); font-weight:900; font-size:1.3rem}
+.cat-head .cat-count{font-size:.8rem; font-weight:700; padding:1px 10px; border-radius:999px; border:2px solid var(--ink); background:var(--yellow-soft)}
+.cat:first-child .cat-head{margin-top:26px}
 .card.off{background:#efece4; filter:grayscale(.85); opacity:.85}
 .card.off:hover{transform:none; box-shadow:var(--shadow)}
 .fix-badge{position:absolute; top:-10px; right:12px; padding:3px 11px; font-size:.78rem; font-weight:900; background:var(--yellow); color:var(--ink); border:var(--bd); border-radius:999px; box-shadow:var(--shadow-sm); filter:none}
@@ -1349,7 +1384,8 @@ footer a{color:var(--ink); font-weight:700}
   <section id="games">
     <div class="sec-head"><span class="mark"></span><h2 data-i="gamesTitle"></h2></div>
     <p class="sec-intro" data-i="gamesIntro"></p>
-    <div class="grid" id="gameGrid"></div>
+    <nav class="cat-nav" id="catNav"></nav>
+    <div id="gameGrid"></div>
   </section>
 
   <section id="tools">
@@ -1863,6 +1899,24 @@ document.addEventListener("click", e => {
   }
 });
 
+/* ===== 遊戲分組顯示（依 CONFIG.gameCats 的順序；沒有 cat 的歸到「其他」）===== */
+const OTHER_CAT = { id: "other", icon: "🎮", title: { zh: "其他", es: "Otros" } };
+function renderGameGroups(cardFn){
+  const known = CONFIG.gameCats.map(c => c.id);
+  const cats = [...CONFIG.gameCats, OTHER_CAT];
+  const groups = cats.map(c => ({
+    c,
+    list: CONFIG.games.filter(g => c.id === "other" ? !known.includes(g.cat) : g.cat === c.id)
+  })).filter(x => x.list.length);
+  document.getElementById("catNav").innerHTML = groups.map(x =>
+    `<a class="cat-chip" href="#cat-${esc(x.c.id)}">${x.c.icon} ${esc(t(x.c.title))}</a>`).join("");
+  document.getElementById("gameGrid").innerHTML = groups.map(x =>
+    `<section class="cat" id="cat-${esc(x.c.id)}">
+      <div class="cat-head"><span class="mark"></span><h3>${x.c.icon} ${esc(t(x.c.title))}</h3><span class="cat-count">${x.list.length} ${lang === "zh" ? "款" : (x.list.length === 1 ? "juego" : "juegos")}</span></div>
+      <div class="grid">${x.list.map(cardFn).join("")}</div>
+    </section>`).join("");
+}
+
 /* ===== 畫面 ===== */
 function render(){
   document.documentElement.lang = lang === "zh" ? "zh-Hant" : "es";
@@ -1870,7 +1924,7 @@ function render(){
   document.querySelectorAll(".lang button").forEach(b => b.setAttribute("aria-pressed", b.dataset.lang === lang));
 
   // games
-  document.getElementById("gameGrid").innerHTML = CONFIG.games.map(g => {
+  const gameCard = g => {
     const other = lang === "zh" ? g.title.es : g.title.zh;
     const off = isOff("game-" + g.id);
     const btn = off
@@ -1889,8 +1943,10 @@ function render(){
       <div class="tags">${subTag("game-" + g.id)}${(g.tags||[]).map(x => `<span>${esc(t(x))}</span>`).join("")}</div>
       <div class="card-actions">${btn}${g.guide && !off ? `<button type="button" class="btn btn-line" data-gguide="${esc(g.id)}">${esc(t(UI.gameGuide))}</button>` : ""}<a class="fb-link" href="#feedback" data-fb="game" data-fb-target="${esc(g.id)}">${esc(t(UI.fbCardLink))}</a></div>
     </article>`;
-  }).join("");
+  };
+  renderGameGroups(gameCard);
   // 規則：每個遊戲卡片都要有 guide（詳細說明）。沒填的話按鈕不會出現，並在主控台提醒
+  CONFIG.games.filter(g => !CONFIG.gameCats.some(c => c.id === g.cat)).forEach(g => console.warn(`[分類] 遊戲「${g.title.zh}」（id: ${g.id}）還沒有 cat（分類），會被放進「其他」`));
   CONFIG.games.filter(g => !g.guide).forEach(g => console.warn(`[詳細說明] 遊戲「${g.title.zh}」（id: ${g.id}）還沒有 guide，請補上`));
 
   // tools

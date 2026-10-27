@@ -22,6 +22,7 @@
    - `tip` 小提醒（可省略）
    - 還沒上線的遊戲加 `soon: true`
 3. 卡片上的簡短說明（`desc`）也要跟遊戲實際內容一致。
+   - 每個遊戲還要加 `cat`（分類）：`vocab` 單字與漢字、`listen` 聽力、`grammar` 文法與句子、`life` 生活情境。要新增分類就改 `CONFIG.gameCats`。沒填 `cat` 的遊戲會被放進最後面的「其他」，主控台也會提醒。
 4. 到 `stats.html` 的卡片開關清單加上 `game-<id>`。
 5. **如果這個遊戲也加進老師管理中心**：到 `stats.html#sub`「老師管理中心遊戲開關」的清單（`CS`）加一列，id 要跟 profesor 的 `GAME_IDS` 一致（寫入 `portalStatus/center-<id>`）。新遊戲還沒做好時，先勾維修中。
 

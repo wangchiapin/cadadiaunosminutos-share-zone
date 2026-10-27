@@ -8,3 +8,4 @@
 請照 README.md 的「新增遊戲卡片的規則」：每張遊戲卡片都要有 `guide`（詳細說明），
 內容要先讀該遊戲的 repo 程式再寫，中西文都要，並更新 README 的遊戲與 repo 對照表，以及 stats.html 的卡片開關。
 遊戲改版後，卡片的 `desc` 和 `guide` 也要重新核對。
+另外每張遊戲卡片都要有 `cat`（分類，id 見 `CONFIG.gameCats`：vocab / listen / grammar / life），網頁會依分類分組顯示。
