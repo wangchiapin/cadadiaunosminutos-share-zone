@@ -47,7 +47,7 @@
 | agarrar | 我要放哪裡？ | que-voy-a-agarrar |
 | perdido | 問路小達人 | Me-he-perdido |
 | hora | 練習時間 | timegame |
-| rayo | 別被雷劈到 | Cuidado-con-el-rayo |
+| rayo | 天打雷劈 | Cuidado-con-el-rayo |
 | come | 吃字小籠包 | -come-caracteres |
 
 ## Instagram Reel 腳本
