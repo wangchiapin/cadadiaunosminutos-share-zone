@@ -1201,7 +1201,7 @@ function render() {
   const pl = [...pm.values()].sort((a, b) => b.n - a.n || (b.last || 0) - (a.last || 0));
   const label = r => (r.names.size ? [...r.names].join(" / ") : "匿名裝置") + `（${String(r.uid).slice(-4)}）`;
   h += `<h3 style="margin:14px 0 6px;font-size:1rem">玩家（一台裝置算一位；點一列看每一局）</h3><div class="box"><table id="plPlayers"><tr><th>玩家</th><th>局數</th><th>玩完</th><th>沒玩完</th><th>玩過的遊戲</th><th>最近一次</th></tr>` +
-    (pl.length ? pl.slice(0, 60).map((r, i) => `<tr class="plp" data-i="${i}" style="cursor:pointer"><td style="text-align:left">${esc(label(r))}</td><td>${r.n}</td><td>${r.d}</td><td>${r.n - r.d}</td><td style="white-space:normal;text-align:left">${esc([...r.games].map(gname).join("、"))}</td><td>${esc(tm(r.last))}</td></tr>`).join("") : `<tr><td colspan="6" class="msg">沒有符合的玩家。</td></tr>`) +
+    (pl.length ? pl.slice(0, 60).map((r, i) => `<tr class="plp" data-i="${i}" style="cursor:pointer"><td style="text-align:left">${esc(label(r))}</td><td>${r.n}</td><td>${r.d}</td><td>${r.n - r.d}</td><td style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:left">${esc([...r.games].map(gname).join("、"))}</td><td>${esc(tm(r.last))}</td></tr>`).join("") : `<tr><td colspan="6" class="msg">沒有符合的玩家。</td></tr>`) +
     `</table></div>${pl.length > 60 ? `<p class="msg">只顯示局數最多的 60 位（共 ${pl.length} 位）。</p>` : ""}`;
   // 最近的局
   const recent = [...pf].sort((a, b) => (b.t || 0) - (a.t || 0)).slice(0, 50);
