@@ -23,7 +23,7 @@
 
 - 和「把」用同樣的圖：同一件事換成被動來說，最好比較。
 - 四種題型：排字卡、聽音選圖、選出正確的句子、把 ⇒ 被轉換（關卡 1）。
-- 三關：有說是誰做的／沒說是誰做的／否定詞放在「被」前面（沒被、沒有被、還沒被）。
+- 四關：有說是誰做的／沒說是誰做的／否定詞放在「被」前面（沒被、沒有被、還沒被）／還沒發生的事（會被、不要被）。
 - 錯的選項都是真的不能說的句子，例如常見錯誤「被沒」。
 - 不會的字可以按「詞彙」查，不扣分；不扣命、沒有生命值。
 - 結束依第一次就答對的比例給 1～3 顆星，並列出錯題複習。
@@ -50,13 +50,13 @@ Las mismas imágenes de «antes» y «después», pero ahora la oración empieza
 
 Para profesores de chino 👩‍🏫👨‍🏫
 
-Después de enseñar 把, este juego permite practicar la pasiva con 被 usando las mismas imágenes, así que los alumnos comparan ambas estructuras sobre el mismo hecho. Las preguntas «把 ⇒ 被» del nivel 1 sirven para comparar, y el nivel 3 practica la negación antes de 被 (沒被, 還沒被). Sin vidas y con vocabulario a un toque.
+Después de enseñar 把, este juego permite practicar la pasiva con 被 usando las mismas imágenes, así que los alumnos comparan ambas estructuras sobre el mismo hecho. Las preguntas «把 ⇒ 被» del nivel 1 sirven para comparar, y el nivel 3 practica la negación antes de 被 (沒被, 還沒被) y el nivel 4 lo que todavía no pasa (會被, 不要被). Sin vidas y con vocabulario a un toque.
 
 🔗 Link en la bio
 
 給華語老師 👩‍🏫👨‍🏫
 
-教完把字句，接著用同樣的圖練被字句，學生可以直接比較兩種說法；關卡 1 的「把 ⇒ 被」轉換題適合課堂對照，關卡 3 練否定詞放在「被」前面（沒被、還沒被）。不扣命，可隨時查生字，結束後的錯題清單可拿來檢討。
+教完把字句，接著用同樣的圖練被字句，學生可以直接比較兩種說法；關卡 1 的「把 ⇒ 被」轉換題適合課堂對照，關卡 3 練否定詞放在「被」前面（沒被、還沒被），關卡 4 練還沒發生的事（會被、不要被）。不扣命，可隨時查生字，結束後的錯題清單可拿來檢討。
 
 🔗 連結在簡介
 
