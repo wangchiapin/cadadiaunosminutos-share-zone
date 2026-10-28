@@ -28,6 +28,9 @@ th,td{padding:7px 6px;text-align:right;white-space:nowrap}
 th{font-size:.8rem;color:var(--soft);font-weight:700;border-bottom:1px solid var(--line);background:var(--fill)}
 td{border-top:1px dashed var(--line)}
 th:first-child,td:first-child{text-align:left}
+.box.scr{overflow:auto;padding-top:0;max-height:calc(var(--n) * 32px + 36px)}
+.scr th{position:sticky;top:0;z-index:2}
+.scr tr.tot td{position:sticky;bottom:0;z-index:1;background:var(--fill);border-top:1px solid var(--line)}
 tr:first-child td{border-top:0}
 .row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
 input[type=text]{font:inherit;color:var(--ink);padding:6px 10px;border:2px solid var(--line);border-radius:8px;background:var(--fill);flex:1;min-width:140px}
@@ -1179,16 +1182,16 @@ function render() {
   const gsum = [...gm.values()].sort((a, b) => b.s - a.s || b.dev.size - a.dev.size);
   const allDev = new Set(); vf.forEach(v => allDev.add(v.uid || "?"));
   const rate = (d, s) => s ? Math.round(d / s * 100) + "%" : "—";
-  h += `<details open style="margin:14px 0 0"><summary style="margin:0 0 6px;font-size:1rem;cursor:pointer;user-select:none">各遊戲總表（訪客＝不重複的裝置數）</summary><div class="box"><table><tr><th>遊戲</th><th>訪客</th><th>開始</th><th>玩完</th><th>沒玩完</th><th>玩完率</th></tr>` +
+  h += `<details open style="margin:14px 0 0"><summary style="margin:0 0 6px;font-size:1rem;cursor:pointer;user-select:none">各遊戲總表（訪客＝不重複的裝置數）</summary><div class="box scr" style="--n:11"><table><tr><th>遊戲</th><th>訪客</th><th>開始</th><th>玩完</th><th>沒玩完</th><th>玩完率</th></tr>` +
     (gsum.length ? gsum.map(r => `<tr><td style="text-align:left">${esc(gname(r.game))}</td><td>${r.dev.size}</td><td>${r.s}</td><td>${r.d}</td><td>${r.s - r.d}</td><td>${rate(r.d, r.s)}</td></tr>`).join("") +
-      `<tr style="font-weight:700"><td style="text-align:left">合計</td><td>${allDev.size}</td><td>${pf.length}</td><td>${nDone}</td><td>${pf.length - nDone}</td><td>${rate(nDone, pf.length)}</td></tr>` : `<tr><td colspan="6" class="msg">這個範圍沒有紀錄。</td></tr>`) + `</table></div>` +
+      `<tr class="tot" style="font-weight:700"><td style="text-align:left">合計</td><td>${allDev.size}</td><td>${pf.length}</td><td>${nDone}</td><td>${pf.length - nDone}</td><td>${rate(nDone, pf.length)}</td></tr>` : `<tr><td colspan="6" class="msg">這個範圍沒有紀錄。</td></tr>`) + `</table></div>` +
     `<p class="msg" style="margin:6px 0 0">合計的訪客是全部遊戲合起來的不重複裝置，同一台裝置玩了好幾個遊戲只算一位，所以會小於上面各列相加。</p></details>`;
   // 每天 × 每個遊戲
   const m = new Map(), get = (d, g) => { const k = d + "|" + g; if (!m.has(k)) m.set(k, { day: d, game: g, v: 0, s: 0, d: 0 }); return m.get(k); };
   vf.forEach(v => get(v.day, v.game).v++);
   pf.forEach(p => { const r = get(p.day, p.game); r.s++; if (p.done) r.d++; });
   const sum = [...m.values()].sort((a, b) => b.day.localeCompare(a.day) || b.s - a.s || b.v - a.v);
-  h += `<details open style="margin:14px 0 0"><summary style="margin:0 0 6px;font-size:1rem;cursor:pointer;user-select:none">每天、每個遊戲</summary><div class="box"><table><tr><th>日期</th><th>遊戲</th><th>訪客</th><th>開始</th><th>玩完</th><th>沒玩完</th><th>玩完率</th></tr>` +
+  h += `<details open style="margin:14px 0 0"><summary style="margin:0 0 6px;font-size:1rem;cursor:pointer;user-select:none">每天、每個遊戲</summary><div class="box scr" style="--n:20"><table><tr><th>日期</th><th>遊戲</th><th>訪客</th><th>開始</th><th>玩完</th><th>沒玩完</th><th>玩完率</th></tr>` +
     (sum.length ? sum.map(r => `<tr><td>${esc(r.day)}</td><td style="text-align:left">${esc(gname(r.game))}</td><td>${r.v}</td><td>${r.s}</td><td>${r.d}</td><td>${r.s - r.d}</td><td>${r.s ? Math.round(r.d / r.s * 100) + "%" : "—"}</td></tr>`).join("") : `<tr><td colspan="7" class="msg">這個範圍沒有紀錄。</td></tr>`) + `</table></div></details>`;
   // 幾點玩（以這台電腦的時區）
   const hrs = Array(24).fill(0); pf.forEach(p => { if (p.t) hrs[p.t.getHours()]++; });
@@ -1201,11 +1204,11 @@ function render() {
   pf.forEach(p => { const k = p.uid || "?"; if (!pm.has(k)) pm.set(k, { uid: k, names: new Set(), n: 0, d: 0, last: null, games: new Set(), list: [] }); const r = pm.get(k); if (p.name) r.names.add(p.name); r.n++; if (p.done) r.d++; r.games.add(p.game); r.list.push(p); if (p.t && (!r.last || p.t > r.last)) r.last = p.t; });
   const pl = [...pm.values()].sort((a, b) => b.n - a.n || (b.last || 0) - (a.last || 0));
   const label = r => (r.names.size ? [...r.names].join(" / ") : "匿名裝置") + `（${String(r.uid).slice(-4)}）`;
-  h += `<details open style="margin:14px 0 0"><summary style="margin:0 0 6px;font-size:1rem;cursor:pointer;user-select:none">玩家（一台裝置算一位；點一列看每一局）</summary><div class="box"><table id="plPlayers"><tr><th>玩家</th><th>局數</th><th>玩完</th><th>沒玩完</th><th>玩過的遊戲</th><th>最近一次</th></tr>` +
-    (pl.length ? pl.slice(0, 60).map((r, i) => `<tr class="plp" data-i="${i}" style="cursor:pointer"><td style="text-align:left">${esc(label(r))}</td><td>${r.n}</td><td>${r.d}</td><td>${r.n - r.d}</td><td style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:left">${esc([...r.games].map(gname).join("、"))}</td><td>${esc(tm(r.last))}</td></tr>`).join("") : `<tr><td colspan="6" class="msg">沒有符合的玩家。</td></tr>`) +
-    `</table></div>${pl.length > 60 ? `<p class="msg">只顯示局數最多的 60 位（共 ${pl.length} 位）。</p>` : ""}</details>`;
+  h += `<details open style="margin:14px 0 0"><summary style="margin:0 0 6px;font-size:1rem;cursor:pointer;user-select:none">玩家（一台裝置算一位；點一列看每一局）</summary><div class="box scr" style="--n:10"><table id="plPlayers"><tr><th>玩家</th><th>局數</th><th>玩完</th><th>沒玩完</th><th>玩過的遊戲</th><th>最近一次</th></tr>` +
+    (pl.length ? pl.map((r, i) => `<tr class="plp" data-i="${i}" style="cursor:pointer"><td style="text-align:left">${esc(label(r))}</td><td>${r.n}</td><td>${r.d}</td><td>${r.n - r.d}</td><td style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:left">${esc([...r.games].map(gname).join("、"))}</td><td>${esc(tm(r.last))}</td></tr>`).join("") : `<tr><td colspan="6" class="msg">沒有符合的玩家。</td></tr>`) +
+    `</table></div></details>`;
   // 最近的局
-  const recent = [...pf].sort((a, b) => (b.t || 0) - (a.t || 0)).slice(0, 50);
+  const recent = [...pf].sort((a, b) => (b.t || 0) - (a.t || 0)).slice(0, 25);
   h += `<details open style="margin:14px 0 0"><summary style="margin:0 0 6px;font-size:1rem;cursor:pointer;user-select:none">最近 ${recent.length} 局</summary><div class="box"><table><tr><th>開始時間</th><th>遊戲</th><th>關卡</th><th>玩家</th><th>狀態</th><th>分數</th><th>秒</th></tr>` +
     recent.map(p => `<tr><td>${esc(tm(p.t))}</td><td style="text-align:left">${esc(gname(p.game))}</td><td>${esc(p.level)}</td><td style="text-align:left">${esc(p.name || "匿名（" + String(p.uid).slice(-4) + "）")}</td><td>${p.done ? "✅ 玩完" : "⏸ 沒玩完"}</td><td>${p.score ?? ""}</td><td>${p.secs ?? ""}</td></tr>`).join("") + `</table></div></details>`;
   $("plBox").innerHTML = h;
