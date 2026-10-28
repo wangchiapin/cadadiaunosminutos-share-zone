@@ -557,19 +557,19 @@ const CONFIG = {
       glyph: "把", color: "jade",
       title: { zh: "把", es: "Oración con 把" },
       desc: {
-        zh: "練習「把字句」：每題看「之前」和「之後」兩張圖，排出或認出正確的句子。共 3 關、題庫持續增加，有排字卡、聽音選圖、選出正確句子三種題型。",
-        es: "Practica la estructura 把: en cada pregunta ves las imágenes «antes» y «después» y formas o reconoces la oración correcta. 3 niveles con un banco de oraciones que sigue creciendo, con tres tipos de pregunta."
+        zh: "練習「把字句」：每題看「之前」和「之後」兩張圖，排出或認出正確的句子。共 3 關、題庫持續增加，有排字卡、聽音選圖、選出正確句子三種題型，也練否定句「沒把」「別把」。",
+        es: "Practica la estructura 把: en cada pregunta ves las imágenes «antes» y «después» y formas o reconoces la oración correcta. 3 niveles con un banco de oraciones que sigue creciendo, tres tipos de pregunta y también las negativas «沒把» y «別把»."
       },
       tags: [{ zh: "把字句", es: "Oración con 把" }, { zh: "語法", es: "Gramática" }],
       url: "https://wangchiapin.github.io/practica-de-ba-oracion/",
       guide: {
-        learn: { zh: "把字句：誰 ＋ 把 ＋ 東西 ＋ 動作 ＋ 結果，例如「我把書放在桌子上」。三關分別是放置類（把書放在桌子上）、結果類（他把杯子打破了）、處置類（我把禮物送給朋友）。",
-                 es: "La oración con 把: quién + 把 + objeto + acción + resultado, por ejemplo «我把書放在桌子上». Los tres niveles son colocar cosas, resultados (他把杯子打破了) y dar o transformar (我把禮物送給朋友)." },
-        level: { zh: "初級。適合剛接觸把字句的學生，需要先認得基本的動詞和日常物品。",
-                 es: "Nivel básico. Para quienes empiezan con la estructura 把; conviene conocer los verbos y objetos cotidianos más comunes." },
+        learn: { zh: "把字句：誰 ＋ 把 ＋ 東西 ＋ 動作 ＋ 結果，例如「我把書放在桌子上」。三關分別是放置類（放、掛、貼、塞、插、戴，例如把書放在桌子上）、結果類（打破、洗乾淨、打開／關上、倒滿／倒空等，例如他把杯子打破了）、處置類（給、寄、送、借、交、帶到、搬到，例如我把禮物送給朋友）。三關也混了否定句：我沒把書放在桌子上、別把書放在地上。",
+                 es: "La oración con 把: quién + 把 + objeto + acción + resultado, por ejemplo «我把書放在桌子上». Los tres niveles son colocar cosas (poner, colgar, pegar, meter, insertar, ponerse: 我把書放在桌子上), resultados (romper, limpiar, abrir/cerrar, llenar/vaciar, etc.: 他把杯子打破了) y dar o llevar (dar, enviar, prestar, entregar, llevar a, mover a: 我把禮物送給朋友). Los tres niveles también mezclan oraciones negativas: 我沒把書放在桌子上, 別把書放在地上." },
+        level: { zh: "初級。適合剛接觸把字句的學生，需要先認得基本的動詞和日常物品。否定句「沒把」「別把」要先學過肯定句再玩比較好。",
+                 es: "Nivel básico. Para quienes empiezan con la estructura 把; conviene conocer los verbos y objetos cotidianos más comunes. Las negativas «沒把» y «別把» funcionan mejor cuando ya se conocen las afirmativas." },
         steps: [
-          { zh: "<b>在首頁輸入暱稱（必填）</b>，右上角 ⚙ 可選語言、字形和讀音，再點要玩的關卡。第 1 關一開始就開放，其他關要先過上一關。",
-            es: "<b>En la página de inicio escribe tu apodo (obligatorio)</b>, elige idioma, caracteres y pronunciación en el botón ⚙, y luego toca el nivel. El nivel 1 está abierto; los demás se desbloquean al superar el anterior." },
+          { zh: "<b>在首頁輸入暱稱（必填）</b>，右上角 ⚙ 可選語言、字形和讀音，再點要玩的關卡。三個關卡一開始就全部開放。",
+            es: "<b>En la página de inicio escribe tu apodo (obligatorio)</b>, elige idioma, caracteres y pronunciación en el botón ⚙, y luego toca el nivel. Los tres niveles están abiertos desde el principio." },
           { zh: "<b>看「之前」和「之後」兩張圖</b>，每關 10 題，每題是三種題型之一。",
             es: "<b>Mira las dos imágenes, «antes» y «después»</b>. Cada nivel tiene 10 preguntas, de uno de los tres tipos." },
           { zh: "<b>排字卡</b>：把詞排成正確的句子。<b>聽音選圖</b>：聽句子（逐詞念），選出「之後」的圖。<b>選出正確的句子</b>：三句裡挑那句對的，答對後選項收起來只留句子（錯的選項都是真的不能說的句子，例如「把」放錯位置、少了結果）。",
@@ -586,6 +586,8 @@ const CONFIG = {
             es: "Idioma de la interfaz: español, inglés o solo chino; el español usa el vocabulario de Latinoamérica." },
           { zh: "字形：繁體或簡體。讀音：拼音、注音、兩個都顯示或不顯示（預設拼音），以台灣讀音為主。語音是台灣中文，語速可選慢、正常（預設）、快。字形、語言、讀音、語速和其他遊戲共用。",
             es: "Caracteres: tradicionales o simplificados. Pronunciación: pinyin, zhuyin, ambos o ninguna (por defecto, pinyin), con lecturas de Taiwán. La voz es de Taiwán; velocidad lenta, normal (por defecto) o rápida. Caracteres, idioma, pronunciación y velocidad se comparten con los demás juegos." },
+          { zh: "否定句：「沒把…」的「之後」圖和「之前」一樣，左上角打 ✕；「別把…」畫出做了的結果並打 ✕，「別把」不會出現在聽音選圖。很多東西會成對出現（同一個東西、不同結果，例如打開／關上、弄髒／洗乾淨、倒滿／倒空），聽音選圖時另一半常在選項裡，要看「之後」的圖才選得對。",
+            es: "Negativas: en «沒把…» la imagen del «después» es igual a la del «antes» con una ✕ arriba a la izquierda; en «別把…» se dibuja el resultado con una ✕, y «別把» no sale en «Escuchar y elegir». Muchos objetos aparecen en pareja (el mismo objeto con resultados distintos, por ejemplo abrir/cerrar, ensuciar/limpiar, llenar/vaciar), y en «Escuchar y elegir» la otra mitad suele estar entre las opciones, así que hay que fijarse en la imagen del «después»." },
           { zh: "所有句子的圖片都是用程式畫的簡單圖案。介面文字分兩行：中文大字、西文／英文小字。排行榜（前 10 名）和其他同學共用，三關的分數加起來排名；每台裝置每關只留最高分。",
             es: "Las imágenes de todas las oraciones están dibujadas con código, en un estilo sencillo. Los textos de la interfaz van en dos líneas: chino grande y español/inglés pequeño. El ranking (Top 10) se comparte con otros alumnos y se ordena por la suma de los puntos de los tres niveles; cada dispositivo conserva solo su mejor puntuación por nivel." }
         ],
@@ -594,6 +596,8 @@ const CONFIG = {
             es: "Los tres niveles están abiertos desde el principio, así que en clase puedes elegir el que mejor se ajuste a tus estudiantes." },
           { zh: "可以先在課堂上講解「把」的句型，再讓學生玩；錯題複習適合當課後檢討。",
             es: "Puedes explicar la estructura 把 en clase y luego dejar que jueguen; el repaso de errores sirve para comentar después." },
+          { zh: "教否定句時，可以先玩肯定句，再讓學生玩同一個東西的「沒把」和「別把」，比較「做了」「沒做」「不要做」三種說法。",
+            es: "Para enseñar las negativas, deja que jueguen primero con las afirmativas y luego con «沒把» y «別把» del mismo objeto, para comparar «lo hice», «no lo hice» y «no lo hagas»." },
           { zh: "沒有老師管理中心，也不用訂閱，直接開啟就能玩。",
             es: "No tiene Centro del profesor ni requiere suscripción: se abre y se juega." }
         ],
