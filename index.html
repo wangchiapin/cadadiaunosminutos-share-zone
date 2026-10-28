@@ -922,6 +922,56 @@ const CONFIG = {
         tip: { zh: "吃錯只扣分、不扣命，但連擊會歸零；與其亂吃，不如先躲開怪物，想清楚再吃。同一題吃錯兩次，正確的字卡會放大跳動，幫你找到它。",
                es: "Equivocarte solo resta puntos, no vidas, pero reinicia el combo; en lugar de comer al azar, esquiva primero a los monstruos y piensa antes de comer. Si fallas dos veces en la misma pregunta, la tarjeta correcta se agranda y late para ayudarte a encontrarla." }
       }
+    },
+    {
+      id: "dron",
+      cat: "grammar",                         // 分類：vocab 單字與漢字 / listen 聽力 / grammar 文法與句子 / life 生活情境
+      glyph: "量", color: "brick",
+      title: { zh: "量詞空戰", es: "¡Dispara al clasificador!" },
+      desc: {
+        zh: "用無人機練習量詞：看到「一＿貓」，射出正確的量詞（隻）；或飛過正確的詞語門。有「射擊量詞」和「飛過門」兩種玩法，每局 10 題、3 條命，可開聽力模式和拼音。",
+        es: "Practica los clasificadores con un dron: ves «一＿貓» y disparas al clasificador correcto (隻), o vuelas por la puerta con la palabra correcta. Dos modos, «Tiro de clasificadores» y «Puertas de palabras»; 10 preguntas y 3 vidas por partida, con modo escucha y pinyin."
+      },
+      tags: [{ zh: "量詞", es: "Clasificadores" }, { zh: "詞彙", es: "Vocabulario" }, { zh: "聽力", es: "Comprensión" }],
+      url: "https://wangchiapin.github.io/dron-clasificadores/",
+      guide: {
+        learn: { zh: "量詞：名詞前面要搭配的詞，例如「一隻貓」「一條魚」「一杯茶」。另一個玩法「飛過門」練水果、食物、動物、顏色、交通等主題的詞彙。",
+                 es: "Los clasificadores: la palabra que acompaña al sustantivo, como «一隻貓», «一條魚» o «一杯茶». El otro modo, «Puertas de palabras», practica vocabulario de temas como frutas, comida, animales, colores y transporte." },
+        level: { zh: "入門到初級。量詞分成動物、物品、食物、交通、自然與其他幾類，可以只練一類，或只練某一個量詞。",
+                 es: "Principiante a básico. Los clasificadores se agrupan en animales, objetos, comida, transporte y naturaleza y otros; puedes practicar solo un grupo o un único clasificador." },
+        steps: [
+          { zh: "<b>在選單選玩法</b>：「射擊量詞」或「飛過門」。射擊量詞可選量詞範圍（全部、某一類，或只練某個量詞）；飛過門要選主題。",
+            es: "<b>Elige el modo en el menú</b>: «Tiro de clasificadores» o «Puertas de palabras». En el primero puedes elegir el alcance (todos, un grupo o un solo clasificador); en el segundo, el tema." },
+          { zh: "<b>選操作方式</b>：「搖桿」（螢幕上左右兩個虛擬搖桿）或「傾斜」（用手機傾斜來飛，進遊戲後先把手機拿平穩，按「校準」）。手機要橫放。電腦玩：W S 前後、A D 左右、↑ ↓ 升降、← → 轉向。",
+            es: "<b>Elige el control</b>: «Joystick» (dos joysticks virtuales en pantalla) o «Inclinar» (se vuela inclinando el móvil; ya dentro, sostén el móvil estable y pulsa «Calibrar»). Gira el móvil en horizontal. En el ordenador: W S adelante/atrás, A D izquierda/derecha, ↑ ↓ subir/bajar, ← → girar." },
+          { zh: "<b>射擊量詞</b>：上方出現「一＿貓」，空中有三個量詞，把正確的射下來（電腦按空白鍵或點滑鼠，手機點「射擊」鈕）。一次有 6 發子彈，打完要換彈（按 R，或自動換）。",
+            es: "<b>Tiro de clasificadores</b>: arriba aparece «一＿貓» y en el aire hay tres clasificadores; dispara al correcto (en el ordenador, barra espaciadora o clic; en el móvil, el botón «Disparar»). Tienes 6 balas por pregunta y hay que recargar (tecla R o automático)." },
+          { zh: "<b>飛過門</b>：上方寫著要找的詞，前方有三個門，各寫一個詞，操控無人機飛過正確的那一個。",
+            es: "<b>Puertas de palabras</b>: arriba aparece la palabra que buscas y delante hay tres puertas, cada una con una palabra; pilota el dron por la correcta." },
+          { zh: "<b>答對得 100 分，答錯扣一條命</b>。每局 10 題、3 條命；10 題答完是「任務完成」，3 條命用完是「任務失敗」，結算頁會顯示分數和答對題數。",
+            es: "<b>Cada acierto da 100 puntos y cada error cuesta una vida</b>. Cada partida tiene 10 preguntas y 3 vidas: al terminar las 10 es «misión cumplida» y si pierdes las 3 vidas, «misión fallida». Al final ves la puntuación y los aciertos." }
+        ],
+        features: [
+          { zh: "選項：「顯示拼音」會在題目下面加拼音；「聽力模式」會用台灣中文語音唸出名詞或詞語，題目只顯示「一＿？」或「聽，然後飛過正確的字」，可以按喇叭再聽一次。",
+            es: "Opciones: «pinyin» añade el pinyin bajo la pregunta; el «modo escucha» lee el sustantivo o la palabra con voz china de Taiwán y la pantalla solo muestra «一＿？» o «escucha y vuela por la palabra correcta»; el altavoz permite repetirlo." },
+          { zh: "操作可以選「前後反過來」「左右反過來」，適合習慣不同的玩家。",
+            es: "Puedes invertir adelante/atrás y izquierda/derecha para adaptarlo a tu costumbre." },
+          { zh: "題庫放在遊戲資料夾的三個 CSV 檔（量詞題、量詞表、飛過門的詞），老師可以用 Excel 或 Google 試算表直接編輯。西文提示不會洩漏量詞答案。",
+            es: "Las preguntas están en tres archivos CSV (preguntas de clasificadores, lista de clasificadores y palabras de las puertas) que se editan con Excel u hojas de cálculo. La pista en español no revela el clasificador." },
+          { zh: "目前沒有排行榜、不用輸入暱稱；每一局會記在後台的遊玩紀錄。",
+            es: "Por ahora no hay ranking ni hace falta apodo; cada partida se registra en el panel de administración." }
+        ],
+        teacher: [
+          { zh: "「射擊量詞」可以只選一個量詞（例如只練「隻」或「條」），上課教到哪個量詞就練哪個；「聽力模式」適合先聽再說。",
+            es: "En «Tiro de clasificadores» puedes elegir un solo clasificador (por ejemplo, solo 隻 o 條), el que estés enseñando; el «modo escucha» sirve para oír primero y hablar después." },
+          { zh: "答錯時畫面會顯示完整答案（例如「一隻貓」）和西文意思，學生可以馬上看到對的搭配。有些名詞可以搭配不只一個量詞，都算對。",
+            es: "Cuando fallan, la pantalla muestra la respuesta completa (por ejemplo, «一隻貓») y el significado en español. Si un sustantivo admite varios clasificadores, todos cuentan como correctos." },
+          { zh: "沒有老師管理中心，也不用訂閱，直接開啟就能玩。",
+            es: "No tiene Centro del profesor ni requiere suscripción: se abre y se juega." }
+        ],
+        tip: { zh: "遊戲用到 3D 畫面和手機傾斜，請用比較新的手機或電腦的瀏覽器。手機一定要橫放，否則會顯示「請把手機橫放」。",
+               es: "El juego usa gráficos 3D y la inclinación del móvil, así que conviene un navegador reciente. El móvil debe estar en horizontal; si no, aparece el aviso «Gira el teléfono»." }
+      }
     }
   ],
 
