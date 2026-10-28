@@ -1005,6 +1005,7 @@ const GAMES = [
   { name: "色數消消樂", p: "memorma", boards: ["A", "B"].flatMap(m => [20, 30, 42].flatMap(c => ["basic", "adv"].flatMap(s => [999, 9999].map(r => B(`${m}_${c}_${s}_${r}`, `模式${m}・${c}格・${s === "basic" ? "基礎色" : "進階色"}・0–${r}`, ["colorgame_boards", `${m}_${c}_${s}_${r}`, "entries"], [["rank", "desc"]]))))) },
   { name: "幫媽媽買東西", p: "memorma", boards: [B("a", "全部", ["mama_shopping_leaderboard"], [["score", "desc"]])] },
   { name: "把", p: "memorma", boards: [B("a", "全部（總分）", ["baLeaderboard"], [["total", "desc"]])] },
+  { name: "被", p: "memorma", boards: [B("a", "全部（總分）", ["beiLeaderboard"], [["total", "desc"]])] },
   { name: "問路小達人", p: "memorma", boards: range(1, 4).map(l => B(l, `第 ${l} 關`, ["askDirections_L" + l], [["score", "desc"]], { limit: 30, sort: (a, b) => b.score - a.score || (a.time ?? 1e9) - (b.time ?? 1e9) })) },
   { name: "我要放哪裡？", p: "memorma", boards: range(1, 3).map(l => B(l, `第 ${l} 關`, ["homefetchmap_L" + l], [["score", "desc"]])) },
   { name: "墨龍飛天", p: "memorma", boards: [["food","食物"],["fruit","水果"],["animal","動物"],["color","顏色"],["transport","交通"],["body","身體"],["clothes","衣服"],["job","工作"],["weather","天氣"],["home","家"]].map(([t, n]) => B(t, n, ["inkdragon_boards", t, "entries"], [["score", "desc"]])) },
