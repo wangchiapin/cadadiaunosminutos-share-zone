@@ -20,6 +20,7 @@
 | 第一批 1 | [dragon.md](dragon.md) | 墨龍飛天 | 已剪好 v2（26 秒） |
 | 第一批 2 | [topo.md](topo.md) | 打地鼠學中文 | 已剪好 v1（26 秒） |
 | 第一批 3 | [ba.md](ba.md) | 把（oración con 把） | **還沒錄影** |
+| 第二批 | [bei.md](bei.md) | 被（oración con 被） | 腳本（遊戲先放維修中） |
 | 第一批 4 | [perrito.md](perrito.md) | 小狗找寶藏 | 已剪好 v1（24 秒） |
 | 第一批 5 | [colores.md](colores.md) | 色數消消樂 | 已剪好 v1（28 秒） |
 | 第二批 | [taiwan-life.md](taiwan-life.md) | 台灣生存日記 | 腳本 |
