@@ -975,7 +975,7 @@ try {
         /* ---- 老師管理中心的遊戲開關（也存在 portalStatus：文件 center-遊戲代號，off:true＝維修中、off:false＝開放；
                  沒有文件時＝開放。任何人可讀，只有你能寫；老師管理中心開啟時讀這幾筆） ---- */
         const csBox = document.getElementById("csBox");
-        const CS = [["corre", "📚 跑吧！漢字", false], ["colores", "🎨 色數消消樂", false], ["bbk", "📐 比比看", false], ["dragon", "🐉 墨龍飛天", false]];
+        const CS = [["corre", "📚 跑吧！漢字", false], ["colores", "🎨 色數消消樂", false], ["bbk", "📐 比比看", false], ["dragon", "🐉 墨龍飛天", false], ["ba", "🤲 把（oración con 把）", true], ["bei", "🧲 被（oración con 被）", true]];   // 第三個值＝沒有開關資料時的預設：true＝維修中
         let CSV = {}, csLoaded = false, csMsg = "";
         const csOff = ([g, , def]) => ("center-" + g) in CSV ? CSV["center-" + g] : def;
         function drawCs(){
