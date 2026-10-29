@@ -52,6 +52,7 @@
 | rayo | 天打雷劈 | Cuidado-con-el-rayo |
 | come | 吃字小籠包 | -come-caracteres |
 | dron | 量詞空戰 | dron-clasificadores |
+| tonos | 聲調偵探 | detective-de-tonos |
 
 ## Instagram Reel 腳本
 

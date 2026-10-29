@@ -972,6 +972,54 @@ const CONFIG = {
         tip: { zh: "遊戲用到 3D 畫面和手機傾斜，請用比較新的手機或電腦的瀏覽器。手機一定要橫放，否則會顯示「請把手機橫放」。",
                es: "El juego usa gráficos 3D y la inclinación del móvil, así que conviene un navegador reciente. El móvil debe estar en horizontal; si no, aparece el aviso «Gira el teléfono»." }
       }
+    },
+    {
+      id: "tonos",
+      cat: "listen",                         // 分類：vocab 單字與漢字 / listen 聽力 / grammar 文法與句子 / life 生活情境
+      glyph: "調", color: "jade",
+      title: { zh: "聲調偵探", es: "Detective de tonos" },
+      desc: {
+        zh: "每句話只給沒有聲調的拼音，由你填聲調。有「看句子」（看漢字和拼音）和「聽句子」（聽台灣中文語音，檢查後才顯示漢字）兩種玩法，題庫是 A1、A2、B1 共 300 句，每局 10 題，選「全部」可以上排行榜。",
+        es: "Cada frase muestra el pinyin sin tonos y tú pones los tonos. Dos modos: «Leer la frase» (ves los caracteres y el pinyin) y «Escuchar la frase» (oyes la voz china de Taiwán y los caracteres solo aparecen al comprobar). 300 frases de nivel A1, A2 y B1; 10 frases por partida, y con «Todos» entras al ranking."
+      },
+      tags: [{ zh: "聲調", es: "Tonos" }, { zh: "拼音", es: "Pinyin" }, { zh: "聽力", es: "Comprensión" }],
+      url: "https://wangchiapin.github.io/detective-de-tonos/",
+      guide: {
+        learn: { zh: "聲調（一聲到四聲）和輕聲：看到句子的拼音，自己判斷每個字是一聲、二聲、三聲還是四聲。",
+                 es: "Los tonos (del 1.º al 4.º) y el tono neutro: ves el pinyin de la frase y decides el tono de cada sílaba." },
+        level: { zh: "入門到進階。題庫分 A1、A2、B1 三個等級（大致對應《當代中文課程》第 1 到 3 冊的句子），也可以選「全部」混合練習。",
+                 es: "De principiante a intermedio. Las frases se dividen en A1, A2 y B1 (aproximadamente los libros 1 a 3 de «Contemporary Chinese»); también puedes elegir «Todos» para mezclarlas." },
+        steps: [
+          { zh: "<b>在首頁選玩法和等級</b>：「看句子」或「聽句子」；等級可選全部、A1、A2、B1；還可以選語速（慢、中、快）。選「全部」要先輸入暱稱才能開始。",
+            es: "<b>Elige el modo y el nivel en la pantalla de inicio</b>: «Leer la frase» o «Escuchar la frase»; nivel Todos, A1, A2 o B1; y la velocidad (lenta, normal, rápida). Con «Todos» hay que escribir un apodo para empezar." },
+          { zh: "<b>為每個音節選聲調</b>：每個音節下面有四個按鈕（一聲 ˉ、二聲 ˊ、三聲 ˇ、四聲 ˋ），點下去之後上面的拼音會馬上標上聲調。輕聲的字已經幫你填好（顯示「輕聲」），不用選。",
+            es: "<b>Elige el tono de cada sílaba</b>: bajo cada sílaba hay cuatro botones (1.º ˉ, 2.º ˊ, 3.º ˇ, 4.º ˋ) y al pulsar, el pinyin de arriba muestra el tono al instante. Las sílabas de tono neutro ya vienen rellenadas («tono neutro»), no hay que elegirlas." },
+          { zh: "<b>聽句子玩法</b>：進入題目會自動唸一次句子，畫面只有拼音、沒有漢字；可以按喇叭再聽一次。",
+            es: "<b>Modo escucha</b>: al empezar cada frase se lee una vez en voz alta y en pantalla solo ves el pinyin, sin caracteres; puedes pulsar el altavoz para oírla otra vez." },
+          { zh: "<b>全部音節選好後按「檢查」</b>：答錯的音節會標紅並顯示正確的拼音；同時顯示完整漢字、有聲調的拼音和西文意思。聽句子玩法在檢查後才會顯示漢字。",
+            es: "<b>Cuando todas las sílabas tengan tono, pulsa «Comprobar»</b>: las erróneas se marcan en rojo con el pinyin correcto, y aparecen la frase completa, el pinyin con tonos y su significado en español. En el modo escucha los caracteres solo se ven después de comprobar." },
+          { zh: "<b>每局 10 題</b>，答完會看到答對音節數、答對率和全對的句數。",
+            es: "<b>Cada partida tiene 10 frases</b>; al terminar ves las sílabas correctas, el porcentaje de aciertos y cuántas frases salieron perfectas." }
+        ],
+        features: [
+          { zh: "答案以「本調」為準：一＝yī、不＝bù，連著的三聲都算三聲。實際說話時這些字會變調，但這個遊戲不算；畫面上有註記。聽句子是手機語音唸的，會自動變調，聽起來跟本調不一樣是正常的。",
+            es: "Se usa el tono original (el del diccionario): 一 = yī, 不 = bù, y varios terceros tonos seguidos se marcan todos como 3.º. En el habla real cambian, pero aquí no cuenta (hay un aviso en pantalla). La voz del dispositivo cambia los tonos sola, así que es normal que suene distinto al tono original." },
+          { zh: "有繁體／簡體、西文／英文／純中文設定；語音只使用台灣中文語音。",
+            es: "Puedes elegir caracteres tradicionales o simplificados, y español, inglés o solo chino; la voz es siempre chino de Taiwán." },
+          { zh: "排行榜：「看句子」和「聽句子」各有一個榜（前 10 名），分數是答對率。只有等級選「全部」玩完 10 題才會上榜，選 A1、A2、B1 只是練習；每台裝置只留最高分。",
+            es: "Ranking: hay uno para «Leer la frase» y otro para «Escuchar la frase» (top 10); la puntuación es el porcentaje de aciertos. Solo cuentan las partidas de 10 frases con el nivel «Todos»; A1, A2 y B1 son solo práctica. Se guarda la mejor marca de cada dispositivo." }
+        ],
+        teacher: [
+          { zh: "上課可以只選某個等級，教到哪一冊就練那一級；想要全班一起比就選「全部」，大家抽的是同一批句子。",
+            es: "En clase puedes elegir un solo nivel, el del libro que estés viendo; si quieres que toda la clase compita, elige «Todos»: todos sacan frases del mismo conjunto." },
+          { zh: "「聽句子」適合先聽再看：先只給拼音，學生要自己判斷聲調，檢查後再對照漢字。",
+            es: "El modo escucha sirve para oír primero y ver después: solo se da el pinyin, el alumno decide los tonos y luego compara con los caracteres." },
+          { zh: "沒有老師管理中心，也不用訂閱，直接開啟就能玩。",
+            es: "No tiene Centro del profesor ni requiere suscripción: se abre y se juega." }
+        ],
+        tip: { zh: "「聽句子」用的是手機或電腦內建的語音，每個裝置的聲音不太一樣；如果找不到中文（台灣）語音，畫面上方會提示怎麼安裝。",
+               es: "El modo escucha usa la voz integrada del móvil u ordenador, que varía según el dispositivo; si no encuentra una voz de chino (Taiwán), aparece un aviso arriba para instalarla." }
+      }
     }
   ],
 
