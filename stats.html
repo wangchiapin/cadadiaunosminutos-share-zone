@@ -208,7 +208,7 @@ select{font:inherit;color:var(--ink);padding:6px 10px;border:2px solid var(--lin
 
   <section class="tabpane" data-pane="reports">
   <h2>問題回報</h2>
-  <p class="note">學生在遊戲每題答完後按「🚩 這題怪怪的」送出的回報，所有遊戲都集中在這裡（比比看、把、被）。圖、題目、正確答案、學生選的答案都會一起送回來。只有你登入後看得到（登入請到「回饋專區」分頁）；可以用下拉選單篩選遊戲，標記已處理、刪除、匯出。</p>
+  <p class="note">學生在遊戲每題答完後按「🚩 這題怪怪的」送出的回報，所有遊戲都集中在這裡（比比看、把、被、聲調偵探）。圖、題目、正確答案、學生選的答案都會一起送回來。只有你登入後看得到（登入請到「回饋專區」分頁）；可以用下拉選單篩選遊戲，標記已處理、刪除、匯出。</p>
   <div class="box" id="bbrBox"><p class="msg">請先到「回饋專區」分頁用 Google 登入。</p></div>
   </section>
 
@@ -858,15 +858,16 @@ try {
           } catch (err) { alert("失敗：" + (err.code || err.message)); }
         });
 
-        /* ---- 問題回報（學生在遊戲按「🚩 這題怪怪的」送出）：比比看存 bbk_reports，把／被存 game_reports；只有你讀得到 ---- */
+        /* ---- 問題回報（學生在遊戲按「🚩 這題怪怪的」送出）：比比看存 bbk_reports，把／被／聲調偵探存 game_reports；只有你讀得到 ---- */
         const bbrBox = document.getElementById("bbrBox"), bbrCount = document.getElementById("bbrCount");
-        const BBR_WHY = { wrong: "答案好像不對", image: "圖看不清楚", other: "其他" };
+        const BBR_WHY = { wrong: "答案好像不對", image: "圖看不清楚", voice: "機器聲音怪怪的", text: "拼音或句子有錯", other: "其他" };
         const BBR_TYPE = { decode: "看句子找人", tf: "對錯題", pick: "看圖選句子", more: "選人：誰比較＿？", whobi: "選人：誰比 A ＿？", biwho: "選人：A 比誰＿？", fill: "選比較詞", adj: "選形容詞", chain: "連鎖解碼", most: "選人：誰最＿？" };
         const BBR_DIM = { height: "身高", age: "年齡", build: "胖瘦", hair: "頭髮長短", eyes: "眼睛大小", nose: "鼻子大小", muscle: "壯不壯", tex: "髮質（直／捲）", skin: "膚色" };
         const BBR_LANG = { es: "西文", en: "英文", zh: "只有中文" };
         const BBR_IMG = "https://wangchiapin.github.io/compara-y-adivina/img/";
         /* 之後有新遊戲：REP_GAMES 加一行（bbk 以外的遊戲都存在 game_reports，回報裡有 game 欄位） */
-        const REP_GAMES = { bbk: "📐 比比看", ba: "把", bei: "被" };
+        const REP_GAMES = { bbk: "📐 比比看", ba: "把", bei: "被", tonos: "聲調偵探" };
+        const REP_MODE = { read: "看句子", listen: "聽句子" };
         const REP_COLL = g => g === "bbk" ? "bbk_reports" : "game_reports";
         const REP_QT = { A: "排句子", L: "聽力選圖", P: "選句子", T: "把⇒被轉換" };
         const REP_IMGK = { b: "之前", a: "之後", ok: "正確答案", pick: "學生選的" };
@@ -882,6 +883,11 @@ try {
               <br><small>${esc(x.when)} · 第 ${esc(x.lv)} 關${x.r ? " · 老師範圍 " + esc(x.r) : " · 一般模式"} · ${esc(BBR_LANG[x.lang] || x.lang || "")} · ${esc(x.ver || "")}</small>
               <div class="bbr-ppl">${(x.ids || []).map(id => `<figure><img src="${BBR_IMG}${encodeURIComponent(id)}.webp" alt="${esc(id)}" loading="lazy">${esc(id)}</figure>`).join("")}</div>
               <div class="bbr-tb"><div><b>題目</b>${esc(x.q)}</div><div><b>正確答案</b>${esc(x.ans)}</div><div><b>學生選的</b><span class="${x.pick && x.pick.split(" → ").pop() !== x.ans ? "no" : ""}">${esc(x.pick || "—")}</span></div></div>
+              ${x.note ? `<p>💬 ${esc(x.note)}</p>` : ""}</div>`;
+          if (x.game === "tonos") return `<div class="fbi ${x.done ? "done" : ""}">${repHead(x)}
+              <b>${esc(REP_GAMES.tonos)}</b> · ${esc(REP_MODE[x.mode] || x.mode)} <small>(${esc(x.id)})</small>
+              <br><small>${esc(x.when)} · ${esc(x.lv)} · ${esc(BBR_LANG[x.lang] || x.lang || "")} · ${esc(x.ver || "")}</small>
+              <div class="bbr-tb"><div><b>句子</b>${esc(x.han)} <small>${esc(x.py)}</small></div><div><b>標準答案</b>${esc(x.ans)}</div><div><b>學生選的</b><span class="${x.pick !== x.ans ? "no" : ""}">${esc(x.pick || "—")}</span></div></div>
               ${x.note ? `<p>💬 ${esc(x.note)}</p>` : ""}</div>`;
           const imgs = (Array.isArray(x.imgs) ? x.imgs : []).map((svg, i) => { const src = repSvg(svg); if (!src) return ""; const k = (x.imgk || [])[i] || "";
             return `<figure class="${esc(k)}"><img src="${src}" alt="" loading="lazy">${esc(REP_IMGK[k] || "")}</figure>`; }).join("");
@@ -903,7 +909,7 @@ try {
           bbrBox.innerHTML = (bbrWarn ? `<p class="msg">⚠ ${esc(bbrWarn)}</p>` : "") +
             `<div class="rep-sum">${Object.entries(by).map(([g, o]) => `<button data-bg="${esc(g)}" class="${bbrGame === g ? "on" : ""}"><b>${esc(gname(g))}</b><span>未處理 ${o.open}</span><small>共 ${o.all} 則</small></button>`).join("")}</div>` +
             `<div class="fb-bar"><select id="bbrGameSel" aria-label="遊戲"><option value="all">全部遊戲（共 ${BBR.length} 則）</option>${Object.keys(by).map(g => `<option value="${esc(g)}" ${bbrGame === g ? "selected" : ""}>${esc(gname(g))}</option>`).join("")}</select>` +
-            [["open","未處理"],["all","全部"],["wrong","答案不對"],["image","圖不清楚"],["other","其他"]].map(([k,l]) => `<button data-bf="${k}" class="${k===bbrFilter?"on":""}">${l}</button>`).join("") +
+            [["open","未處理"],["all","全部"],["wrong","答案不對"],["image","圖不清楚"],["voice","聲音怪"],["text","拼音／句子錯"],["other","其他"]].map(([k,l]) => `<button data-bf="${k}" class="${k===bbrFilter?"on":""}">${l}</button>`).join("") +
             `<span class="sp"></span><button id="bbrReload">重新整理</button><button id="bbrCsv">匯出 CSV</button></div>` +
             (list.length ? list.map(repItem).join("") : `<p class="msg">沒有符合的回報。</p>`);
         }
@@ -923,7 +929,7 @@ try {
             return;
           }
           if (a.status === "rejected") bbrWarn = `比比看的回報讀不到（${why(a)}）。`;
-          if (b.status === "rejected") bbrWarn = `把、被的回報讀不到（${why(b)}）：請確認已貼上新版規則（game_reports）。`;
+          if (b.status === "rejected") bbrWarn = `把、被、聲調偵探的回報讀不到（${why(b)}）：請確認已貼上新版規則（game_reports）。`;
           BBR = [...(a.value || []), ...(b.value || [])].sort((p, q) => q.ts - p.ts);
           drawBbr();
         }
@@ -938,9 +944,9 @@ try {
             const q = v => '"' + String(v ?? "").replace(/"/g, '""') + '"';
             const rows = [["時間","遊戲","原因","留言","題型","特徵／句子編號","題目","正確答案","學生選的","關卡","範圍碼","語言","版本","已處理"]]
               .concat(BBR.map(x => [x.when, REP_GAMES[x.game] || x.game, BBR_WHY[x.why] || x.why, x.note,
-                x.game === "bbk" ? (BBR_TYPE[x.type] || x.type) : (REP_QT[x.qt] || x.qt),
+                x.game === "bbk" ? (BBR_TYPE[x.type] || x.type) : x.game === "tonos" ? (REP_MODE[x.mode] || x.mode) : (REP_QT[x.qt] || x.qt),
                 x.game === "bbk" ? [BBR_DIM[x.d] || x.d, x.f, (x.ids || []).join(" ")].filter(Boolean).join(" ") : x.id,
-                x.q, x.ans, x.pick, x.lv, x.r || "", BBR_LANG[x.lang] || x.lang, x.ver, x.done ? "是" : ""]));
+                x.game === "tonos" ? [x.han, x.py].join(" ") : x.q, x.ans, x.pick, x.lv, x.r || "", BBR_LANG[x.lang] || x.lang, x.ver, x.done ? "是" : ""]));
             const blob = new Blob(["﻿" + rows.map(r => r.map(q).join(",")).join("\r\n")], { type: "text/csv;charset=utf-8" });
             const a = document.createElement("a"); a.href = URL.createObjectURL(blob);
             a.download = `問題回報-${new Date().toISOString().slice(0,10)}.csv`; a.click();
