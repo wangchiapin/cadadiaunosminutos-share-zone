@@ -57,6 +57,16 @@
 
 `reels/` 資料夾放每款遊戲的 Instagram Reel 腳本與貼文（見 `reels/README.md`）。遊戲改版後，對應的腳本也要重新核對。
 
+## 問題回報（stats.html#reports）
+
+學生在遊戲每題答完後按「🚩 這題怪怪的」，回報會集中在後台「🚩 問題回報」分頁（在「遊玩紀錄」右邊）。
+
+- **比比看**：存在中央專案（subscription-48d3c）的 `bbk_reports`。
+- **把、被**：存在同一個中央專案的 `game_reports`，用 `game` 欄位分遊戲（`ba`＝把、`bei`＝被）。回報裡會帶題目句、正確答案、學生選的答案，以及當題的圖（SVG 字串，後台只用 `<img>` 顯示，不會執行）。
+- 分頁上方有各遊戲的總覽和下拉選單可篩選；可標記已處理、刪除、匯出 CSV。
+- **新遊戲要加進問題回報**：遊戲端把回報寫進 `game_reports`（`game` 用新的代號），再到 `stats.html` 的 `REP_GAMES` 加一行；Firestore 規則的 `game` 清單也要加上新代號。
+- 回報只有管理員（a2224907@gmail.com）讀得到、能改、能刪；任何登入（含匿名）的人可以送出，欄位長度有限制。
+
 ## 老師管理中心遊戲開關（stats.html#sub）
 - 「🔧 老師管理中心遊戲開關」分頁：勾選＝該遊戲在老師管理中心維修中，一般老師看不到卡片。
 - 寫入 Firestore `portalStatus/center-<corre|colores|bbk|dragon>`，`{off:true}`；沒有文件＝開放。只有 a2224907@gmail.com 能寫（沿用現有規則）。
