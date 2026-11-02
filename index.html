@@ -2669,7 +2669,7 @@ async function notifySite(req, id){
 }
 const CENTER_URL = "https://wangchiapin.github.io/profesor/";
 const CMP_ROWS = [
-  [{ zh: "六款遊戲自己玩", es: "Jugar a los seis juegos" }, "✅", "✅"],
+  [{ zh: "多款遊戲自己玩", es: "Jugar a varios juegos" }, "✅", "✅"],
   [{ zh: "跑吧！漢字 句庫", es: "¡Corre, Hanzi!: bancos de frases" }, { zh: "1 個，每庫 50 句", es: "1 banco, 50 frases" }, { zh: "5 個，每庫 80 句，可自訂干擾字", es: "5 bancos, 80 frases cada uno, distractores propios" }],
   [{ zh: "跑吧！漢字 公開句庫", es: "¡Corre, Hanzi!: bancos públicos" }, { zh: "A1、A2", es: "A1 y A2" }, { zh: "再加 B1 和主題包", es: "Además B1 y paquetes temáticos" }],
   [{ zh: "色數消消樂 設定組", es: "Pop Colores y Números: configuraciones" }, { zh: "3 組", es: "3" }, { zh: "15 組，可自訂顏色與數字", es: "15, con colores y números propios" }],
@@ -2679,7 +2679,7 @@ const CMP_ROWS = [
   [{ zh: "練習連結（不用班級，直接傳給學生玩）", es: "Enlaces de práctica (sin clase, se envían directo al alumno)" }, "✅", "✅"],
   [{ zh: "建立班級、成績自動回傳、成績冊", es: "Clases, notas automáticas y libro de notas" }, "❌", { zh: "✅ 最多 3 班", es: "✅ hasta 3 clases" }],
   [{ zh: "比比看、把、被 的常錯統計、匯出 CSV", es: "Errores frecuentes y exportar CSV en Compara y Adivina, 把 y 被" }, "❌", "✅"],
-  [{ zh: "六款遊戲的學習單（列印／PDF）", es: "Fichas de los seis juegos (imprimir / PDF)" }, "❌", "✅"],
+  [{ zh: "多款遊戲的學習單（列印／PDF）", es: "Fichas de varios juegos (imprimir / PDF)" }, "❌", "✅"],
 ];
 function compareHtml(){
   return `<h3 class="sub-sec">${esc(t(UI.cmpTitle2))}</h3>
