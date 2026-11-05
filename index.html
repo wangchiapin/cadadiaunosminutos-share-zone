@@ -1029,6 +1029,52 @@ const CONFIG = {
         tip: { zh: "「聽句子」用的是手機或電腦內建的語音，每個裝置的聲音不太一樣；如果找不到中文（台灣）語音，畫面上方會提示怎麼安裝。",
                es: "El modo escucha usa la voz integrada del móvil u ordenador, que varía según el dispositivo; si no encuentra una voz de chino (Taiwán), aparece un aviso arriba para instalarla." }
       }
+    },
+    {
+      id: "fangwei",
+      cat: "grammar",                         // 分類：vocab 單字與漢字 / listen 聽力 / grammar 文法與句子 / life 生活情境
+      glyph: "轉", color: "brick",
+      title: { zh: "方位轉轉轉", es: "¡Gira y ubica!" },
+      desc: {
+        zh: "畫面中間的小動物會轉向，要用牠的角度分辨前、後、左、右和四個斜角，再回答「在」和「有」的問題。四種題型隨機出，有簡單（4 個方位）和困難（8 個方位）。",
+        es: "El animalito del centro gira y tú piensas desde su punto de vista para distinguir delante, detrás, izquierda, derecha y las cuatro diagonales; luego respondes preguntas con 在 y 有. Cuatro tipos de pregunta al azar, con nivel fácil (4 direcciones) y difícil (8)."
+      },
+      tags: [{ zh: "方位詞", es: "Direcciones" }, { zh: "在／有", es: "在 / 有" }],
+      url: "https://wangchiapin.github.io/dondeestayquehay/",
+      guide: {
+        learn: { zh: "相對方位詞：前面、後面、左邊、右邊，加上左前方、右前方、左後方、右後方（也認識正前方、正後方、左手邊、右手邊）；還有「在」和「有」兩種句型：「咖啡廳在我的左邊」、「我的右前方有銀行」。",
+                 es: "Palabras de dirección relativa: 前面 (delante), 後面 (detrás), 左邊 (izquierda), 右邊 (derecha) y las diagonales 左前方, 右前方, 左後方, 右後方 (también 正前方, 正後方, 左手邊, 右手邊); y las dos estructuras 在 y 有: «咖啡廳在我的左邊», «我的右前方有銀行»." },
+        level: { zh: "入門到初級。簡單只有前後左右 4 個方位；困難加上 4 個斜角，共 8 個方位。",
+                 es: "Principiante a básico. El nivel fácil solo tiene 4 direcciones (delante, detrás, izquierda, derecha); el difícil añade 4 diagonales, 8 en total." },
+        steps: [
+          { zh: "<b>在主選單選難度</b>，按開始。中間是一隻小動物（每題換一隻），外面圍著一圈地點：咖啡廳、圖書館、銀行、郵局、便利商店、醫院、學校、夜市、捷運站、藥局、公園、超市（每局隨機抽，簡單 4 個、困難 8 個）。",
+            es: "<b>Elige la dificultad en el menú</b> y empieza. En el centro hay un animalito (cambia en cada pregunta) y alrededor, en círculo, algunos lugares: cafetería, biblioteca, banco, correos, tienda de conveniencia, hospital, escuela, mercado nocturno, estación de metro, farmacia, parque y supermercado (se sortean en cada partida: 4 en fácil, 8 en difícil)." },
+          { zh: "<b>按「旋轉」</b>，小動物會轉向。要用<b>牠自己的方向</b>來想：牠頭朝的方向就是「前面」，所以地點的位置會跟著變。",
+            es: "<b>Pulsa «Girar»</b> y el animalito cambia de dirección. Piensa desde <b>su punto de vista</b>: delante es hacia donde apunta su cabeza, así que la posición de los lugares cambia." },
+          { zh: "<b>回答問題</b>：四種題型隨機出——「…在哪裡？」（選方位）、「我的…有什麼？」（選地點）、「什麼在我的…？」（選地點）、「我的哪個方位有…？」（選方位）。答完會顯示完整句子和西文意思。",
+            es: "<b>Responde</b>: hay cuatro tipos de pregunta al azar: «¿Dónde está…?» (eliges la dirección), «¿Qué hay en mi…?» (eliges el lugar), «¿Qué está en mi…?» (eliges el lugar) y «¿En qué dirección de mí hay…?» (eliges la dirección). Al responder aparece la frase completa con su significado en español." },
+          { zh: "<b>每局 10 題，每題 10 秒</b>；時間到算答錯。按「下一題」繼續，10 題答完會看到答對題數，可以再玩一次或回主選單。",
+            es: "<b>Cada partida tiene 10 preguntas de 10 segundos</b>; si se acaba el tiempo cuenta como error. Pulsa «Siguiente» para continuar; al terminar las 10 ves tus aciertos y puedes jugar otra vez o volver al menú." }
+        ],
+        features: [
+          { zh: "主選單右上角的 ⓘ 是「遊戲說明」；進到遊戲裡，右上角的 📖 是「小字典」，可以查地點、方位詞和句型（在、有、什麼在我的…？、我的哪個方位有…？）。",
+            es: "El ⓘ de la esquina superior derecha del menú son las «instrucciones del juego»; ya dentro, el 📖 abre el mini diccionario con los lugares, las palabras de dirección y las estructuras (在, 有, ¿qué está en mi…?, ¿en qué dirección hay…?)." },
+          { zh: "⚙️ 設定：繁體或簡體、介面語言（中文＋西文／英文／只有中文）、拼音／注音／兩個都顯示／關閉；遊戲自己的設定有難度、地點名稱顯示或隱藏（只看圖）、倒數計時開關、方位提示開關（在地點旁邊標出方位詞）。",
+            es: "⚙️ Ajustes: tradicional o simplificado; idioma de la interfaz (chino + español / inglés / solo chino); pinyin, zhuyin, ambos o ninguno. Propios del juego: dificultad, mostrar u ocultar el nombre de los lugares (solo imágenes), cronómetro sí/no y pista de dirección sí/no (escribe la palabra de dirección junto a cada lugar)." },
+          { zh: "目前沒有排行榜、不用輸入暱稱，成績也不會回傳。",
+            es: "Por ahora no hay ranking ni hace falta apodo, y los resultados no se envían a ningún sitio." }
+        ],
+        teacher: [
+          { zh: "第一次玩可以打開「方位提示」，學生熟了再關掉；也可以隱藏地點名稱，只看圖練習。",
+            es: "La primera vez, activa la «pista de dirección» y desactívala cuando se familiaricen; también puedes ocultar el nombre de los lugares y practicar solo con imágenes." },
+          { zh: "上課可以先請學生站起來轉身，體會「用自己的方向想」，再玩遊戲。",
+            es: "Antes de jugar, pide a los alumnos que se levanten y giren, para sentir lo de «pensar desde tu propia dirección»." },
+          { zh: "沒有老師管理中心，也不用訂閱，直接開啟就能玩。",
+            es: "No tiene Centro del profesor ni requiere suscripción: se abre y se juega." }
+        ],
+        tip: { zh: "答錯時別急著按下一題，先看畫面上亮起來的地點和完整句子，再想一次為什麼。",
+               es: "Si fallas, no pases enseguida a la siguiente: mira el lugar resaltado y la frase completa, y piensa por qué." }
+      }
     }
   ],
 

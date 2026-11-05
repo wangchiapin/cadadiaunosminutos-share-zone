@@ -53,6 +53,7 @@
 | come | 吃字小籠包 | -come-caracteres |
 | dron | 量詞空戰 | dron-clasificadores |
 | tonos | 聲調偵探 | detective-de-tonos |
+| fangwei | 方位轉轉轉 | dondeestayquehay |
 
 ## Instagram Reel 腳本
 
