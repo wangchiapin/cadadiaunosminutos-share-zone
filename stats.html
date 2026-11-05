@@ -341,7 +341,7 @@ try {
   if (!cfg || !cfg.projectId) {
     fail("還沒設定 Firebase：請在 firebase-config.js 貼上設定。");
   } else {
-    const V = "10.12.2";
+    const V = "12.17.1";
     const { initializeApp } = await import(`https://www.gstatic.com/firebasejs/${V}/firebase-app.js`);
     const { initializeFirestore, collection, getDocs: rawGetDocs, query, where, documentId } = await withTimeout(import(`https://www.gstatic.com/firebasejs/${V}/firebase-firestore.js`));
     const app = initializeApp(cfg, "stats");
@@ -1059,7 +1059,7 @@ try {
 <a class="go-site" href="https://wangchiapin.github.io/cadadiaunosminutos-share-zone/" target="_blank" rel="noopener" title="開啟華語老師分享區">🏠 華語老師分享區 <small>↗</small></a>
 <script type="module">
 /* ---- 排行榜總覽（只讀）：榜單登記表在這裡，新遊戲加一筆就會出現 ---- */
-const V = "10.12.2";
+const V = "12.17.1";
 const PROJECTS = {
   memorma: { apiKey:"AIzaSyC_YSDn2OH6_GKKwCq0d8QFNl3fYXzTC60", authDomain:"memorma-24dab.firebaseapp.com", projectId:"memorma-24dab", storageBucket:"memorma-24dab.firebasestorage.app", messagingSenderId:"806709458465", appId:"1:806709458465:web:f0d12acb2f911f2f165560" },
   corre:   { apiKey:"AIzaSyA0jxyA3ZqWcFfsN1nu5Zol33QSxwrgq68", authDomain:"corre-d16da.firebaseapp.com", projectId:"corre-d16da", storageBucket:"corre-d16da.firebasestorage.app", messagingSenderId:"734685362204", appId:"1:734685362204:web:fec4c0f9f39b1730dfc7d9" },
