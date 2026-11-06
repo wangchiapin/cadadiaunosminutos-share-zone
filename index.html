@@ -724,48 +724,48 @@ const CONFIG = {
       glyph: "路", color: "gold",
       title: { zh: "問路小達人", es: "¡Me he perdido!" },
       desc: {
-        zh: "練習問路、指路：聽一段指路的話，用「直走、左轉、右轉」三個按鈕讓小人走到目的地。4 個關卡，3 張地圖。",
-        es: "Practica pedir y entender direcciones: escucha una indicación y mueve al personaje con tres botones (直走, 左轉, 右轉) hasta el destino. 4 niveles y 3 mapas."
+        zh: "練習問路、指路：聽一段指路的話，用「直走、左轉、右轉」三個按鈕讓小人走到目的地。4 個關卡，8 張地圖（含真實街區），每輪 10 題。",
+        es: "Practica pedir y entender direcciones: escucha una indicación y mueve al personaje con tres botones (直走, 左轉, 右轉) hasta el destino. 4 niveles, 8 mapas (con calles reales) y 10 preguntas por ronda."
       },
       tags: [{ zh: "問路", es: "Direcciones" }, { zh: "方位詞", es: "Palabras de lugar" }, { zh: "聽力", es: "Comprensión" }],
       url: "https://wangchiapin.github.io/Me-he-perdido/",
       guide: {
-        learn: { zh: "指路的中文：直走、左轉、右轉、左手邊／右手邊、第幾個路口、過馬路、對面、旁邊，以及用建築物當參考（例如「右手邊是銀行，過了銀行就左轉」）。",
-                 es: "El chino para dar direcciones: 直走, 左轉, 右轉, 左手邊/右手邊, «el primer/segundo cruce», 過馬路, 對面, 旁邊, y usar edificios como referencia (por ejemplo, «右手邊是銀行，過了銀行就左轉»)." },
-        level: { zh: "入門到初級。第 4 關是綜合挑戰，指路的句子比較長。",
-                 es: "Principiante a básico. El nivel 4 es un reto combinado con indicaciones más largas." },
+        learn: { zh: "指路的中文：直走、左轉、右轉、左手邊／右手邊、第幾個路口、紅綠燈、過馬路、對面、前面、後面、旁邊、圓環、Y 字路口，以及用建築物當參考（例如「右手邊是銀行，看到銀行就左轉」「過了銀行就左轉」）。",
+                 es: "El chino para dar direcciones: 直走, 左轉, 右轉, 左手邊/右手邊, «el primer/segundo cruce», semáforos, 過馬路, 對面, 前面, 後面, 旁邊, rotondas, bifurcaciones en Y, y usar edificios como referencia (por ejemplo, «右手邊是銀行，看到銀行就左轉» o «過了銀行就左轉»)." },
+        level: { zh: "入門到初級。第 3 關是真實街區和大地圖，路線比較長；第 4 關是綜合挑戰，最難。",
+                 es: "Principiante a básico. El nivel 3 usa calles reales y un mapa grande con rutas más largas; el nivel 4 es el reto combinado, el más difícil." },
         steps: [
           { zh: "<b>輸入名字、選關卡。</b>",
             es: "<b>Escribe tu nombre y elige un nivel.</b>" },
           { zh: "<b>聽（或看）指路的話</b>，按 🔊 可以聽很多次。",
             es: "<b>Escucha (o lee) la indicación</b>; con 🔊 puedes oírla las veces que quieras." },
-          { zh: "<b>用三個按鈕讓小人走</b>：直走（走到下一個路口）、左轉、右轉。左和右要看小人面向哪裡（黑色箭頭），不是看畫面。",
-            es: "<b>Mueve al personaje con tres botones</b>: 直走 (avanza hasta la siguiente esquina), 左轉 y 右轉. Izquierda y derecha dependen de hacia dónde mira el personaje (la flecha negra), no de la pantalla." },
+          { zh: "<b>用三個按鈕讓小人走</b>：直走（走到下一個路口；真實街區也會在每間店前面停下來）、左轉、右轉。從第 2 關起，聽到「過馬路」要走到那個路口再按「過馬路」；第 3 關起遇到圓環要按出口按鈕。左和右要看小人面向哪裡，不是看畫面。小人是隨機的動物或人物。",
+            es: "<b>Mueve al personaje con tres botones</b>: 直走 (avanza hasta la siguiente esquina; en las calles reales también se detiene frente a cada tienda), 左轉 y 右轉. Desde el nivel 2, cuando oigas «過馬路», camina hasta ese cruce y pulsa el botón de cruzar; desde el nivel 3, en una rotonda pulsa el botón de la salida. Izquierda y derecha dependen de hacia dónde mira el personaje, no de la pantalla. El personaje es un animal o una persona al azar." },
           { zh: "<b>覺得到了就按「我到了」。</b>",
             es: "<b>Cuando creas que llegaste, pulsa «¡Llegué!».</b>" },
-          { zh: "<b>走錯了</b>，遊戲會顯示你走的路線和正確的路線，還可以看小人怎麼走。每一輪 8 題，每答對一題 10 分。",
-            es: "<b>Si te equivocas</b>, el juego muestra tu ruta y la ruta correcta, y puedes ver cómo se camina. Cada ronda tiene 8 preguntas y cada acierto vale 10 puntos." }
+          { zh: "<b>走錯了</b>，遊戲會顯示你走的路線和正確的路線，還可以看小人怎麼走。每一輪 10 題，每答對一題 10 分，滿分 100。",
+            es: "<b>Si te equivocas</b>, el juego muestra tu ruta y la ruta correcta, y puedes ver cómo se camina. Cada ronda tiene 10 preguntas, cada acierto vale 10 puntos y el máximo es 100." }
         ],
         features: [
-          { zh: "四個關卡：1 方向詞（直走、左轉、右轉、左手邊、右手邊）→ 2 路口與過馬路 → 3 位置詞（對面、旁邊，用建築物當參考）→ 4 綜合挑戰。",
-            es: "Cuatro niveles: 1 direcciones (直走, 左轉, 右轉, izquierda, derecha) → 2 esquinas y cruzar la calle → 3 posiciones (enfrente, al lado, con edificios como referencia) → 4 reto combinado." },
-          { zh: "三張簡單的地圖：便利商店街、車站前、夜市，每張 9 個地點，共 21 種建築（銀行、郵局、公園、夜市、捷運站等）。",
-            es: "Tres mapas sencillos: calle comercial, frente a la estación y mercado nocturno, con 9 lugares cada uno y 21 tipos de edificios en total (banco, correos, parque, mercado nocturno, estación de metro, etc.)." },
-          { zh: "設定：繁體或簡體；介面語言：西文、英文或只有中文（只有中文時不顯示翻譯）；拼音／注音／兩個都顯示／關閉（台灣讀音）；語音速度慢、正常、快；📖 地圖詞彙。這些設定和其他遊戲共用。",
-            es: "Ajustes: caracteres tradicionales o simplificados; interfaz en español, inglés o solo chino (en solo chino no hay traducción); pinyin, zhuyin, ambos o ninguna (lecturas de Taiwán); velocidad de voz lenta, normal o rápida; 📖 vocabulario del mapa. Estos ajustes se comparten con los demás juegos." },
-          { zh: "每一關有自己的前 10 名排行榜，分數高、時間短的排前面；每台裝置每關只留最好的成績。",
-            es: "Cada nivel tiene su propio ranking Top 10: más puntos y menos tiempo, mejor posición; cada dispositivo conserva solo su mejor resultado por nivel." }
+          { zh: "四個關卡：1 基本方向（直走、左轉、右轉、走到底、對面／前面／後面）→ 2 數路口、紅綠燈、建築物，還有過馬路 → 3 真實街區和大地圖（圓環、Y 字路口、重複的店、較長的路線）→ 4 綜合挑戰。每一輪由簡單排到困難。",
+            es: "Cuatro niveles: 1 direcciones básicas (直走, 左轉, 右轉, hasta el final, enfrente/delante/detrás) → 2 contar esquinas, semáforos y edificios, y cruzar la calle → 3 calles reales y mapa grande (rotondas, bifurcaciones en Y, tiendas repetidas, rutas más largas) → 4 reto combinado. Cada ronda va de fácil a difícil." },
+          { zh: "八張地圖：便利商店街、車站前、夜市、校園附近、醫院附近、捷運站出口六張格子地圖，加上真實街區和大街區，共 35 種建築（銀行、郵局、公園、醫院、學校、捷運站等）。第 3 關的街區地圖有 🔍／🗺 可以切換跟著小人或看全圖。",
+            es: "Ocho mapas: seis de cuadrícula (calle comercial, frente a la estación, mercado nocturno, cerca de la escuela, cerca del hospital y salida del metro), más un barrio de calles reales y uno grande, con 35 tipos de edificios (banco, correos, parque, hospital, escuela, estación de metro, etc.). En los mapas de calles reales, 🔍/🗺 alterna entre seguir al personaje y ver todo el mapa." },
+          { zh: "設定：繁體或簡體；介面語言：西文、英文或只有中文（只有中文時不顯示翻譯）；拼音／注音／兩個都顯示／關閉（台灣讀音）；語音速度慢、正常、快；「一開始就顯示文字」；「分段聽」；📖 地圖詞彙；❓ 說明。每題可以先聽 🔊，需要時再按「看文字」，再看讀音和翻譯。這些設定和其他遊戲共用。",
+            es: "Ajustes: caracteres tradicionales o simplificados; interfaz en español, inglés o solo chino (en solo chino no hay traducción); pinyin, zhuyin, ambos o ninguna (lecturas de Taiwán); velocidad de voz lenta, normal o rápida; «Texto desde el inicio»; «Por partes»; 📖 vocabulario del mapa; ❓ ayuda. En cada pregunta puedes escuchar 🔊 primero, ver el texto cuando lo necesites y después la lectura y la traducción. Estos ajustes se comparten con los demás juegos." },
+          { zh: "每一關有自己的前 10 名排行榜，分數高、時間短的排前面；每台裝置每關只留最好的成績。走錯時可以按「重走」再試一次，或「看路線」看小人怎麼走。",
+            es: "Cada nivel tiene su propio ranking Top 10: más puntos y menos tiempo, mejor posición; cada dispositivo conserva solo su mejor resultado por nivel. Si te equivocas, puedes pulsar «Reintentar» o «Ver la ruta»." }
         ],
         teacher: [
           { zh: "網址後面可以加參數直接跳過開始畫面，例如 ?name=Ana&script=tw&lang=es（script 填 tw 或 cn，lang 填 es 或 en），適合傳給學生的連結。",
             es: "Puedes saltarte la pantalla de inicio con parámetros en la dirección, por ejemplo ?name=Ana&script=tw&lang=es (script: tw o cn; lang: es o en); es práctico para mandar un enlace a los alumnos." },
-          { zh: "可以先在教室裡讓學生用身體練「向左轉、向右轉」，再玩這個遊戲。",
-            es: "Antes de jugar, los alumnos pueden practicar «向左轉 / 向右轉» con el cuerpo en clase." },
+          { zh: "可以先在教室裡讓學生用身體練「向左轉、向右轉」，再玩這個遊戲。玩到一半按「主選單」會先提醒，離開就不會計分。",
+            es: "Antes de jugar, los alumnos pueden practicar «向左轉 / 向右轉» con el cuerpo en clase. Si se pulsa «主選單» a mitad de una ronda, el juego avisa antes de salir." },
           { zh: "沒有老師管理中心，也不用訂閱，直接開啟就能玩。",
             es: "No tiene Centro del profesor ni requiere suscripción: se abre y se juega." }
         ],
-        tip: { zh: "「直走」是走到下一個路口；「過馬路」是直接走到馬路對面，不轉彎。",
-               es: "«直走» es avanzar hasta la siguiente esquina; «過馬路» es cruzar la calle en línea recta, sin girar." }
+        tip: { zh: "「直走」是走到下一個路口（真實街區會在每間店前停下）；「看到銀行就轉」是在銀行開始的那個路口轉，「過了銀行就轉」是走過銀行後的下一個路口轉。",
+               es: "«直走» avanza hasta la siguiente esquina (en calles reales, también frente a cada tienda); «看到銀行就轉» es girar en la esquina donde empieza el banco, y «過了銀行就轉» en la esquina después de pasarlo." }
       }
     },
     {
