@@ -72,5 +72,5 @@
 
 ## 老師管理中心遊戲開關（stats.html#sub）
 - 「🔧 老師管理中心遊戲開關」分頁：勾選＝該遊戲在老師管理中心維修中，一般老師看不到卡片。
-- 寫入 Firestore `portalStatus/center-<corre|colores|bbk|dragon>`，`{off:true}`；沒有文件＝開放。只有 a2224907@gmail.com 能寫（沿用現有規則）。
+- 寫入 Firestore `portalStatus/center-<corre|colores|bbk|dragon|ba|bei|rayo>`，`{off:true}`；沒有文件＝開放（把、被、天打雷劈例外：沒有文件＝維修中）。只有 a2224907@gmail.com 能寫（沿用現有規則）。
 - 管理者自己的管理中心不受影響，照常使用。
