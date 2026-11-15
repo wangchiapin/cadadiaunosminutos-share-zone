@@ -128,7 +128,8 @@ select{font:inherit;color:var(--ink);padding:6px 10px;border:2px solid var(--lin
 .subtabs{display:flex;gap:6px;margin:16px 0 4px;flex-wrap:wrap}
 .wa-card{background:var(--paper);border:2px solid var(--line);border-radius:12px;padding:16px}
 .tabpane>.blk:first-child>h2{margin-top:18px}
-.ck-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;align-items:start}
+.ck-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;align-items:start}
+.ck-col{display:flex;flex-direction:column;gap:12px;min-width:0}
 .ck-grid .box h3{font-size:.95rem;margin:10px 0 2px;display:flex;justify-content:space-between;gap:8px}
 .ck-grid .box h3 span{color:var(--soft);font-weight:400;font-size:.85rem}
 /* 電腦版寬螢幕：放寬頁面，區塊分左右（或三）欄；手機與窄視窗不變 */
@@ -1079,16 +1080,20 @@ try {
       : `<p class="msg">最近 30 天還沒有資料。</p>`;
 
     const NAMES = { game: "遊戲", download: "下載", support: "捐款", tool: "工具開啟", toolview: "工具說明", toolcopy: "工具複製網址", gameview: "遊戲詳細說明", gamecopy: "遊戲複製網址" };
-    const ORDER = ["game", "gameview", "gamecopy", "tool", "toolview", "toolcopy", "download", "support"];
-    const groups = {};
-    Object.keys(T).forEach(k => { const [p, ...rest] = k.split("_"); if (NAMES[p] && rest.length) (groups[p] ||= []).push([rest.join("_"), T[k]]); });
-    const cards = ORDER.filter(p => groups[p]).map(p => {
-      const list = groups[p].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+    // 四張卡片：遊戲、工具（左欄）；下載、捐款（右欄）。遊戲／工具把「看說明、複製網址」等一起算進去
+    const CARDS = { 遊戲: ["game", "gameview", "gamecopy"], 工具: ["tool", "toolview", "toolcopy"], 下載: ["download"], 捐款: ["support"] };
+    const cardHtml = title => {
+      const m = {};
+      Object.keys(T).forEach(k => { const [p, ...rest] = k.split("_"); if (CARDS[title].includes(p) && rest.length) m[rest.join("_")] = (m[rest.join("_")] || 0) + T[k]; });
+      const list = Object.entries(m).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+      if (!list.length) return "";
       const sum = list.reduce((t, x) => t + x[1], 0);
-      return `<div class="box"><h3>${NAMES[p]}<span>共 ${n(sum)}</span></h3><table>${list.map(x => `<tr><td>${String(x[0]).replace(/[&<>]/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;" }[c]))}</td><td>${n(x[1])}</td></tr>`).join("")}</table></div>`;
-    });
+      return `<div class="box"><h3>${title}<span>共 ${n(sum)}</span></h3><table>${list.map(x => `<tr><td>${String(x[0]).replace(/[&<>]/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;" }[c]))}</td><td>${n(x[1])}</td></tr>`).join("")}</table></div>`;
+    };
+    const colL = ["遊戲", "工具"].map(cardHtml).join(""), colR = ["下載", "捐款"].map(cardHtml).join("");
+    const cards = (colL || colR) ? [`<div class="ck-col">${colL}</div><div class="ck-col">${colR}</div>`] : [];
     clicks.className = "";
-    clicks.innerHTML = cards.length ? `<div class="ck-grid">${cards.join("")}</div>` : `<p class="msg">還沒有點擊紀錄。</p>`;
+    clicks.innerHTML = cards.length ? `<div class="ck-grid">${cards[0]}</div>` : `<p class="msg">還沒有點擊紀錄。</p>`;
   }
 } catch (e) {
   fail(explain(e) + "<br>" + RETRY);
