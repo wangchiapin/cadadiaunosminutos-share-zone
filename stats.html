@@ -1080,7 +1080,7 @@ try {
       : `<p class="msg">最近 30 天還沒有資料。</p>`;
 
     const NAMES = { game: "遊戲", download: "下載", support: "捐款", tool: "工具開啟", toolview: "工具說明", toolcopy: "工具複製網址", gameview: "遊戲詳細說明", gamecopy: "遊戲複製網址" };
-    // 四張卡片：遊戲、工具（左欄）；下載、捐款（右欄）。遊戲／工具把「看說明、複製網址」等一起算進去
+    // 四張卡片：遊戲（左欄）；下載、捐款、工具（右欄）。遊戲／工具把「看說明、複製網址」等一起算進去
     const CARDS = { 遊戲: ["game", "gameview", "gamecopy"], 工具: ["tool", "toolview", "toolcopy"], 下載: ["download"], 捐款: ["support"] };
     const cardHtml = title => {
       const m = {};
@@ -1090,7 +1090,7 @@ try {
       const sum = list.reduce((t, x) => t + x[1], 0);
       return `<div class="box"><h3>${title}<span>共 ${n(sum)}</span></h3><table>${list.map(x => `<tr><td>${String(x[0]).replace(/[&<>]/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;" }[c]))}</td><td>${n(x[1])}</td></tr>`).join("")}</table></div>`;
     };
-    const colL = ["遊戲", "工具"].map(cardHtml).join(""), colR = ["下載", "捐款"].map(cardHtml).join("");
+    const colL = ["遊戲"].map(cardHtml).join(""), colR = ["下載", "捐款", "工具"].map(cardHtml).join("");
     const cards = (colL || colR) ? [`<div class="ck-col">${colL}</div><div class="ck-col">${colR}</div>`] : [];
     clicks.className = "";
     clicks.innerHTML = cards.length ? `<div class="ck-grid">${cards[0]}</div>` : `<p class="msg">還沒有點擊紀錄。</p>`;
