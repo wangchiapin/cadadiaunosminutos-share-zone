@@ -127,6 +127,22 @@ select{font:inherit;color:var(--ink);padding:6px 10px;border:2px solid var(--lin
 .tabpane>h2:first-child{margin-top:18px}
 .subtabs{display:flex;gap:6px;margin:16px 0 4px;flex-wrap:wrap}
 .wa-card{background:var(--paper);border:2px solid var(--line);border-radius:12px;padding:16px}
+.tabpane>.blk:first-child>h2{margin-top:18px}
+/* 電腦版寬螢幕：放寬頁面，區塊分左右（或三）欄；手機與窄視窗不變 */
+@media(min-width:1100px){
+  .wrap{max-width:2000px;padding:0 28px 60px}
+  h1{margin:0 -28px 12px;padding:14px 28px}
+  .tabpane.cols.on{display:block;column-width:560px;column-gap:32px}
+  .tabpane.cols>.blk{break-inside:avoid;margin-bottom:6px}
+  .tabpane.cols.on{padding-top:18px}
+  .tabpane.cols>.blk>h2{margin-top:0}
+  .tabpane.cols .tiles{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+  #swBox{column-width:420px;column-gap:32px}
+  #swBox .sw-group{break-inside:avoid}
+  .pl-cols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:0 32px;align-items:start}
+  .pl-cols>div{min-width:0}
+  .pl-cols details:first-child{margin-top:0!important}
+}
 </style>
 </head>
 <body>
@@ -148,7 +164,7 @@ select{font:inherit;color:var(--ink);padding:6px 10px;border:2px solid var(--lin
     <button data-tab="dl">⬇ 字體下載</button>
   </nav>
 
-  <section class="tabpane" data-pane="stats">
+  <section class="tabpane cols" data-pane="stats">
   <h2>總計</h2>
   <div class="tiles" id="tiles"><p class="msg">讀取中…</p></div>
 
@@ -160,7 +176,7 @@ select{font:inherit;color:var(--ink);padding:6px 10px;border:2px solid var(--lin
 
   </section>
 
-  <section class="tabpane" data-pane="feedback">
+  <section class="tabpane cols" data-pane="feedback">
   <h2>留言（只有你登入後看得到）</h2>
   <div class="box" id="notes">
     <p class="msg">請用你的 Google 帳號登入才能看到留言。</p>
@@ -288,6 +304,16 @@ select{font:inherit;color:var(--ink);padding:6px 10px;border:2px solid var(--lin
   showTab(location.hash.slice(1) || get("statsTab") || "stats", false);
   showSub(get("statsSub") || "site");
   window.__showTab = showTab;
+})();
+/* ---- 電腦版：把分頁內「標題＋內容」包成區塊，CSS 才能分左右欄 ---- */
+(function(){
+  document.querySelectorAll(".tabpane.cols").forEach(pane => {
+    const kids = [...pane.children]; let cur = null;
+    kids.forEach(el => {
+      if (el.tagName === "H2") { cur = document.createElement("div"); cur.className = "blk"; pane.insertBefore(cur, el); }
+      if (cur) cur.appendChild(el);
+    });
+  });
 })();
 /* ---- 自己的裝置不計入 ---- */
 const ownerBox = document.getElementById("owner");
@@ -1317,6 +1343,15 @@ function render() {
   h += `<details open style="margin:14px 0 0"><summary style="margin:0 0 6px;font-size:1rem;cursor:pointer;user-select:none">最近 ${recent.length} 局</summary><div class="box"><table><tr><th>開始時間</th><th>遊戲</th><th>關卡</th><th>玩家</th><th>狀態</th><th>分數</th><th>秒</th></tr>` +
     recent.map(p => `<tr><td>${esc(tm(p.t))}</td><td style="text-align:left">${esc(gname(p.game))}</td><td>${esc(p.level)}</td><td style="text-align:left">${esc(p.name || "匿名（" + String(p.uid).slice(-4) + "）")}</td><td>${p.done ? "✅ 玩完" : "⏸ 沒玩完"}</td><td>${p.score ?? ""}</td><td>${p.secs ?? ""}</td></tr>`).join("") + `</table></div></details>`;
   $("plBox").innerHTML = h;
+  { // 電腦版：左欄＝總覽＋各遊戲總表＋玩家來自哪裡；右欄＝其餘明細（窄視窗會自動疊成一欄）
+    const pb = $("plBox"), ds = pb.querySelectorAll(":scope > details");
+    if (ds.length >= 4) {
+      const L = document.createElement("div"), R = document.createElement("div"), wrap = document.createElement("div");
+      wrap.className = "pl-cols";
+      [...pb.children].forEach(el => { (el.tagName === "DETAILS" && [...ds].indexOf(el) >= 2 ? R : L).appendChild(el); });
+      wrap.append(L, R); pb.appendChild(wrap);
+    }
+  }
   $("plBox").querySelectorAll(".plp").forEach(tr => tr.onclick = () => {
     const nx = tr.nextElementSibling;
     if (nx && nx.classList.contains("pld")) { nx.remove(); return; }
