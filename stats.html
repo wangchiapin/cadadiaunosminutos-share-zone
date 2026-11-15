@@ -128,12 +128,37 @@ select{font:inherit;color:var(--ink);padding:6px 10px;border:2px solid var(--lin
 .subtabs{display:flex;gap:6px;margin:16px 0 4px;flex-wrap:wrap}
 .wa-card{background:var(--paper);border:2px solid var(--line);border-radius:12px;padding:16px}
 .tabpane>.blk:first-child>h2{margin-top:18px}
+/* ---- 遊玩紀錄：頂部精簡、三欄、寬螢幕剛好一個螢幕高 ---- */
+.pl-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.pl-help{flex:0 1 auto}.pl-help[open]{flex-basis:100%}
+.pl-help summary{cursor:pointer;color:var(--soft);font-size:.85rem;user-select:none}
+.pl-help .note{margin:6px 0}
+.pl-auth{display:inline-flex;align-items:center;gap:8px}
+.pl-top{display:flex;gap:16px;align-items:center;flex-wrap:wrap;margin-bottom:10px}
+.pl-top .msg{margin:0!important}
+.pl-tiles{margin:0!important}
+.pl-cols{display:block}
+.pl-col>.pl-panel{margin:14px 0 0}
+.pl-ph{margin:0 0 6px;font-size:1rem;cursor:pointer;user-select:none}
+.pl-ph::before{content:"▼ ";font-size:.7em;color:var(--soft)}
+.pl-panel.closed>:not(.pl-ph){display:none}
+.pl-panel.closed .pl-ph::before{content:"▶ "}
 .ck-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;align-items:start}
 .ck-col{display:flex;flex-direction:column;gap:12px;min-width:0}
 .ck-grid .box h3{font-size:.95rem;margin:10px 0 2px;display:flex;justify-content:space-between;gap:8px}
 .ck-grid .box h3 span{color:var(--soft);font-weight:400;font-size:.85rem}
 /* 電腦版寬螢幕：放寬頁面，區塊分左右（或三）欄；手機與窄視窗不變 */
 @media(min-width:1100px){
+  body[data-tab="plays"] .wrap>p.note,body[data-tab="plays"] .owner,body[data-tab="plays"] .go-site{display:none}
+  .tabpane[data-pane="plays"]>.pl-head>h2{margin:14px 0 6px}
+  .pl-filters{margin-bottom:10px}
+  #plWho{max-width:300px}
+  .pl-tiles{display:grid;grid-template-columns:repeat(4,minmax(140px,190px));gap:10px}
+  .pl-tiles .tile{padding:8px 14px}.pl-tiles .tile b{font-size:24px}
+  .pl-cols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 20px;align-items:start}
+  .pl-col{display:flex;flex-direction:column;gap:10px;min-width:0}
+  .pl-col:nth-child(3){grid-column:1/-1}
+  .pl-cols .pl-panel{margin:0!important}
   .wrap{max-width:2000px;padding:0 28px 60px}
   h1{margin:0 -28px 12px;padding:14px 28px}
   .tabpane.cols.on{display:block;column-width:560px;column-gap:32px}
@@ -146,9 +171,18 @@ select{font:inherit;color:var(--ink);padding:6px 10px;border:2px solid var(--lin
   .tabpane[data-pane="stats"] .tiles{grid-template-columns:repeat(6,minmax(0,1fr))}
   #swBox{column-width:420px;column-gap:32px}
   #swBox .sw-group{break-inside:avoid}
-  .pl-cols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:0 32px;align-items:start}
-  .pl-cols>div{min-width:0}
-  .pl-cols details:first-child{margin-top:0!important}
+}
+@media(min-width:1600px){
+  .pl-cols{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .pl-col:nth-child(3){grid-column:auto}
+  body[data-tab="plays"] .wrap{padding-bottom:14px}
+  .pl-cols.fit{align-items:stretch;grid-template-rows:minmax(0,1fr)}
+  .pl-cols.fit .pl-col{min-height:0}
+  .pl-cols.fit .pl-panel{display:flex;flex-direction:column;min-height:0;flex:var(--g,1) 1 0}
+  .pl-cols.fit .pl-panel.closed,.pl-cols.fit .pl-panel.fixed{flex:0 0 auto}
+  .pl-cols.fit .pl-panel>.box{flex:1 1 0;min-height:0;overflow:auto;max-height:none}
+  .pl-cols.fit .pl-panel>.box.chart{flex:0 0 auto}
+  .pl-cols.fit .pl-panel>p.msg{flex:0 0 auto;margin:6px 0 0;font-size:.72rem;line-height:1.35}
 }
 </style>
 </head>
@@ -223,19 +257,20 @@ select{font:inherit;color:var(--ink);padding:6px 10px;border:2px solid var(--lin
   </section>
 
   <section class="tabpane" data-pane="plays">
-  <h2>遊玩紀錄</h2>
-  <p class="note">每個遊戲被玩了幾次（玩完／沒玩完）、什麼時候玩、哪些玩家玩了幾次。資料在 memorma 專案的 <code>plays</code>（每一局）和 <code>visits</code>（訪客：每台裝置每天每個遊戲算一次）。需要用管理員 Google 帳號登入才讀得到。玩家名字是遊戲裡填的暱稱；沒填的遊戲顯示「匿名裝置」加裝置編號後四碼。「沒玩完」＝按了開始但沒有跑到結算畫面。</p>
-  <div class="row">
+  <div class="pl-head">
+    <h2>遊玩紀錄</h2>
+    <details class="pl-help"><summary>ⓘ 說明</summary><p class="note">每個遊戲被玩了幾次（玩完／沒玩完）、什麼時候玩、哪些玩家玩了幾次。資料在 memorma 專案的 <code>plays</code>（每一局）和 <code>visits</code>（訪客：每台裝置每天每個遊戲算一次）。需要用管理員 Google 帳號登入才讀得到。玩家名字是遊戲裡填的暱稱；沒填的遊戲顯示「匿名裝置」加裝置編號後四碼。「沒玩完」＝按了開始但沒有跑到結算畫面。</p><p class="note">每次載入會讀取範圍內的所有紀錄（上限 1000 筆），免費額度每天可讀 5 萬筆，所以平常看「今天」或「最近 7 天」就好。紀錄越積越多時，可按下方按鈕清掉舊的。</p></details>
+  </div>
+  <div class="row pl-filters">
     <select id="plDays" aria-label="日期範圍"><option value="1">今天</option><option value="7" selected>最近 7 天</option><option value="30">最近 30 天</option></select>
     <select id="plGame" aria-label="遊戲"></select>
     <select id="plStatus" aria-label="狀態"><option value="">全部狀態</option><option value="done">只看玩完</option><option value="open">只看沒玩完</option></select>
     <input type="text" id="plWho" placeholder="找玩家（名字或裝置編號）" aria-label="找玩家">
     <button id="plLoad" type="button">載入</button>
+    <button id="plPurge" type="button" class="ghost">🧹 清除舊紀錄…</button>
+    <span id="plAuth" class="pl-auth"></span>
   </div>
-  <div class="row" id="plAuth" style="align-items:center"></div>
   <div id="plBox"><div class="box"><p class="msg">登入管理員後，按「載入」。</p></div></div>
-  <p class="note" style="margin-top:10px">每次載入會讀取範圍內的所有紀錄（上限 1000 筆），免費額度每天可讀 5 萬筆，所以平常看「今天」或「最近 7 天」就好。紀錄越積越多時，可按下方按鈕清掉舊的。</p>
-  <div class="row"><button id="plPurge" type="button" class="ghost">🧹 清除舊紀錄…</button></div>
   </section>
 
   <section class="tabpane" data-pane="reports">
@@ -296,6 +331,7 @@ select{font:inherit;color:var(--ink);padding:6px 10px;border:2px solid var(--lin
     document.querySelectorAll("#tabs [data-tab]").forEach(b => b.classList.toggle("on", b.dataset.tab === t));
     document.querySelectorAll("[data-pane]").forEach(p => p.classList.toggle("on", p.dataset.pane === t));
     if (t === "sub" && get("statsSub") === "wa") { const f = document.getElementById("waFrame"); if (f && !f.src) f.src = f.dataset.src; }
+    document.body.dataset.tab = t; if (window.__fitPl) setTimeout(window.__fitPl, 0);
     put("statsTab", t); if (push) history.replaceState(null, "", "#" + t);
   }
   function showSub(k){
@@ -1310,6 +1346,15 @@ async function load() {
     box.innerHTML = `<div class="box"><p class="msg">讀取失敗（${esc(e.code || e.message)}）。${e.code === "failed-precondition" ? "需要建索引，請看瀏覽器主控台的連結。" : e.code === "permission-denied" ? "Firebase 規則還沒貼上 plays／visits 區塊，或登入的不是管理員。" : ""}</p></div>`;
   }
 }
+function fitPl() {   // 寬螢幕（1600px 以上）：三欄高度剛好填滿畫面，表格在欄內捲動
+  const c = document.querySelector("#plBox .pl-cols"); if (!c) return;
+  const on = matchMedia("(min-width:1600px)").matches && c.offsetParent;
+  c.classList.toggle("fit", !!on);
+  if (!on) { c.style.height = ""; return; }
+  const top = c.getBoundingClientRect().top + window.scrollY;
+  c.style.height = Math.max(460, window.innerHeight - top - 14) + "px";
+}
+window.__fitPl = fitPl; window.addEventListener("resize", fitPl);
 const gameMatch = (id, f) => !f || (f === "tw_" ? String(id).startsWith("tw_") : id === f);
 function render() {
   const gf = $("plGame").value, sf = $("plStatus").value, who = $("plWho").value.trim().toLowerCase();
@@ -1318,8 +1363,8 @@ function render() {
   const vf = visits.filter(v => gameMatch(v.game, gf));
   const nDone = pf.filter(p => p.done).length;
   const tile = (a, b) => `<div class="tile"><small>${a}</small><b>${b}</b></div>`;
-  let h = `<div class="tiles" style="margin-bottom:12px">${tile("訪客（每台每天算一次）", vf.length)}${tile("開始玩", pf.length)}${tile("玩完", nDone)}${tile("沒玩完", pf.length - nDone)}</div>`;
-  h += `<p class="msg" style="margin:0 0 8px">讀到 ${plays.length} 筆遊玩紀錄、${visits.length} 筆訪客。${capped ? "<b style='color:var(--brick)'>已達上限 1000 筆，較舊的沒讀到，請縮小日期範圍。</b>" : ""}</p>`;
+  let h = `<div class="pl-top"><div class="tiles pl-tiles">${tile("訪客（每台每天算一次）", vf.length)}${tile("開始玩", pf.length)}${tile("玩完", nDone)}${tile("沒玩完", pf.length - nDone)}</div>`;
+  h += `<p class="msg">讀到 ${plays.length} 筆遊玩紀錄、${visits.length} 筆訪客。${capped ? "<b style='color:var(--brick)'>已達上限 1000 筆，較舊的沒讀到，請縮小日期範圍。</b>" : ""}</p></div>`;
   // 各遊戲總表（整個日期範圍合起來；訪客＝不重複裝置數）
   const gm = new Map(), gget = g => { if (!gm.has(g)) gm.set(g, { game: g, dev: new Set(), s: 0, d: 0 }); return gm.get(g); };
   vf.forEach(v => gget(v.game).dev.add(v.uid || "?"));
@@ -1353,30 +1398,44 @@ function render() {
   // 幾點玩（以這台電腦的時區）
   const hrs = Array(24).fill(0); pf.forEach(p => { if (p.t) hrs[p.t.getHours()]++; });
   const mx = Math.max(1, ...hrs);
-  h += `<details open style="margin:14px 0 0"><summary style="margin:0 0 6px;font-size:1rem;cursor:pointer;user-select:none">幾點開始玩（以你這台電腦的時間）</summary><div class="box"><div style="display:flex;align-items:flex-end;gap:2px;height:70px">` +
-    hrs.map((n, i) => `<div title="${i} 點：${n} 局" style="flex:1;background:var(--jade);height:${Math.round(n / mx * 100)}%;min-height:${n ? 3 : 1}px;opacity:${n ? 1 : .25}"></div>`).join("") +
-    `</div><div style="display:flex;gap:2px;font-size:.6rem;color:var(--soft)">` + hrs.map((_, i) => `<div style="flex:1;text-align:center">${i % 3 === 0 ? i : ""}</div>`).join("") + `</div></div></details>`;
+  const peak = hrs.indexOf(mx);
+  h += `<details open style="margin:14px 0 0"><summary style="margin:0 0 6px;font-size:1rem;cursor:pointer;user-select:none">幾點開始玩（以你這台電腦的時間）</summary><div class="box chart"><div style="display:flex;align-items:flex-end;gap:2px;height:84px">` +
+    hrs.map((n, i) => `<div title="${i} 點：${n} 局" style="flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%"><span style="font-size:.58rem;color:var(--soft);line-height:1.2">${n || ""}</span><div style="width:100%;background:var(--jade);height:${n ? Math.max(3, Math.round(n / (mx || 1) * 58)) : 1}px;opacity:${n ? 1 : .25}"></div></div>`).join("") +
+    `</div><div style="display:flex;gap:2px;font-size:.6rem;color:var(--soft)">` + hrs.map((_, i) => `<div style="flex:1;text-align:center">${i % 3 === 0 ? i : ""}</div>`).join("") + `</div>` +
+    (pf.length ? `<p class="msg" style="margin:6px 0 0">最多人開始玩的時段：${peak} 點（${hrs[peak]} 局）</p>` : "") + `</div></details>`;
   // 玩家（以裝置為單位）
   const pm = new Map();
   pf.forEach(p => { const k = p.uid || "?"; if (!pm.has(k)) pm.set(k, { uid: k, names: new Set(), n: 0, d: 0, last: null, games: new Set(), list: [] }); const r = pm.get(k); if (p.name) r.names.add(p.name); r.n++; if (p.done) r.d++; r.games.add(p.game); r.list.push(p); if (p.t && (!r.last || p.t > r.last)) r.last = p.t; });
   const pl = [...pm.values()].sort((a, b) => b.n - a.n || (b.last || 0) - (a.last || 0));
   const label = r => (r.names.size ? [...r.names].join(" / ") : "匿名裝置") + `（${String(r.uid).slice(-4)}）`;
   h += `<details open style="margin:14px 0 0"><summary style="margin:0 0 6px;font-size:1rem;cursor:pointer;user-select:none">玩家（一台裝置算一位；點一列看每一局）</summary><div class="box scr" style="--n:10"><table id="plPlayers"><tr><th>玩家</th><th>局數</th><th>玩完</th><th>沒玩完</th><th>玩過的遊戲</th><th>最近一次</th></tr>` +
-    (pl.length ? pl.map((r, i) => `<tr class="plp" data-i="${i}" style="cursor:pointer"><td style="text-align:left">${esc(label(r))}</td><td>${r.n}</td><td>${r.d}</td><td>${r.n - r.d}</td><td style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:left;font-size:.7rem">${esc([...r.games].map(gname).join("、"))}</td><td>${esc(tm(r.last))}</td></tr>`).join("") : `<tr><td colspan="6" class="msg">沒有符合的玩家。</td></tr>`) +
+    (pl.length ? pl.map((r, i) => `<tr class="plp" data-i="${i}" style="cursor:pointer"><td style="text-align:left">${esc(label(r))}</td><td>${r.n}</td><td>${r.d}</td><td>${r.n - r.d}</td><td style="text-align:left" title="${esc([...r.games].map(gname).join("、"))}">玩過 ${r.games.size} 款</td><td>${esc(tm(r.last))}</td></tr>`).join("") : `<tr><td colspan="6" class="msg">沒有符合的玩家。</td></tr>`) +
     `</table></div></details>`;
   // 最近的局
   const recent = [...pf].sort((a, b) => (b.t || 0) - (a.t || 0)).slice(0, 25);
-  h += `<details open style="margin:14px 0 0"><summary style="margin:0 0 6px;font-size:1rem;cursor:pointer;user-select:none">最近 ${recent.length} 局</summary><div class="box"><table><tr><th>開始時間</th><th>遊戲</th><th>關卡</th><th>玩家</th><th>狀態</th><th>分數</th><th>秒</th></tr>` +
+  h += `<details open style="margin:14px 0 0"><summary style="margin:0 0 6px;font-size:1rem;cursor:pointer;user-select:none">最近 ${recent.length} 局</summary><div class="box scr"><table><tr><th>開始時間</th><th>遊戲</th><th>關卡</th><th>玩家</th><th>狀態</th><th>分數</th><th>秒</th></tr>` +
     recent.map(p => `<tr><td>${esc(tm(p.t))}</td><td style="text-align:left">${esc(gname(p.game))}</td><td>${esc(p.level)}</td><td style="text-align:left">${esc(p.name || "匿名（" + String(p.uid).slice(-4) + "）")}</td><td>${p.done ? "✅ 玩完" : "⏸ 沒玩完"}</td><td>${p.score ?? ""}</td><td>${p.secs ?? ""}</td></tr>`).join("") + `</table></div></details>`;
   $("plBox").innerHTML = h;
-  { // 電腦版：左欄＝總覽＋各遊戲總表＋玩家來自哪裡；右欄＝其餘明細（窄視窗會自動疊成一欄）
-    const pb = $("plBox"), ds = pb.querySelectorAll(":scope > details");
-    if (ds.length >= 4) {
-      const L = document.createElement("div"), R = document.createElement("div"), wrap = document.createElement("div");
+  { // 版面：三欄（第一欄：總表＋來源；第二欄：每天＋幾點；第三欄：玩家＋最近）；窄一點的螢幕自動變兩欄或一欄
+    const pb = $("plBox"), ds = [...pb.querySelectorAll(":scope > details")].map(d => {   // details 改成一般區塊（才能在欄內撐滿高度）；點標題仍可收合
+      const panel = document.createElement("div"); panel.className = "pl-panel";
+      const sm = d.querySelector(":scope > summary"), ph = document.createElement("div");
+      ph.className = "pl-ph"; ph.textContent = sm ? sm.textContent : "";
+      ph.onclick = () => { panel.classList.toggle("closed"); fitPl(); };
+      panel.appendChild(ph); [...d.children].forEach(ch => { if (ch !== sm) panel.appendChild(ch); });
+      d.replaceWith(panel); return panel;
+    });
+    if (ds.length === 6) {
+      const grow = [3, 2, 1, 0, 2, 3], wrap = document.createElement("div");
       wrap.className = "pl-cols";
-      [...pb.children].forEach(el => { (el.tagName === "DETAILS" && [...ds].indexOf(el) >= 2 ? R : L).appendChild(el); });
-      wrap.append(L, R); pb.appendChild(wrap);
+      [[0, 1], [2, 3], [4, 5]].forEach(ix => {
+        const col = document.createElement("div"); col.className = "pl-col";
+        ix.forEach(i => { if (grow[i]) ds[i].style.setProperty("--g", grow[i]); else ds[i].classList.add("fixed"); col.appendChild(ds[i]); });
+        wrap.appendChild(col);
+      });
+      pb.appendChild(wrap);
     }
+    fitPl();
   }
   $("plBox").querySelectorAll(".plp").forEach(tr => tr.onclick = () => {
     const nx = tr.nextElementSibling;
