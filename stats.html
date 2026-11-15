@@ -128,6 +128,9 @@ select{font:inherit;color:var(--ink);padding:6px 10px;border:2px solid var(--lin
 .subtabs{display:flex;gap:6px;margin:16px 0 4px;flex-wrap:wrap}
 .wa-card{background:var(--paper);border:2px solid var(--line);border-radius:12px;padding:16px}
 .tabpane>.blk:first-child>h2{margin-top:18px}
+.ck-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;align-items:start}
+.ck-grid .box h3{font-size:.95rem;margin:10px 0 2px;display:flex;justify-content:space-between;gap:8px}
+.ck-grid .box h3 span{color:var(--soft);font-weight:400;font-size:.85rem}
 /* 電腦版寬螢幕：放寬頁面，區塊分左右（或三）欄；手機與窄視窗不變 */
 @media(min-width:1100px){
   .wrap{max-width:2000px;padding:0 28px 60px}
@@ -137,6 +140,9 @@ select{font:inherit;color:var(--ink);padding:6px 10px;border:2px solid var(--lin
   .tabpane.cols.on{padding-top:18px}
   .tabpane.cols>.blk>h2{margin-top:0}
   .tabpane.cols .tiles{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+  .tabpane[data-pane="stats"].cols.on{display:grid;column-width:auto;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:0 32px;align-items:start}
+  .tabpane[data-pane="stats"]>.blk:first-child{grid-column:1/-1}
+  .tabpane[data-pane="stats"] .tiles{grid-template-columns:repeat(6,minmax(0,1fr))}
   #swBox{column-width:420px;column-gap:32px}
   #swBox .sw-group{break-inside:avoid}
   .pl-cols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:0 32px;align-items:start}
@@ -1073,9 +1079,16 @@ try {
       : `<p class="msg">最近 30 天還沒有資料。</p>`;
 
     const NAMES = { game: "遊戲", download: "下載", support: "捐款", tool: "工具開啟", toolview: "工具說明", toolcopy: "工具複製網址", gameview: "遊戲詳細說明", gamecopy: "遊戲複製網址" };
-    const items = Object.keys(T).filter(k => /^(game|download|support|tool|toolview|toolcopy|gameview|gamecopy)_/.test(k)).sort()
-      .map(k => { const [p, ...rest] = k.split("_"); return `<tr><td>${NAMES[p]} · ${rest.join("_")}</td><td>${n(T[k])}</td></tr>`; });
-    clicks.innerHTML = items.length ? `<table><tr><th>項目</th><th>次數</th></tr>${items.join("")}</table>` : `<p class="msg">還沒有點擊紀錄。</p>`;
+    const ORDER = ["game", "gameview", "gamecopy", "tool", "toolview", "toolcopy", "download", "support"];
+    const groups = {};
+    Object.keys(T).forEach(k => { const [p, ...rest] = k.split("_"); if (NAMES[p] && rest.length) (groups[p] ||= []).push([rest.join("_"), T[k]]); });
+    const cards = ORDER.filter(p => groups[p]).map(p => {
+      const list = groups[p].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+      const sum = list.reduce((t, x) => t + x[1], 0);
+      return `<div class="box"><h3>${NAMES[p]}<span>共 ${n(sum)}</span></h3><table>${list.map(x => `<tr><td>${String(x[0]).replace(/[&<>]/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;" }[c]))}</td><td>${n(x[1])}</td></tr>`).join("")}</table></div>`;
+    });
+    clicks.className = "";
+    clicks.innerHTML = cards.length ? `<div class="ck-grid">${cards.join("")}</div>` : `<p class="msg">還沒有點擊紀錄。</p>`;
   }
 } catch (e) {
   fail(explain(e) + "<br>" + RETRY);
