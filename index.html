@@ -1122,7 +1122,7 @@ const CONFIG = {
   /* ---------------- 字體 ---------------- */
   font: {
     name: "GoodTeacher",
-    updated: "2026-10-13",          // ← 每次發新版改這裡（和 GitHub Release 的 tag 一樣）
+    updated: "2026-11-15",          // ← 每次發新版改這裡（和 GitHub Release 的 tag 一樣）
     desc: {
       zh: "此字體可自動校正拼音（以台灣讀音為主）。共有文楷拼音、正楷拼音、正楷注音三種字體，簡體、繁體輸入法皆適用。PowerPoint、Word 另有外掛程式，可以單字更換讀音、一鍵換字型。詳細用法請看圖解安裝說明。",
       es: "Esta fuente corrige automáticamente el pinyin (según la pronunciación de Taiwán). Incluye tres fuentes: WenKai Pinyin, Kai Pinyin y Kai Zhuyin, y funciona con la entrada de caracteres simplificados y tradicionales. Para PowerPoint y Word hay complementos que permiten cambiar la lectura de un carácter y cambiar de fuente con un clic. Consulta la guía de instalación ilustrada para más detalles."
@@ -1132,31 +1132,31 @@ const CONFIG = {
     // version：只要改這裡的數字，網站上就會顯示
     downloads: [
       {
-        id: "wenkai", version: "v10",
+        id: "wenkai", version: "v11",
         label: { zh: "文楷拼音字體", es: "Fuente pinyin WenKai" },
         note:  { zh: "手寫感、適合講義。含字體檔與 OFL.txt", es: "Estilo manuscrito, ideal para fichas. Incluye la licencia OFL.txt" },
         url: "https://github.com/wangchiapin/GoodTeacher/releases/latest/download/GoodTeacher-WenKai.zip"
       },
       {
-        id: "kai", version: "v3",
+        id: "kai", version: "v4",
         label: { zh: "正楷拼音字體", es: "Fuente pinyin Kai" },
         note:  { zh: "標準楷書。含字體檔與授權說明", es: "Caligrafía Kai estándar. Incluye las licencias" },
         url: "https://github.com/wangchiapin/GoodTeacher/releases/latest/download/GoodTeacher-KaiPinyin.zip"
       },
       {
-        id: "zhuyin", version: "v3",
+        id: "zhuyin", version: "v4",
         label: { zh: "正楷注音字體", es: "Fuente Kai zhuyin (bopomofo)" },
         note:  { zh: "字旁顯示注音。含字體檔與授權說明", es: "Muestra zhuyin junto a cada carácter. Incluye las licencias" },
         url: "https://github.com/wangchiapin/GoodTeacher/releases/latest/download/GoodTeacher-Zhuyin.zip"
       },
       {
-        id: "ppt", version: "v2",
+        id: "ppt", version: "v3",
         label: { zh: "PowerPoint 外掛程式", es: "Complemento de PowerPoint" },
         note:  { zh: "PowerPoint 使用者必須安裝", es: "Imprescindible para usuarios de PowerPoint" },
         url: "https://github.com/wangchiapin/GoodTeacher/releases/latest/download/GoodTeacher-PPT.zip"
       },
       {
-        id: "word", version: "v2",
+        id: "word", version: "v3",
         label: { zh: "Word 外掛程式", es: "Complemento de Word" },
         note:  { zh: "Word 想要單字更換讀音、一鍵換字型時安裝（選用，Windows）", es: "Opcional: cambiar la lectura de un carácter y cambiar de fuente con un clic (Windows)" },
         url: "https://github.com/wangchiapin/GoodTeacher/releases/latest/download/GoodTeacher-Word.zip"
@@ -1182,6 +1182,8 @@ const CONFIG = {
     ],
     changelog: [
       // 新版本加在最上面
+     { version: "2026-11-15", date: "",
+       notes: { zh: "讀音規則更新（簡體、繁體一致）。請把字體和 GoodTeacher 資料夾一起換新。", es: "Actualización de las reglas de lectura (igual en simplificado y tradicional). Cambia la fuente y la carpeta GoodTeacher juntas." } },
      { version: "2026-10-13", date: "",
        notes: { zh: "部分讀音規則更新。", es: "Actualización de algunas reglas de lectura." } },
      { version: "2026-10-03", date: "",
