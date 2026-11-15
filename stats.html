@@ -1082,9 +1082,17 @@ try {
     const NAMES = { game: "遊戲", download: "下載", support: "捐款", tool: "工具開啟", toolview: "工具說明", toolcopy: "工具複製網址", gameview: "遊戲詳細說明", gamecopy: "遊戲複製網址" };
     // 四張卡片：遊戲（左欄）；下載、捐款、工具（右欄）。遊戲／工具把「看說明、複製網址」等一起算進去
     const CARDS = { 遊戲: ["game", "gameview", "gamecopy"], 工具: ["tool", "toolview", "toolcopy"], 下載: ["download"], 捐款: ["support"] };
+    // 代碼 → 顯示名字（對不到的就直接顯示代碼）。新增遊戲時，跟「卡片開關」的清單一起補一行
+    const CK_NAME = {
+      game: { memorama:"翻牌記憶", numeros:"數字聽力練習", colores:"色數消消樂", compara:"比比看", "taiwan-life":"台灣生存日記", "corre-hanzi":"跑吧！漢字", corre:"跑吧！漢字", armario:"收納小達人", compras:"幫媽媽買東西", perrito:"小狗找寶藏", jigsaw:"文字拼圖", dragon:"墨龍飛天", topo:"打地鼠學中文", ba:"把", bei:"被", agarrar:"我要放哪裡？", perdido:"問路小達人", hora:"練習時間", rayo:"天打雷劈", come:"吃字小籠包", dron:"量詞空戰", tonos:"聲調偵探", fangwei:"方位轉轉轉", bebidas:"飲料店（舊版）" },
+      tool: { pinyin:"漢字加拼音" },
+      download: { wenkai:"文楷拼音字體", kai:"正楷拼音字體", zhuyin:"正楷注音字體", ppt:"PowerPoint 外掛程式", word:"Word 外掛程式", guide:"圖解安裝說明（PDF）" },
+      support: { paypal:"PayPal", bank:"銀行轉帳", "paypal-float":"PayPal（右下浮動按鈕）", "bank-float":"銀行轉帳（右下浮動按鈕）" }
+    };
+    const ckName = (title, id) => { const kind = { 遊戲: "game", 工具: "tool", 下載: "download", 捐款: "support" }[title]; return (CK_NAME[kind] || {})[id] || id; };
     const cardHtml = title => {
       const m = {};
-      Object.keys(T).forEach(k => { const [p, ...rest] = k.split("_"); if (CARDS[title].includes(p) && rest.length) m[rest.join("_")] = (m[rest.join("_")] || 0) + T[k]; });
+      Object.keys(T).forEach(k => { const [p, ...rest] = k.split("_"); if (CARDS[title].includes(p) && rest.length) { const nm = ckName(title, rest.join("_")); m[nm] = (m[nm] || 0) + T[k]; } });
       const list = Object.entries(m).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
       if (!list.length) return "";
       const sum = list.reduce((t, x) => t + x[1], 0);
