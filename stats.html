@@ -1110,17 +1110,17 @@ try {
       <div class="tile"><small>遊戲點擊</small><b>${n(sumPrefix(T,"game"))}</b><span>看詳細說明 ${n(sumPrefix(T,"gameview"))}・複製網址 ${n(sumPrefix(T,"gamecopy"))}</span></div>
       <div class="tile"><small>工具開啟</small><b>${n(sumPrefix(T,"tool"))}</b><span>看說明 ${n(sumPrefix(T,"toolview"))}・複製網址 ${n(sumPrefix(T,"toolcopy"))}</span></div>
       <div class="tile"><small>下載點擊</small><b>${n(sumPrefix(T,"download"))}</b></div>
-      <div class="tile"><small>捐款資訊查詢</small><b>${n(sumPrefix(T,"support"))}</b></div>`;
+      <div class="tile"><small>贊助資訊查詢</small><b>${n(sumPrefix(T,"support"))}</b></div>`;
 
     const rows = Object.keys(byDay).map(day => ({ day, ...byDay[day] })).sort((a,b) => b.day.localeCompare(a.day));
     days.innerHTML = rows.length
-      ? `<table><tr><th>日期</th><th>訪客</th><th>瀏覽</th><th>遊戲</th><th>工具</th><th>下載</th><th>捐款資訊<wbr>查詢</th></tr>` +
+      ? `<table><tr><th>日期</th><th>訪客</th><th>瀏覽</th><th>遊戲</th><th>工具</th><th>下載</th><th>贊助資訊<wbr>查詢</th></tr>` +
         rows.map(r => `<tr><td>${r.day}</td><td>${n(r.visitors)}</td><td>${n(r.views)}</td><td>${n(sumPrefix(r,"game"))}</td><td>${n(sumPrefix(r,"tool") + sumPrefix(r,"toolview") + sumPrefix(r,"toolcopy"))}</td><td>${n(sumPrefix(r,"download"))}</td><td>${n(sumPrefix(r,"support"))}</td></tr>`).join("") + `</table>`
       : `<p class="msg">最近 30 天還沒有資料。</p>`;
 
-    const NAMES = { game: "遊戲", download: "下載", support: "捐款資訊查詢", tool: "工具開啟", toolview: "工具說明", toolcopy: "工具複製網址", gameview: "遊戲詳細說明", gamecopy: "遊戲複製網址" };
-    // 四張卡片：遊戲（左欄）；下載、捐款資訊查詢、工具（右欄）。遊戲／工具把「看說明、複製網址」等一起算進去
-    const CARDS = { 遊戲: ["game", "gameview", "gamecopy"], 工具: ["tool", "toolview", "toolcopy"], 下載: ["download"], 捐款資訊查詢: ["support"] };
+    const NAMES = { game: "遊戲", download: "下載", support: "贊助資訊查詢", tool: "工具開啟", toolview: "工具說明", toolcopy: "工具複製網址", gameview: "遊戲詳細說明", gamecopy: "遊戲複製網址" };
+    // 四張卡片：遊戲（左欄）；下載、贊助資訊查詢、工具（右欄）。遊戲／工具把「看說明、複製網址」等一起算進去
+    const CARDS = { 遊戲: ["game", "gameview", "gamecopy"], 工具: ["tool", "toolview", "toolcopy"], 下載: ["download"], 贊助資訊查詢: ["support"] };
     // 代碼 → 顯示名字（對不到的就直接顯示代碼）。新增遊戲時，跟「卡片開關」的清單一起補一行
     const CK_NAME = {
       game: { memorama:"翻牌記憶", numeros:"數字聽力練習", colores:"色數消消樂", compara:"比比看", "taiwan-life":"台灣生存日記", "corre-hanzi":"跑吧！漢字", corre:"跑吧！漢字", armario:"收納小達人", compras:"幫媽媽買東西", perrito:"小狗找寶藏", jigsaw:"文字拼圖", dragon:"墨龍飛天", topo:"打地鼠學中文", ba:"把", bei:"被", agarrar:"我要放哪裡？", perdido:"問路小達人", hora:"練習時間", rayo:"天打雷劈", come:"吃字小籠包", dron:"量詞空戰", tonos:"聲調偵探", fangwei:"方位轉轉轉", bebidas:"飲料店（舊版）" },
@@ -1128,7 +1128,7 @@ try {
       download: { wenkai:"文楷拼音字體", kai:"正楷拼音字體", zhuyin:"正楷注音字體", ppt:"PowerPoint 外掛程式", word:"Word 外掛程式", guide:"圖解安裝說明（PDF）" },
       support: { paypal:"PayPal", bank:"銀行轉帳", "paypal-float":"PayPal（右下浮動按鈕）", "bank-float":"銀行轉帳（右下浮動按鈕）" }
     };
-    const ckName = (title, id) => { const kind = { 遊戲: "game", 工具: "tool", 下載: "download", 捐款資訊查詢: "support" }[title]; return (CK_NAME[kind] || {})[id] || id; };
+    const ckName = (title, id) => { const kind = { 遊戲: "game", 工具: "tool", 下載: "download", 贊助資訊查詢: "support" }[title]; return (CK_NAME[kind] || {})[id] || id; };
     const cardHtml = title => {
       const m = {};
       Object.keys(T).forEach(k => { const [p, ...rest] = k.split("_"); if (CARDS[title].includes(p) && rest.length) { const nm = ckName(title, rest.join("_")); m[nm] = (m[nm] || 0) + T[k]; } });
@@ -1137,7 +1137,7 @@ try {
       const sum = list.reduce((t, x) => t + x[1], 0);
       return `<div class="box"><h3>${title}<span>共 ${n(sum)}</span></h3><table>${list.map(x => `<tr><td>${String(x[0]).replace(/[&<>]/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;" }[c]))}</td><td>${n(x[1])}</td></tr>`).join("")}</table></div>`;
     };
-    const colL = ["遊戲"].map(cardHtml).join(""), colR = ["下載", "捐款資訊查詢", "工具"].map(cardHtml).join("");
+    const colL = ["遊戲"].map(cardHtml).join(""), colR = ["下載", "贊助資訊查詢", "工具"].map(cardHtml).join("");
     const cards = (colL || colR) ? [`<div class="ck-col">${colL}</div><div class="ck-col">${colR}</div>`] : [];
     clicks.className = "";
     clicks.innerHTML = cards.length ? `<div class="ck-grid">${cards[0]}</div>` : `<p class="msg">還沒有點擊紀錄。</p>`;

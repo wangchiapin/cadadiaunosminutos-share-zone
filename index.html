@@ -1720,7 +1720,7 @@ footer a{color:var(--ink); font-weight:700}
 
 </main>
 
-<!-- 懸浮捐款卡片：可拖曳、可關閉；捲到下方「支持」區時自動隱藏 -->
+<!-- 懸浮贊助卡片：可拖曳、可關閉；捲到下方「支持」區時自動隱藏 -->
 <aside class="fc" id="fc" aria-labelledby="fcTitle">
   <div class="fc-head" id="fcHandle">
     <span class="fc-grip" aria-hidden="true">⋮⋮</span>
@@ -2294,7 +2294,7 @@ function setLang(l){
 }
 document.querySelectorAll(".lang button").forEach(b => b.addEventListener("click", () => setLang(b.dataset.lang)));
 
-/* ===== 懸浮捐款卡片 ===== */
+/* ===== 懸浮贊助卡片 ===== */
 (function floatCard(){
   const fc = document.getElementById("fc"), mini = document.getElementById("fcMini");
   const handle = document.getElementById("fcHandle");
