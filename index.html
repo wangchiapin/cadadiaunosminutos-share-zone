@@ -30,6 +30,12 @@
      沒有 guide 的遊戲不會出現「詳細說明」按鈕，瀏覽器主控台會出現提醒。
    - ★ 規則：每個遊戲也都要有 cat（分類），值是下面 gameCats 裡的 id；沒填的會被放進最後面的「其他」。
    ===================================================================== */
+/* ===== GoodTeacher 下載改為免費簡易版：到這個時間自動換版（台灣時間）=====
+   之前：公告顯示「12/1 起將改為…」，下載區照舊；之後：公告顯示「已改為…」，下載區換成 CONFIG.fontFree 的內容。
+   ⚠ 換版前要先把 GoodTeacher-PPT-0.zip 上傳到最新的 Release；換版當天刪掉所有 Release 的完整版 zip。 */
+const FREE_SWITCH = Date.parse("2026-12-01T00:00:00+08:00");
+const isFreeNow = () => Date.now() >= FREE_SWITCH;
+
 const CONFIG = {
 
   site: {
@@ -1224,6 +1230,41 @@ const CONFIG = {
       es: "Las fuentes GoodTeacher son modificaciones de las fuentes pinyin de ToneOZ. WenKai: SIL Open Font License 1.1 (incluye LXGW WenKai y Fontworks Klee One). Kai y Zhuyin: caracteres chinos del «full repertoire» CNS 11643 del National Development Council de Taiwán (cns11643.gov.tw), bajo la Open Government Data License v1.0; pinyin y zhuyin bajo SIL OFL 1.1. Detalles en los archivos de licencia de cada descarga. Uso y difusión gratuitos; las fuentes no pueden venderse por separado."
     }
   },
+  /* ---------------- 換版後（FREE_SWITCH 起）字體區要換掉的內容；沒寫在這裡的沿用上面的 font ---------------- */
+  fontFree: {
+    desc: {
+      zh: "此字體可自動校正拼音（以台灣讀音為主）。共有文楷拼音、正楷拼音、正楷注音三種字體，簡體、繁體輸入法皆適用。PowerPoint 另有免費的簡易版外掛，可以校正讀音、還原所有讀音。詳細用法請看圖解安裝說明。",
+      es: "Esta fuente corrige automáticamente el pinyin (según la pronunciación de Taiwán). Incluye tres fuentes: WenKai Pinyin, Kai Pinyin y Kai Zhuyin, y funciona con la entrada de caracteres simplificados y tradicionales. Para PowerPoint hay un complemento básico gratuito que corrige las lecturas y permite restaurarlas. Consulta la guía de instalación ilustrada para más detalles."
+    },
+    // 沒列出來的 id（wenkai、kai、zhuyin、guide）沿用上面 font.downloads 的設定
+    downloadIds: ["wenkai", "kai", "zhuyin", "ppt0", "guide", "full"],
+    downloads: [
+      {
+        id: "ppt0", version: "",
+        label: { zh: "PowerPoint 外掛程式（簡易版）", es: "Complemento de PowerPoint (básico)" },
+        note:  { zh: "校正讀音、還原所有讀音", es: "Corregir lecturas y restaurar todas las lecturas" },
+        url: "https://github.com/wangchiapin/GoodTeacher/releases/latest/download/GoodTeacher-PPT-0.zip"
+      },
+      {
+        id: "full", version: "",
+        label: { zh: "完整版（PowerPoint 其他功能、Word 外掛）", es: "Versión completa (más funciones de PowerPoint y complemento de Word)" },
+        note:  { zh: "", es: "" },
+        url: ""                       // 空白＝顯示「即將推出」
+      }
+    ],
+    steps: [
+      { zh: "選一種字體下載（文楷、正楷或注音），解壓縮。", es: "Elige una fuente (WenKai, Kai o Zhuyin), descárgala y descomprímela." },
+      { zh: "在字體檔（.ttf）上按兩下 →「安裝」。", es: "Haz doble clic en el archivo .ttf → «Instalar»." },
+      { zh: "重新開啟 Word，字型清單選 GoodTeacher 開頭的字型，直接打字就會自動校正讀音，不需要外掛。", es: "Abre Word de nuevo, elige la fuente que empieza por GoodTeacher y escribe: las lecturas se corrigen solas, sin complemento." },
+      { zh: "PowerPoint：另外下載 PPT 簡易版外掛，先在 zip 檔上按右鍵 → 內容 → 勾選「解除封鎖」，再依 PDF 說明安裝。", es: "PowerPoint: descarga aparte el complemento básico, clic derecho en el zip → Propiedades → marca «Desbloquear» y sigue la guía PDF." },
+      { zh: "已經裝過、出新版時：關掉 Word、PowerPoint，重新安裝字體、覆蓋 GoodTeacher 資料夾，詳見安裝說明 PDF。", es: "Si ya lo tenías instalado y sale una versión nueva: cierra Word y PowerPoint, reinstala la fuente y sobrescribe la carpeta GoodTeacher (ver la guía PDF)." },
+      { zh: "裝過舊版外掛、想保留原功能：只更新字體和 GoodTeacher 資料夾，不要覆蓋原本的外掛檔（.ppam、.dotm）。", es: "Si tienes el complemento anterior y quieres conservar sus funciones: actualiza solo la fuente y la carpeta GoodTeacher, sin sobrescribir los archivos del complemento (.ppam, .dotm)." }
+    ],
+    changelog: [                      // 會加在上面 font.changelog 的最前面
+      { version: "2026-12-01", date: "",
+        notes: { zh: "下載內容改為免費簡易版（三種字體＋PowerPoint 簡易版外掛）。", es: "Las descargas pasan a la versión básica gratuita (tres fuentes y complemento básico de PowerPoint)." } }
+    ]
+  },
 
   /* ---------------- 支持 ---------------- */
   // 想加其他方式：複製一整段 { ... } 加在下面
@@ -1550,6 +1591,9 @@ summary{cursor:pointer; font-weight:900; font-size:.92rem}
 .notice-body p{margin:0 0 10px}
 .notice-body ul{margin:0 0 10px; padding-left:1.2em}
 .notice-body li{margin-bottom:4px}
+.nt-list{list-style:none; margin:0 0 10px; padding:0 !important}
+.nt-list li{margin-bottom:8px; padding-left:1.7em; text-indent:-1.7em}
+.nt-bar{display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:10px; margin:0 0 20px; padding:12px 16px; background:var(--yellow-soft); border:var(--bd); border-radius:var(--radius); box-shadow:var(--shadow-sm)}
 .notice-warn{background:var(--red-soft); border:2px solid var(--ink); border-radius:10px; padding:8px 12px; font-weight:900}
 .modal-box.wide{width:min(560px,100%)}
 .card-click{cursor:pointer}
@@ -1637,6 +1681,7 @@ footer a{color:var(--ink); font-weight:700}
   <section id="font">
     <div class="sec-head"><span class="mark"></span><h2 data-i="fontTitle"></h2></div>
     <p class="sec-intro" data-i="fontIntro"></p>
+    <div class="nt-bar"><b id="ntBarText"></b><button type="button" class="btn" id="ntOpen" data-i="ntOpen"></button></div>
     <div class="font-grid">
       <div class="left-col">
         <div class="panel preview">
@@ -1743,6 +1788,18 @@ footer a{color:var(--ink); font-weight:700}
       <button type="submit" class="btn btn-brick" id="bmSend" data-i="sendNote"></button>
       <p class="bm-status" id="bmStatus" role="status"></p>
     </form>
+  </div>
+</div>
+
+<!-- 下載內容調整公告（換版前每天一次；換版後每台裝置一次）。這次有跳公告，歡迎視窗就下次再出現 -->
+<div class="modal" id="noticeModal" hidden role="dialog" aria-modal="true" aria-labelledby="ntTitle">
+  <div class="modal-box">
+    <div class="modal-head"><b id="ntTitle" data-i="ntTitle"></b></div>
+    <div class="notice-body" id="ntBody"></div>
+    <div class="notice-btns">
+      <button type="button" class="btn btn-brick" id="ntOk" data-i="wmOk"></button>
+      <button type="button" class="btn" id="ntMore" data-i="ntMore"></button>
+    </div>
   </div>
 </div>
 
@@ -1963,6 +2020,9 @@ const UI = {
   fbWait:     { zh: "剛剛已送出，請稍等 30 秒再送下一則。", es: "Espera 30 segundos antes de enviar otro." },
   fbOk:       { zh: "收到了，謝謝你的回饋！🙏", es: "¡Recibido, gracias por tu opinión! 🙏" },
   termsMore:  { zh: "查看完整使用說明與版權聲明", es: "Ver condiciones de uso completas" },
+  ntTitle:    { zh: "📢 GoodTeacher 下載內容調整", es: "📢 Cambios en las descargas de GoodTeacher" },
+  ntMore:     { zh: "看下載區", es: "Ver descargas" },
+  ntOpen:     { zh: "看公告", es: "Ver aviso" },
   wmTitle:    { zh: "歡迎來到華語老師分享區！🎉", es: "¡Bienvenido/a! 🎉" },
   wmOk:       { zh: "我知道了", es: "Entendido" },
   wmMore:     { zh: "查看完整說明", es: "Ver condiciones" },
@@ -2044,7 +2104,42 @@ const TERMS = {
     es: `<ul><li>Uso gratuito en materiales y presentaciones personales, educativos o comerciales</li><li><b>Prohibido vender los archivos de fuente o el complemento</b></li><li>Si los compartes, incluye los archivos de licencia</li></ul>`
   }
 };
+/* 換版後：外掛的版權聲明改用下面這段（取代「三、PowerPoint 外掛程式與安裝說明」和下載前確認） */
+if (isFreeNow()) {
+  const swap = (obj, k, from, to) => { obj[k] = obj[k].replace(from, to); };
+  swap(TERMS.full, "zh", /<h5>三、[\s\S]*?(?=<h5>四、)/, `<h5>三、PowerPoint 簡易版外掛、讀音規則資料與安裝說明</h5>
+<p>由作者原創製作，著作權屬於 Ben（cadadiaunosminutos_ben_chino）。</p>
+<ul><li>可<b>免費</b>安裝在自己的電腦上使用，包括收費課程；用它做出的投影片、講義、PDF 可以自由提供給學生。</li><li><b>禁止</b>轉賣、公開上傳、轉傳外掛或規則檔，或販售修改版。要分享請傳本網站連結。</li></ul>
+`);
+  swap(TERMS.full, "es", /<h5>3\. [\s\S]*?(?=<h5>4\. )/, `<h5>3. Complemento básico de PowerPoint, datos de las reglas de lectura y guía de instalación</h5>
+<p>Obra original del autor. Derechos de autor: Ben (cadadiaunosminutos_ben_chino).</p>
+<ul><li>Puedes instalarlo <b>gratis</b> en tus propios ordenadores, también para clases de pago; las presentaciones, fichas y PDF que prepares con él pueden darse libremente a tus alumnos.</li><li><b>No está permitido</b> revenderlo, subirlo a sitios públicos, reenviar el complemento o los archivos de reglas, ni vender versiones modificadas. Para compartirlo, envía el enlace de este sitio.</li></ul>
+`);
+  TERMS.download = {
+    zh: `<ul><li>可免費用於個人、教學與商業用途的講義和簡報</li><li><b>禁止單獨販售字體檔；禁止販售或轉傳外掛與規則檔</b></li><li>轉傳字體時請保留壓縮檔內的授權檔案</li></ul>`,
+    es: `<ul><li>Uso gratuito en materiales y presentaciones personales, educativos o comerciales</li><li><b>Prohibido vender los archivos de fuente por separado, y vender o reenviar el complemento y los archivos de reglas</b></li><li>Si compartes las fuentes, incluye los archivos de licencia</li></ul>`
+  };
+}
 const termsText = o => (o[lang] ?? o.zh).replaceAll("{brand}", esc(t(CONFIG.site.brand))).replaceAll("{handle}", esc(CONFIG.site.handle));
+
+/* ===== 下載內容調整公告（bar＝下載區上方那一條；lead＝公告第一段，before／after 依 FREE_SWITCH 切換）===== */
+const NOTICE = {
+  bar: {
+    before: { zh: "📢 12/1 起，本站下載改為免費簡易版", es: "📢 Desde el 1 de diciembre, las descargas serán la versión básica gratuita" },
+    after:  { zh: "📢 本站下載已改為免費簡易版", es: "📢 Las descargas ya son la versión básica gratuita" }
+  },
+  lead: {
+    before: { zh: "<b>12/1 起</b>，本站下載將改為<b>免費簡易版</b>：", es: "<b>A partir del 1 de diciembre</b>, las descargas de este sitio pasarán a ser la <b>versión básica gratuita</b>:" },
+    after:  { zh: "本站下載已改為<b>免費簡易版</b>：", es: "Las descargas de este sitio ya son la <b>versión básica gratuita</b>:" }
+  },
+  hello: { zh: "親愛的老師，謝謝你使用 GoodTeacher！", es: "¡Hola, profe! Gracias por usar GoodTeacher." },
+  body: {
+    zh: `<ul class="nt-list"><li>✅ 三種字體：維持免費下載</li><li>✅ PowerPoint 外掛簡易版：校正讀音、還原所有讀音</li><li>🔸 PowerPoint 其他功能和 Word 外掛：改為完整版，之後將另行推出</li><li>🔸 Word 只裝字體，一樣會自動校正讀音</li></ul>
+<p class="notice-warn">已經裝舊版外掛的老師：可以繼續使用。想保留原功能，請不要用簡易版覆蓋。</p>`,
+    es: `<ul class="nt-list"><li>✅ Las tres fuentes: se siguen descargando gratis</li><li>✅ Complemento básico de PowerPoint: corregir lecturas (校正讀音) y restaurar todas las lecturas (還原所有讀音)</li><li>🔸 Las demás funciones de PowerPoint y el complemento de Word: pasan a la versión completa, que saldrá más adelante</li><li>🔸 En Word basta con instalar la fuente: las lecturas se corrigen igualmente de forma automática</li></ul>
+<p class="notice-warn">Si ya tienes instalado el complemento anterior, puedes seguir usándolo. Para conservar sus funciones, no lo sobrescribas con la versión básica.</p>`
+  }
+};
 
 /* ===== 回饋專區的選項（要改選項名稱改這裡） ===== */
 const FB = {
@@ -2082,6 +2177,14 @@ const FB = {
 const DL_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>';
 
 let lang = "zh";
+/* 現在該顯示哪一版的字體區 */
+function fontNow(){
+  const f = CONFIG.font;
+  if (!isFreeNow()) return f;
+  const n = CONFIG.fontFree, all = [...f.downloads, ...n.downloads];
+  return { ...f, desc: n.desc, steps: n.steps, changelog: [...n.changelog, ...f.changelog],
+           downloads: n.downloadIds.map(id => all.find(d => d.id === id)) };
+}
 const t = v => (v == null ? "" : typeof v === "string" ? v : (v[lang] ?? v.zh ?? ""));
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[c]));
 
@@ -2216,7 +2319,10 @@ function render(){
   renderGuide();
 
   // font
-  const f = CONFIG.font;
+  const f = fontNow();
+  const phase = isFreeNow() ? "after" : "before";
+  document.getElementById("ntBarText").textContent = t(NOTICE.bar[phase]);
+  document.getElementById("ntBody").innerHTML = `<p>${t(NOTICE.hello)}</p><p>${t(NOTICE.lead[phase])}</p>${t(NOTICE.body)}`;
   document.getElementById("fontMeta").innerHTML =
     `<span class="pill">${esc(t(UI.updated))} ${esc(f.updated)}</span>`;
   document.getElementById("fontDesc").textContent = t(f.desc);
@@ -2402,7 +2508,18 @@ document.querySelectorAll(".lang button").forEach(b => b.addEventListener("click
   const KEY = "terms-seen-v1";     // 警語內容大改時，把 v1 改成 v2，大家就會再看到一次
   let seen = false; try { seen = localStorage.getItem(KEY) === "1"; } catch(e){}
   const closeWelcome = () => { wm.hidden = true; try { localStorage.setItem(KEY, "1"); } catch(e){} };
-  if (!seen) wm.hidden = false;
+  // 下載內容調整公告：換版前每天一次，換版後每台裝置一次
+  const nm = document.getElementById("noticeModal");
+  const ntMark = () => isFreeNow() ? "after" : "before-" + todayTW();
+  let ntSeen = ""; try { ntSeen = localStorage.getItem("gt-free-notice") || ""; } catch(e){}
+  const closeNotice = () => { nm.hidden = true; try { localStorage.setItem("gt-free-notice", ntMark()); } catch(e){} };
+  if (ntSeen !== ntMark()) nm.hidden = false;
+  else if (!seen) wm.hidden = false;     // 兩個視窗不連著跳
+  document.getElementById("ntOk").addEventListener("click", closeNotice);
+  document.getElementById("ntOpen").addEventListener("click", () => { nm.hidden = false; document.getElementById("ntOk").focus(); });
+  document.getElementById("ntMore").addEventListener("click", () => {
+    closeNotice(); document.getElementById("font").scrollIntoView({ behavior: "smooth", block: "start" });
+  });
   document.getElementById("wmOk").addEventListener("click", closeWelcome);
   document.getElementById("wmMore").addEventListener("click", () => {
     closeWelcome(); document.getElementById("termsDetails").open = true;
@@ -2432,6 +2549,7 @@ document.querySelectorAll(".lang button").forEach(b => b.addEventListener("click
     if (e.key !== "Escape") return;
     if (!dm.hidden) closeDl();
     else if (!wm.hidden) closeWelcome();
+    else if (!nm.hidden) closeNotice();
   });
 })();
 
@@ -2569,7 +2687,7 @@ function renderFeedback(){
   const isFont = fbState.type === "font", isTool = fbState.type === "tool";
   document.getElementById("fbTargetLabel").textContent = t(isFont ? UI.fbWhichFont : isTool ? UI.fbWhichTool : UI.fbWhichGame);
   const targets = isFont
-    ? CONFIG.font.downloads.filter(d => d.id !== "guide").map(d => ({ id: d.id, label: t(d.label) }))
+    ? fontNow().downloads.filter(d => d.url && d.id !== "guide").map(d => ({ id: d.id, label: t(d.label) }))
     : isTool
     ? CONFIG.tools.map(g => ({ id: "tool-" + g.id, label: t(g.title) }))
     : [...CONFIG.games.map(g => ({ id: g.id, label: t(g.title) })), { id: "site", label: t(UI.fbWholeSite) }];

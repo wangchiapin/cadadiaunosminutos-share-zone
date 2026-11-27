@@ -638,7 +638,7 @@ try {
           ["小遊戲", [["game-memorama", "翻牌記憶"], ["game-numeros", "數字聽力練習"], ["game-colores", "色數消消樂"], ["game-compara", "比比看"], ["game-taiwan-life", "台灣生存日記（taiwan-life）"], ["game-corre-hanzi", "跑吧！漢字"], ["game-armario", "收納小達人"], ["game-compras", "幫媽媽買東西"], ["game-perrito", "小狗找寶藏"], ["game-jigsaw", "文字拼圖"], ["game-dragon", "墨龍飛天"], ["game-topo", "打地鼠學中文"], ["game-ba", "把"], ["game-bei", "被"], ["game-agarrar", "我要放哪裡？"], ["game-perdido", "問路小達人"], ["game-hora", "練習時間"], ["game-rayo", "天打雷劈"], ["game-come", "吃字小籠包"], ["game-dron", "量詞空戰"], ["game-tonos", "聲調偵探"], ["game-fangwei", "方位轉轉轉"]]],
           ["教學小工具", [["tool-pinyin", "漢字加拼音"], ["tool-lookup", "課堂速查"]]],
           ["入口區塊（整塊開關）", [["wa-group", "WhatsApp 付費練習群組卡片"], ["sub-site", "老師管理中心訂閱卡片（方案表、登入、訂閱申請）"], ["support-paypal", "贊助：PayPal"], ["support-bank", "贊助：銀行轉帳"]]],
-          ["字體下載", [["dl-wenkai", "文楷拼音字體"], ["dl-kai", "正楷拼音字體"], ["dl-zhuyin", "正楷注音字體"], ["dl-ppt", "PowerPoint 外掛程式"], ["dl-word", "Word 外掛程式"], ["dl-guide", "圖解安裝說明（PDF）"]]]
+          ["字體下載", [["dl-wenkai", "文楷拼音字體"], ["dl-kai", "正楷拼音字體"], ["dl-zhuyin", "正楷注音字體"], ["dl-ppt0", "PowerPoint 簡易版（12/1 起）"], ["dl-ppt", "PowerPoint 外掛程式（12/1 前）"], ["dl-word", "Word 外掛程式（12/1 前）"], ["dl-guide", "圖解安裝說明（PDF）"]]]
         ];
         let SWOFF = new Set(), swLoaded = false, swMsg = "";
         function drawSw(){
@@ -1125,7 +1125,7 @@ try {
     const CK_NAME = {
       game: { memorama:"翻牌記憶", numeros:"數字聽力練習", colores:"色數消消樂", compara:"比比看", "taiwan-life":"台灣生存日記", "corre-hanzi":"跑吧！漢字", corre:"跑吧！漢字", armario:"收納小達人", compras:"幫媽媽買東西", perrito:"小狗找寶藏", jigsaw:"文字拼圖", dragon:"墨龍飛天", topo:"打地鼠學中文", ba:"把", bei:"被", agarrar:"我要放哪裡？", perdido:"問路小達人", hora:"練習時間", rayo:"天打雷劈", come:"吃字小籠包", dron:"量詞空戰", tonos:"聲調偵探", fangwei:"方位轉轉轉", bebidas:"飲料店（舊版）" },
       tool: { pinyin:"漢字加拼音", lookup:"課堂速查" },
-      download: { wenkai:"文楷拼音字體", kai:"正楷拼音字體", zhuyin:"正楷注音字體", ppt:"PowerPoint 外掛程式", word:"Word 外掛程式", guide:"圖解安裝說明（PDF）" },
+      download: { wenkai:"文楷拼音字體", kai:"正楷拼音字體", zhuyin:"正楷注音字體", ppt0:"PowerPoint 簡易版外掛", ppt:"PowerPoint 外掛程式", word:"Word 外掛程式", guide:"圖解安裝說明（PDF）" },
       support: { paypal:"PayPal", bank:"銀行轉帳", "paypal-float":"PayPal（右下浮動按鈕）", "bank-float":"銀行轉帳（右下浮動按鈕）" }
     };
     const ckName = (title, id) => { const kind = { 遊戲: "game", 工具: "tool", 下載: "download", 贊助資訊查詢: "support" }[title]; return (CK_NAME[kind] || {})[id] || id; };

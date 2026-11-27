@@ -8,6 +8,12 @@
 - **狀態：** 使用中
 - **備註：** 原 repo 名稱為 `wangchiapin.github.io`，改名後網址已變更。字體與 PDF 的下載來源是 `GoodTeacher` repo 的 Releases。
 
+## GoodTeacher 下載改為免費簡易版（2026-12-01 自動換版）
+- 時間設定在 `index.html` 的 `FREE_SWITCH`（台灣時間）。公告文字在 `NOTICE`，換版後的下載區內容在 `CONFIG.fontFree`。
+- 公告：換版前每台裝置每天跳一次；換版後每台裝置一次。下載區上方的公告條可以重看。
+- **換版前**：把 `GoodTeacher-PPT-0.zip` 上傳到最新的 Release。
+- **換版當天**：新版安裝說明以 `GoodTeacher-Install-Guide.pdf` 這個檔名上傳；刪掉**每一個** Release 的 `GoodTeacher-PPT.zip`、`GoodTeacher-Word.zip`（先備份）。
+
 ## 新增遊戲卡片的規則（必做）
 
 每新增一張遊戲卡片（`index.html` 裡 `CONFIG.games`），都必須一起做好「詳細說明」：
