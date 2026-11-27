@@ -1201,18 +1201,10 @@ const CONFIG = {
         url: "https://github.com/wangchiapin/GoodTeacher/releases/latest/download/GoodTeacher-Install-Guide.pdf"
       }
     ],
-    requirements: {
-      zh: "Windows 版 Microsoft Word / PowerPoint（桌面版）可正常使用；Mac、Canva 目前回報均可使用；Google 文件不可以。",
-      es: "Funciona en Microsoft Word / PowerPoint de escritorio para Windows. En Mac y Canva, según los reportes recibidos, también funciona. No funciona en Google Docs."
+    requirements: {                 // \n＝換行
+      zh: "Windows：Word（自動校正）、PowerPoint（須裝外掛）、Excel（自動校正）均適用\nMac：Word（自動校正）、PowerPoint（須裝外掛），Pages、Keynote、Numbers 均適用\nCanva 付費版適用\nGoogle 文件不適用",
+      es: "Windows: Word (corrección automática), PowerPoint (requiere el complemento) y Excel (corrección automática)\nMac: Word (corrección automática), PowerPoint (requiere el complemento), Pages, Keynote y Numbers\nCanva: con el plan de pago\nGoogle Docs: no es compatible"
     },
-    steps: [
-      { zh: "選一種字體下載（文楷、正楷或注音），解壓縮。", es: "Elige una fuente (WenKai, Kai o Zhuyin), descárgala y descomprímela." },
-      { zh: "在字體檔（.ttf）上按兩下 →「安裝」。", es: "Haz doble clic en el archivo .ttf → «Instalar»." },
-      { zh: "重新開啟 Word，字型清單選 GoodTeacher 開頭的字型，直接打字即可。", es: "Abre Word de nuevo, elige la fuente que empieza por GoodTeacher y escribe." },
-      { zh: "PowerPoint：另外下載 PPT 外掛程式，先在 zip 檔上按右鍵 → 內容 → 勾選「解除封鎖」，再依 PDF 說明安裝。", es: "PowerPoint: descarga aparte el complemento de PPT, clic derecho en el zip → Propiedades → marca «Desbloquear» y sigue la guía PDF." },
-      { zh: "Word 想要單字更換讀音、一鍵換字型：另外下載 Word 外掛程式，安裝方式見 PDF。", es: "Word, si quieres cambiar la lectura de un carácter y cambiar de fuente con un clic: descarga aparte el complemento de Word; la instalación está en la guía PDF." },
-      { zh: "已經裝過、出新版時：關掉 Word、PowerPoint，重新安裝字體、覆蓋 GoodTeacher 資料夾，詳見 PDF 第 6 部分。", es: "Si ya lo tenías instalado y sale una versión nueva: cierra Word y PowerPoint, reinstala la fuente y sobrescribe la carpeta GoodTeacher (ver la parte 6 de la guía PDF)." }
-    ],
     changelog: [
       // 新版本加在最上面
      { version: "2026-11-15", date: "",
@@ -1233,8 +1225,8 @@ const CONFIG = {
   /* ---------------- 換版後（FREE_SWITCH 起）字體區要換掉的內容；沒寫在這裡的沿用上面的 font ---------------- */
   fontFree: {
     desc: {
-      zh: "此字體可自動校正拼音（以台灣讀音為主）。共有文楷拼音、正楷拼音、正楷注音三種字體，簡體、繁體輸入法皆適用。PowerPoint 另有免費的簡易版外掛，可以校正讀音、還原所有讀音。詳細用法請看圖解安裝說明。",
-      es: "Esta fuente corrige automáticamente el pinyin (según la pronunciación de Taiwán). Incluye tres fuentes: WenKai Pinyin, Kai Pinyin y Kai Zhuyin, y funciona con la entrada de caracteres simplificados y tradicionales. Para PowerPoint hay un complemento básico gratuito que corrige las lecturas y permite restaurarlas. Consulta la guía de instalación ilustrada para más detalles."
+      zh: "此字體會自動校正台灣讀音，共有文楷拼音、正楷拼音、正楷注音三種字體，簡體、繁體輸入法皆適用。在 Word 打字時，多音字會依內建規則自動校正。PowerPoint 至少需安裝簡易版外掛，可以手動校正讀音。詳細用法請看圖解安裝說明。",
+      es: "Esta fuente corrige automáticamente las lecturas según la pronunciación de Taiwán. Incluye tres fuentes: WenKai Pinyin, Kai Pinyin y Kai Zhuyin, y funciona con la entrada de caracteres simplificados y tradicionales. Al escribir en Word, los caracteres con varias lecturas se corrigen automáticamente con las reglas incorporadas. En PowerPoint hay que instalar como mínimo el complemento básico, que permite corregir las lecturas manualmente. Consulta la guía de instalación ilustrada para más detalles."
     },
     // 沒列出來的 id（wenkai、kai、zhuyin、guide）沿用上面 font.downloads 的設定
     downloadIds: ["wenkai", "kai", "zhuyin", "ppt0", "guide", "full"],
@@ -1251,14 +1243,6 @@ const CONFIG = {
         note:  { zh: "", es: "" },
         url: ""                       // 空白＝顯示「即將推出」
       }
-    ],
-    steps: [
-      { zh: "選一種字體下載（文楷、正楷或注音），解壓縮。", es: "Elige una fuente (WenKai, Kai o Zhuyin), descárgala y descomprímela." },
-      { zh: "在字體檔（.ttf）上按兩下 →「安裝」。", es: "Haz doble clic en el archivo .ttf → «Instalar»." },
-      { zh: "重新開啟 Word，字型清單選 GoodTeacher 開頭的字型，直接打字就會自動校正讀音，不需要外掛。", es: "Abre Word de nuevo, elige la fuente que empieza por GoodTeacher y escribe: las lecturas se corrigen solas, sin complemento." },
-      { zh: "PowerPoint：另外下載 PPT 簡易版外掛，先在 zip 檔上按右鍵 → 內容 → 勾選「解除封鎖」，再依 PDF 說明安裝。", es: "PowerPoint: descarga aparte el complemento básico, clic derecho en el zip → Propiedades → marca «Desbloquear» y sigue la guía PDF." },
-      { zh: "已經裝過、出新版時：關掉 Word、PowerPoint，重新安裝字體、覆蓋 GoodTeacher 資料夾，詳見安裝說明 PDF。", es: "Si ya lo tenías instalado y sale una versión nueva: cierra Word y PowerPoint, reinstala la fuente y sobrescribe la carpeta GoodTeacher (ver la guía PDF)." },
-      { zh: "裝過舊版外掛、想保留原功能：只更新字體和 GoodTeacher 資料夾，不要覆蓋原本的外掛檔（.ppam、.dotm）。", es: "Si tienes el complemento anterior y quieres conservar sus funciones: actualiza solo la fuente y la carpeta GoodTeacher, sin sobrescribir los archivos del complemento (.ppam, .dotm)." }
     ],
     changelog: [                      // 會加在上面 font.changelog 的最前面
       { version: "2026-12-01", date: "",
@@ -1433,9 +1417,7 @@ section{padding:44px 0}
 .dl[aria-disabled="true"] .ic{background:#999; border-color:#999}
 h4{font-size:1rem; font-weight:900; margin:20px 0 8px}
 h4:first-child{margin-top:0}
-.req{font-size:.9rem; background:var(--yellow-soft); border:2px dashed var(--ink); border-radius:10px; padding:10px 14px; margin:0}
-ol.steps{margin:0; padding-left:1.4em; font-size:.92rem; color:var(--ink-soft)}
-ol.steps li{margin-bottom:6px}
+.req{white-space:pre-line; font-size:.9rem; background:var(--yellow-soft); border:2px dashed var(--ink); border-radius:10px; padding:10px 14px; margin:0}
 details{border-top:2px solid var(--ink); margin-top:18px; padding-top:12px}
 summary{cursor:pointer; font-weight:900; font-size:.92rem}
 .log{list-style:none; padding:0; margin:10px 0 0; font-size:.88rem; color:var(--ink-soft)}
@@ -1705,8 +1687,6 @@ footer a{color:var(--ink); font-weight:700}
         <div class="dl-list" id="dlList"></div>
         <h4 data-i="reqTitle"></h4>
         <p class="req" id="fontReq"></p>
-        <h4 data-i="stepsTitle"></h4>
-        <ol class="steps" id="fontSteps"></ol>
         <span id="reportHome"><a class="report" id="reportLink" data-i="report"></a></span>
         <details>
           <summary data-i="logTitle"></summary>
@@ -1872,7 +1852,7 @@ const UI = {
   navSupport: { zh: "支持", es: "Apoyar" },
   ctaGames:   { zh: "玩小遊戲", es: "Ver los juegos" },
   ctaTools:   { zh: "使用小工具", es: "Ver las herramientas" },
-  ctaFont:    { zh: "下載拼音字體", es: "Descargar la fuente" },
+  ctaFont:    { zh: "GoodTeacher 字體", es: "Fuente GoodTeacher" },
   ctaSub:     { zh: "訂閱", es: "Suscripción" },
   gamesTitle: { zh: "中文小遊戲", es: "Juegos para aprender chino" },
   gamesIntro: { zh: "全部免費，打開瀏覽器就能玩，手機也可以。中文內容附台灣讀音拼音。",
@@ -1904,7 +1884,6 @@ const UI = {
   updated:    { zh: "更新", es: "Actualizado" },
   dlTitle:    { zh: "下載", es: "Descargas" },
   reqTitle:   { zh: "使用環境", es: "Requisitos" },
-  stepsTitle: { zh: "快速安裝", es: "Instalación rápida" },
   logTitle:   { zh: "更新紀錄", es: "Historial de versiones" },
   report:     { zh: "發現讀音錯誤？回報給我 →", es: "¿Un pinyin incorrecto? Avísame →" },
   supportTitle:{ zh: "請我喝杯咖啡", es: "Invítame a un café" },
@@ -2182,7 +2161,7 @@ function fontNow(){
   const f = CONFIG.font;
   if (!isFreeNow()) return f;
   const n = CONFIG.fontFree, all = [...f.downloads, ...n.downloads];
-  return { ...f, desc: n.desc, steps: n.steps, changelog: [...n.changelog, ...f.changelog],
+  return { ...f, desc: n.desc, changelog: [...n.changelog, ...f.changelog],
            downloads: n.downloadIds.map(id => all.find(d => d.id === id)) };
 }
 const t = v => (v == null ? "" : typeof v === "string" ? v : (v[lang] ?? v.zh ?? ""));
@@ -2336,7 +2315,6 @@ function render(){
     </a>`;
   }).join("");
   document.getElementById("fontReq").textContent = t(f.requirements);
-  document.getElementById("fontSteps").innerHTML = f.steps.map(s => `<li>${esc(t(s))}</li>`).join("");
   document.getElementById("fontLog").innerHTML = f.changelog.map(c => `<li><b>${esc(c.version)}</b>${c.date ? " · " + esc(c.date) : ""}<br>${esc(t(c.notes))}</li>`).join("");
   document.getElementById("fontLicense").textContent = t(f.license);
   // 「發現讀音錯誤？」→ 跳到回饋專區並選好字體回饋（如果 reportUrl 有填外部表單，就用外部表單）
